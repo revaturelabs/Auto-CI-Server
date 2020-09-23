@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.kohsuke.github.GHRepository;
 
 public class ConfigServlet extends HttpServlet {
+    final String ORG_NAME = "TestTestOrgTestTest";
+
     GitHubAPI github = new GitHubAPI();
     String gitUsername;
     String jenkinsUri;
@@ -43,7 +45,7 @@ public class ConfigServlet extends HttpServlet {
     }
 
     private GHRepository createRepo() throws IOException {
-        
+        github.getInstance().getOrganization(ORG_NAME).createRepository(projName).create();
         return null;
     }
 
