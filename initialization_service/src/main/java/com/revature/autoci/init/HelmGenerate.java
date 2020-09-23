@@ -10,10 +10,12 @@ import java.io.InputStreamReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Paths;
+
 
 public class HelmGenerate {
 
-    public static void chartGenerate(String chartName, String apiVersion, String type) {
+    public static void chartGenerate(String chartName, String apiVersion, String type, String directoryToPush) {
 
         List<String> lines = new ArrayList<String>();
         String line;
@@ -25,6 +27,8 @@ public class HelmGenerate {
 
         // writting command
         String buildcommand = "helm create " + chartName;
+
+        processBuilder.directory(new File(directoryToPush));
 
         // setting command
         if (isWindows) {
@@ -51,7 +55,8 @@ public class HelmGenerate {
             int exitCode = process.waitFor();
             System.out.println("\nBuilt with " + exitCode + " error(s).");
 
-            File newchart = new File(chartName + "/Chart.yaml");
+            String path  = Paths.get(directoryToPush, chartName + "/Chart.yaml").toString();
+            File newchart = new File(path);
             FileReader fr = new FileReader(newchart);
             BufferedReader br = new BufferedReader(fr);
             while ((line = br.readLine()) != null) {
@@ -91,15 +96,14 @@ public class HelmGenerate {
     }
 
     // this method is solely for creating a template
-
+ 
     public static void helmTemplates(String chartName, String apiVersion, String kind, String templateName,
-            String data) {
-        String filepath = chartName + "/templates/";
-        String filename = templateName + ".yaml";
+            String data, String directoryToPush) {
+        String filepath = Paths.get(directoryToPush, chartName + "/templates/", templateName+".yaml" ).toString();
 
         Writer writer;
         try {
-            writer = new FileWriter(filepath + filename);
+            writer = new FileWriter(filepath);
             String newLine = System.getProperty("line.separator");
             writer.write("apiVersion: " + apiVersion + newLine);
             writer.write("kind: " + kind + newLine);
@@ -118,15 +122,17 @@ public class HelmGenerate {
 
     }
 
-}
-
-// To Run:
+    // To Run:
 
 // public static void main(String[] args) {
-// HelmGenerate test = new HelmGenerate();
-// test.chartGenerate("testChart", "v2", "application");
-// test.helmTemplates("testChart", "v1", "ConfigMap", "configmap-test", "\"hello there\"");
-// }
+//     HelmGenerate test = new HelmGenerate();
+//     test.chartGenerate("testChart", "v2", "application","C:/Users/xxx/");
+//     test.helmTemplates("testChart", "v1", "ConfigMap", "configmap-test", "\"hello there\"", "C:/Users/xxx/");
+//     }
+    
+
+}
+
 
 
 // Quick Explaination: 
