@@ -24,7 +24,7 @@ public class App
         server.setPort(8080);
         server.setBaseDir(new File("target/tomcat").getAbsolutePath());
         server.getConnector();
-        server.addWebapp("/api", new File("src/main/static").getAbsolutePath());
+        server.addWebapp("/api", new File("src/main/resources").getAbsolutePath());
         server.addServlet("/api", "pipelineServlet", new pipelineServlet()).addMapping("/pipeline");;
         try {
             server.start();
