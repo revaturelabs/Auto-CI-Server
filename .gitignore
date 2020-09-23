@@ -3,3 +3,4 @@ spinnaker_service/target
 .settings/
 .classpath
 .project
+spinnaker_service/app.properties
