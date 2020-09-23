@@ -17,6 +17,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <tomcat.version>9.0.37</tomcat.version>
+    <exec.mainClass>com.revature.autoci.init.InitServer</exec.mainClass>
   </properties>
 
   <dependencies>
@@ -66,7 +67,6 @@
   </dependencies>
 
   <build>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
@@ -107,8 +107,29 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        <plugin>
+                 <artifactId>maven-assembly-plugin</artifactId>
+                 <executions>
+                     <execution>
+                          <phase>package</phase>
+                          <goals>
+                              <goal>single</goal>
+                          </goals>
+                      </execution>
+                  </executions>
+                  <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                       <archive>
+                           <manifest>
+                                 <mainClass>${exec.mainClass}</mainClass>
+                           </manifest>
+                       </archive>
+                       <descriptorRefs>
+                           <descriptorRef>jar-with-dependencies</descriptorRef>
+                      </descriptorRefs>
+                 </configuration>
+         </plugin>
       </plugins>
-    </pluginManagement>
   </build>
 </project>
 
