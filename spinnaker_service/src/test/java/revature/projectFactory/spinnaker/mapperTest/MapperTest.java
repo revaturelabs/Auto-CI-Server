@@ -1,0 +1,29 @@
+package revature.projectFactory.spinnaker.mapperTest;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import revature.projectFactory.spinnaker.POJO.PipelinePojo;
+import revature.projectFactory.spinnaker.mapper.Mapper;
+
+public class MapperTest {
+    private String jsonTest = "{\"jobName\":\"testJob\",\"gitUri\":\"testUri/.:?\",\"metaData\":\"testData\"}";
+    private PipelinePojo expectedObj = new PipelinePojo("testJob", "testUri/.:?", "testData");
+    
+    @Test
+    public void testPipelinePojoReadMapper(){
+        Mapper mapper = new Mapper();
+        PipelinePojo actualObj = mapper.pipelinePojoReadMapper(jsonTest);
+        assertEquals(expectedObj.getJobName(), actualObj.getJobName());
+        assertEquals(expectedObj.getGitUri(), actualObj.getGitUri());
+        assertEquals(expectedObj.getMetaData(), actualObj.getMetaData());
+    }
+
+    @Test
+    public void testWriteMapper(){
+        Mapper mapper = new Mapper();
+        String actual = mapper.writeMapper(expectedObj);
+        assertEquals(jsonTest, actual);
+    }
+}
