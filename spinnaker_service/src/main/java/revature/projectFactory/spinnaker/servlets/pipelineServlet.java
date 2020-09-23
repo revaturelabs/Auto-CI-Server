@@ -15,8 +15,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class pipelineServlet extends HttpServlet{
+    /**
+      *  Default serial id
+	 */
+    private static final long serialVersionUID = 1L;
+    
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    @Override
+    
+    @Override  
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.info("The logger is working!");
         String body = "";

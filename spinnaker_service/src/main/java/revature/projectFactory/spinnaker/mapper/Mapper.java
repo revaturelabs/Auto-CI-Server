@@ -5,8 +5,6 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.apache.catalina.Pipeline;
-
 import revature.projectFactory.spinnaker.POJO.PipelinePojo;
 
 public class Mapper {

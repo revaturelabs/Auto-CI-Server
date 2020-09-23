@@ -1,7 +1,5 @@
 package revature.projectFactory.spinnaker.POJO;
 
-import javax.print.attribute.standard.JobName;
-
 public class PipelinePojo {
     private String jobName;
     private String gitUri;
