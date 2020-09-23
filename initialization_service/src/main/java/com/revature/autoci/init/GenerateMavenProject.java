@@ -1,25 +1,125 @@
 package com.revature.autoci.init;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.maven.model.*;
+import org.apache.maven.model.Build;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 public class GenerateMavenProject {
 
-    public static void generateProject(String groupId, String artifactId, String version, String description, String name, String url, String packaging, String javaVersion, String mainClass, List<Map<String, String>> dependencies) {
-        //initializing variables and objects
+    public static void generateNewMavenProject(String groupId, String artifactId, String version, String description,
+            String name, String url, String packaging, String javaVersion, String mainClass,
+            List<Map<String, String>> dependencies, String IDE, String directoryToPush) {
+        generateMvnFileStructure(groupId, directoryToPush);
+        generateGitIgnoreFile(IDE, directoryToPush);
+        generatePomFile(groupId, artifactId, version, description, name, url, packaging, javaVersion, mainClass,
+                dependencies, directoryToPush);
+    }
+
+    // configuration details for the maven-assembly-plugin
+    private static String getMvnAssemblyPluginConfig(String packaging) {
+        String MvnAssemblyPluginConfig = "<configuration>" + "<descriptorRefs>" + "<descriptorRef>" + packaging
+                + "-with-dependencies</descriptorRef>" + "</descriptorRefs>" + "<archive>" + "<manifest>"
+                + "<mainClass>${exec.mainClass}</mainClass>" + "</manifest>" + "</archive>"
+                + "<appendAssemblyId>true</appendAssemblyId>" + "</configuration>";
+        return MvnAssemblyPluginConfig;
+    }
+
+    private static void generateMvnFileStructure(String groupId, String directoryToPush) {
+        // parse group id to determine folder structure in src
+        String[] groupIdParts = groupId.split("\\.");
+        String groupIdFolders = "";
+        for (String groupIdPart : groupIdParts) {
+            groupIdFolders += groupIdPart + "/";
+        }
+
+        // add src folder
+        String srcPath = directoryToPush + "src/";
+        File srcDir = new File(srcPath);
+        srcDir.mkdir();
+
+        // add main/java/parsedGroupId directory
+        String mainJavaPath = directoryToPush + "src/main/java/" + groupIdFolders;
+        File mainJavaDir = new File(mainJavaPath);
+        mainJavaDir.mkdirs();
+
+        // add test/java/parsedGroupId directory
+        String testJavaPath = directoryToPush + "src/test/java/" + groupIdFolders;
+        File testJavaDir = new File(testJavaPath);
+        testJavaDir.mkdirs();
+    }
+
+    private static void generateGitIgnoreFile(String IDE, String directoryToPush) {
+        String gitIgnoreIoUrl = "https://www.toptal.com/developers/gitignore/api/maven,java,git";
+        if (IDE != null) {
+            gitIgnoreIoUrl += "," + IDE;
+        }
+        try {
+            URL requestURL;
+            requestURL = new URL(gitIgnoreIoUrl);
+            String readLine = null;
+            HttpURLConnection connection = (HttpURLConnection) requestURL.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            int responseCode = connection.getResponseCode();
+            String gitIgnorePath = directoryToPush + ".gitignore";
+            File gitIgnoreFile = new File(gitIgnorePath);
+            FileWriter writer = new FileWriter(gitIgnoreFile);
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                while ((readLine = in.readLine()) != null) {
+                    writer.write(readLine + "\n");
+                }
+                writer.close();
+                in.close();
+            } else {
+                System.err.println("Problem connecting to/receiving response from gitignore.io");
+            }
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return;
+        } catch (Exception e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+             return;
+        }
+    }
+
+    public static void generatePomFile(String groupId, String artifactId, String version, String description,
+            String name, String url, String packaging, String javaVersion, String mainClass,
+            List<Map<String, String>> dependencies, String directoryToPush) {
+        // initializing variables and objects
         String filename = "pom.xml";
-        String filepath = "temp/";
+        String filepath = directoryToPush;
         Model mvnFile = new Model();
         Writer writer;
 
-        //setting project metaData
+        // setting project metaData
         mvnFile.setGroupId(groupId);
         mvnFile.setArtifactId(artifactId);
         mvnFile.setVersion(version);
@@ -28,15 +128,15 @@ public class GenerateMavenProject {
         mvnFile.setName(name);
         mvnFile.setUrl(url);
 
-        //adding properties
+        // adding properties
         mvnFile.addProperty("exec.mainClass", mainClass);
         mvnFile.addProperty("maven.compiler.source", javaVersion);
         mvnFile.addProperty("maven.compiler.target", javaVersion);
 
-        //adding dependencies
+        // adding dependencies
         List<Dependency> allDependencies = new ArrayList<>();
         Dependency newDependency;
-        for (Map<String, String> dependencyMap: dependencies) {
+        for (Map<String, String> dependencyMap : dependencies) {
             newDependency = new Dependency();
             newDependency.setGroupId(dependencyMap.get(groupId));
             newDependency.setArtifactId(dependencyMap.get(artifactId));
@@ -52,16 +152,35 @@ public class GenerateMavenProject {
         }
         mvnFile.setDependencies(allDependencies);
 
-        //adding build/plugins
+        // adding build/plugins
         Build projectBuild = new Build();
         Plugin mvnAssemblyPlugin = new Plugin();
+
         mvnAssemblyPlugin.setArtifactId("maven-assembly-plugin");
         mvnAssemblyPlugin.setVersion("RELEASE");
-        ConfigurationContainer pluginConfig = new ConfigurationContainer();
-        mvnAssemblyPlugin.setConfiguration(pluginConfig);
+        List<PluginExecution> executions = new ArrayList<PluginExecution>();
+        PluginExecution execution = new PluginExecution();
+        execution.setPhase("package");
+        execution.addGoal("single");
+        executions.add(execution);
+        mvnAssemblyPlugin.setExecutions(executions);
+        // Because the configuration for each plugin is dependent on the actual plugin,
+        // it must be added from a Dom object
+        Xpp3Dom configDom = null;
+        try {
+            configDom = Xpp3DomBuilder.build(new StringReader(getMvnAssemblyPluginConfig(packaging)));
+        } catch (XmlPullParserException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        mvnAssemblyPlugin.setConfiguration(configDom);
         projectBuild.addPlugin(mvnAssemblyPlugin);
         mvnFile.setBuild(projectBuild);
 
+        //Write pom.xml to DirectoryToPush folder
         try {
             writer = new FileWriter(filepath + filename);
             new MavenXpp3Writer().write(writer, mvnFile);
