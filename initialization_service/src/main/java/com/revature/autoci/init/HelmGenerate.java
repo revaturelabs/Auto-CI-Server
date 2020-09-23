@@ -125,16 +125,17 @@ public class HelmGenerate {
 // public static void main(String[] args) {
 // HelmGenerate test = new HelmGenerate();
 // test.ChartGenerate("testChart", "v2", "application");
-// test.HelmTemplates("v1", "ConfigMap", "configmap-test", "\"hello there\"");
+// test.HelmTemplates("testChart", "v1", "ConfigMap", "configmap-test", "\"hello there\"");
 // }
 
+
+// Quick Explaination: 
 // creating new instance of Helm Generate: HelmGenerate test = new
 // HelmGenerate();
-
 // Generating a new Helm Chart Chart: test.ChartGenerate("testChart", "v2",
 // "application");
 // Create a template
-// test.HelmTemplates("v1", "ConfigMap", "configmap-test", "\"hello there\"");
+// test.HelmTemplates("testChart", "v1", "ConfigMap", "configmap-test", "\"hello there\"");
 
 // Install a new template template: test.HelmInstall(yourInstallName); Deleted
 // for Now
