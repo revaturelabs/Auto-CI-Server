@@ -15,9 +15,7 @@ public class MapperTest {
     public void testPipelinePojoReadMapper(){
         Mapper mapper = new Mapper();
         PipelinePojo actualObj = mapper.pipelinePojoReadMapper(jsonTest);
-        assertEquals(expectedObj.getJobName(), actualObj.getJobName());
-        assertEquals(expectedObj.getGitUri(), actualObj.getGitUri());
-        assertEquals(expectedObj.getMetaData(), actualObj.getMetaData());
+        assertEquals(expectedObj.toString(),actualObj.toString());
     }
 
     @Test

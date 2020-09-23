@@ -40,4 +40,9 @@ public class PipelinePojo {
     public void setMetaData(String metaData) {
         this.metaData = metaData;
     }
+
+    @Override
+    public String toString(){
+        return "jobName: " +jobName +", gitUri: " + gitUri + ", metaData: " + metaData;
+    }
 }
