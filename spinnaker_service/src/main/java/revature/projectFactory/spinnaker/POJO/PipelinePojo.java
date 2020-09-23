@@ -13,6 +13,12 @@ public class PipelinePojo {
         metaData = "";
     }
 
+    public PipelinePojo(String jobName, String gitUri, String metaData){
+        this.jobName = jobName;
+        this.gitUri = gitUri;
+        this.metaData = metaData;
+    }
+
     public String getMetaData() {
         return metaData;
     }
