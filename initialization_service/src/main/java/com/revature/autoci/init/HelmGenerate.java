@@ -13,7 +13,7 @@ import java.util.List;
 
 public class HelmGenerate {
 
-    public static void ChartGenerate(String chartName, String apiVersion, String type) {
+    public static void chartGenerate(String chartName, String apiVersion, String type) {
 
         List<String> lines = new ArrayList<String>();
         String line;
@@ -92,10 +92,10 @@ public class HelmGenerate {
 
     // this method is solely for creating a template
 
-    public static void HelmTemplates(String chartName, String apiVersion, String kind, String templatename,
+    public static void helmTemplates(String chartName, String apiVersion, String kind, String templateName,
             String data) {
         String filepath = chartName + "/templates/";
-        String filename = templatename + ".yaml";
+        String filename = templateName + ".yaml";
 
         Writer writer;
         try {
@@ -104,7 +104,7 @@ public class HelmGenerate {
             writer.write("apiVersion: " + apiVersion + newLine);
             writer.write("kind: " + kind + newLine);
             writer.write("metadata:" + newLine);
-            writer.write("  name: {{ .Release.Name }}-" + templatename + newLine);
+            writer.write("  name: {{ .Release.Name }}-" + templateName + newLine);
             writer.write("data:" + newLine);
             writer.write("  myvalue: " + data + newLine);
 
@@ -124,8 +124,8 @@ public class HelmGenerate {
 
 // public static void main(String[] args) {
 // HelmGenerate test = new HelmGenerate();
-// test.ChartGenerate("testChart", "v2", "application");
-// test.HelmTemplates("testChart", "v1", "ConfigMap", "configmap-test", "\"hello there\"");
+// test.chartGenerate("testChart", "v2", "application");
+// test.helmTemplates("testChart", "v1", "ConfigMap", "configmap-test", "\"hello there\"");
 // }
 
 
