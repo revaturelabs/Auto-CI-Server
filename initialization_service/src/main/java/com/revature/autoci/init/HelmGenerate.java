@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class HelmGenerate {
     static String chartName = "mychart";
-    static String installName = "full-coral";
+    static String installName = "full-coral"; //not needed for now
 
     public static void ChartGenerate(String chartName) {
         ProcessBuilder processBuilder = new ProcessBuilder();
@@ -51,6 +51,8 @@ public class HelmGenerate {
 
     }
 
+
+    //this method only works when there is a templete.yaml file added into the new helm chart that was created
     public static void HelmInstall(String installName) {
         ProcessBuilder processBuilder = new ProcessBuilder();
 
