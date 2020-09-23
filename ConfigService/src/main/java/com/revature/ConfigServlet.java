@@ -3,12 +3,12 @@ package com.revature;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/configure")
+import org.kohsuke.github.GHRepository;
+
 public class ConfigServlet extends HttpServlet {
     GitHubAPI github = new GitHubAPI();
     String gitUsername;
@@ -21,15 +21,18 @@ public class ConfigServlet extends HttpServlet {
             throws ServletException, IOException {
         parseParams(request);
 
-        String ghRepoUri = createRepo();
-
-        if (usingGHActions) {
-            createGHActions();
+        GHRepository ghRepo = createRepo();
+        if (ghRepo == null) {
+            response.getWriter().write("Error connecting to GitHub");
         } else {
-            createWebhook();
-        }
+            if (usingGHActions) {
+                createGHActions(ghRepo);
+            } else {
+                createWebhook(ghRepo);
+            }
 
-        response.getWriter().write(ghRepoUri);
+            response.getWriter().write(ghRepo.getHttpTransportUrl());
+        }
     }
 
     private void parseParams(HttpServletRequest req) {
@@ -39,16 +42,16 @@ public class ConfigServlet extends HttpServlet {
         usingGHActions = false;
     }
 
-    private String createRepo() {
-
-        return "repo_uri";
+    private GHRepository createRepo() throws IOException {
+        
+        return null;
     }
 
-    private void createWebhook() {
+    private void createWebhook(GHRepository repo) {
 
     }
 
-    private void createGHActions() {
+    private void createGHActions(GHRepository repo) {
 
     }
 }
