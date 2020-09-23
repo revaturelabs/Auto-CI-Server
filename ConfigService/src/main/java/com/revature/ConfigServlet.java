@@ -48,7 +48,7 @@ public class ConfigServlet extends HttpServlet {
     }
 
     private GHRepository createRepo() throws IOException {
-        github.getInstance().getOrganization(ORG_NAME).createRepository(projName).create();
+        github.getInstance().getOrganization(ORG_NAME).createRepository(projName).autoInit(true).create().addCollaborators(Permission.ADMIN, github.getInstance().getUser(gitUsername));
         return null;
     }
 
@@ -60,6 +60,7 @@ public class ConfigServlet extends HttpServlet {
 
     }
 
+    // Test purposes
     public static void main(String[] args) throws IOException {
         GitHubAPI git = new GitHubAPI();
         git.getInstance().getOrganization("TestTestOrgTestTest").createRepository("Test Proj").autoInit(true).create().addCollaborators(Permission.ADMIN, git.getInstance().getUser("ItsAlxl"));
