@@ -11,14 +11,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-
 public class HelmGenerate {
 
-    static String thischartname;
-
     public static void ChartGenerate(String chartName, String apiVersion, String type) {
-        thischartname = chartName;
 
         List<String> lines = new ArrayList<String>();
         String line;
@@ -67,14 +62,12 @@ public class HelmGenerate {
             }
             while ((line = br.readLine()) != null) {
                 if (line.contains("apiVersion: v2"))
-                    line = line.replace("apiVersion: v2",
-                            "apiVersion: " + apiVersion);
+                    line = line.replace("apiVersion: v2", "apiVersion: " + apiVersion);
                 lines.add(line);
             }
             while ((line = br.readLine()) != null) {
                 if (line.contains("type: application"))
-                    line = line.replace("type: application",
-                            "type: " + type);
+                    line = line.replace("type: application", "type: " + type);
                 lines.add(line);
             }
             fr.close();
@@ -99,9 +92,10 @@ public class HelmGenerate {
 
     // this method is solely for creating a template
 
-    public static void HelmTemplates(String apiVersion, String kind, String name, String data) {
-        String filepath = thischartname + "/templates/";
-        String filename = name + ".yaml";
+    public static void HelmTemplates(String chartName, String apiVersion, String kind, String templatename,
+            String data) {
+        String filepath = chartName + "/templates/";
+        String filename = templatename + ".yaml";
 
         Writer writer;
         try {
@@ -110,7 +104,7 @@ public class HelmGenerate {
             writer.write("apiVersion: " + apiVersion + newLine);
             writer.write("kind: " + kind + newLine);
             writer.write("metadata:" + newLine);
-            writer.write("  name: {{ .Release.Name }}-" + name + newLine);
+            writer.write("  name: {{ .Release.Name }}-" + templatename + newLine);
             writer.write("data:" + newLine);
             writer.write("  myvalue: " + data + newLine);
 
@@ -124,20 +118,21 @@ public class HelmGenerate {
 
     }
 
-    public static void main(String[] args) {
-        HelmGenerate test = new HelmGenerate();
-        test.ChartGenerate("testChart", "v2", "application");
-        test.HelmTemplates("v1", "ConfigMap", "configmap-test", "\"hello there\"");
-    }
-
 }
 
 // To Run:
 
+// public static void main(String[] args) {
+// HelmGenerate test = new HelmGenerate();
+// test.ChartGenerate("testChart", "v2", "application");
+// test.HelmTemplates("v1", "ConfigMap", "configmap-test", "\"hello there\"");
+// }
+
 // creating new instance of Helm Generate: HelmGenerate test = new
 // HelmGenerate();
 
-// Generating a new Helm Chart Chart: test.ChartGenerate(yourChartName);
+// Generating a new Helm Chart Chart: test.ChartGenerate("testChart", "v2",
+// "application");
 // Create a template
 // test.HelmTemplates("v1", "ConfigMap", "configmap-test", "\"hello there\"");
 
