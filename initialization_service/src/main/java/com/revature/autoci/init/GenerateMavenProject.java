@@ -10,6 +10,7 @@ import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,17 +40,17 @@ public class GenerateMavenProject {
         String groupIdFolders = GetFoldersFromGroupId(groupId);
 
         // Adding src folder
-        String srcPath = directoryToPush + "src/";
+        String srcPath = Paths.get(directoryToPush, "src/").toString();
         File srcDir = new File(srcPath);
         srcDir.mkdir();
 
         // Adding main/java/parsedGroupId directory
-        String mainJavaPath = directoryToPush + "src/main/java/" + groupIdFolders;
+        String mainJavaPath = Paths.get(directoryToPush, "src/main/java/" , groupIdFolders).toString();
         File mainJavaDir = new File(mainJavaPath);
         mainJavaDir.mkdirs();
 
         // Adding test/java/parsedGroupId directory
-        String testJavaPath = directoryToPush + "src/test/java/" + groupIdFolders;
+        String testJavaPath = Paths.get(directoryToPush, "src/test/java/", groupIdFolders).toString();
         File testJavaDir = new File(testJavaPath);
         testJavaDir.mkdirs();
     }
@@ -79,7 +80,7 @@ public class GenerateMavenProject {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
             int responseCode = connection.getResponseCode();
-            String gitIgnorePath = directoryToPush + ".gitignore";
+            String gitIgnorePath = Paths.get(directoryToPush,".gitignore").toString();
             File gitIgnoreFile = new File(gitIgnorePath);
             FileWriter writer = new FileWriter(gitIgnoreFile);
 
@@ -140,16 +141,22 @@ public class GenerateMavenProject {
         javaString += "public class " + mainClassName + " {\n\n";
         javaString += "\tpublic static void main(String[] args) {\n\n\t}\n}";
 
-        String javaFilePath = directoryToPush + "src/main/java/" + groupIdFolders + mainClass + ".java";
+        String javaFilePath = Paths.get(directoryToPush,"src/main/java/" ,groupIdFolders,mainClass + ".java").toString();
 
         // Creating directory to add main class if necessary
         if (!mainClassFolders.equals("")) {
-            File javaFileDirectory = new File(directoryToPush + "src/main/java/" + groupIdFolders + mainClassFolders);
+            File javaFileDirectory = new File(Paths.get(directoryToPush,"src/main/java/",groupIdFolders,mainClassFolders).toString());
             javaFileDirectory.mkdir();
         }
 
         // Creating java file
         File javaFile = new File(javaFilePath);
+        try {
+            javaFile.createNewFile();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         try {
             FileWriter writer = new FileWriter(javaFile);
             writer.write(javaString);
@@ -234,7 +241,7 @@ public class GenerateMavenProject {
 
         // Writing pom.xml to directory to be pushed
         try {
-            writer = new FileWriter(filepath + filename);
+            writer = new FileWriter(Paths.get(filepath, filename).toString());
             new MavenXpp3Writer().write(writer, mvnFile);
             writer.close();
         } catch (IOException e) {
