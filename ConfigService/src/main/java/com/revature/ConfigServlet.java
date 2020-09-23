@@ -1,11 +1,15 @@
 package com.revature;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import org.kohsuke.github.GHRepository;
 
@@ -31,15 +35,41 @@ public class ConfigServlet extends HttpServlet {
                 createWebhook(ghRepo);
             }
 
-            response.getWriter().write(ghRepo.getHttpTransportUrl());
+            response.setContentType("application/json");
+            response.getWriter().write("{repoUrl: \"" + ghRepo.getHttpTransportUrl() + "\"}");
         }
     }
 
-    private void parseParams(HttpServletRequest req) {
-        gitUsername = "gitUser";
-        jenkinsUri = "jenkinsUri";
-        projName = "Project Name";
-        usingGHActions = false;
+    private void parseParams(HttpServletRequest req) throws IOException {
+        StringBuffer jb = new StringBuffer();
+        String line = null;
+        try {
+            BufferedReader reader = req.getReader();
+            while ((line = reader.readLine()) != null)
+            jb.append(line);
+        } catch (Exception e) {
+            throw new IOException("Error reading input!");
+        }
+
+        JSONObject json = null;
+        try {
+            json = new JSONObject(jb.toString());
+        } catch (JSONException e) {
+            String err = "Request string is not JSON: " + jb.toString();
+            throw new IOException(err);
+        }
+        try {
+            gitUsername = json.getString("gitUser");
+            jenkinsUri = json.getString("jenkinsUrl");
+            projName = json.getString("projName");
+            usingGHActions = !json.getBoolean("useJenkins");
+        } catch (JSONException e) {
+            String err = "Error parsing JSON request string";
+            if (json != null) {
+                err += ": " + json.toString();
+            }
+            throw new IOException(err);
+        }
     }
 
     private GHRepository createRepo() throws IOException {
