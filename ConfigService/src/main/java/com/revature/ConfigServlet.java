@@ -7,7 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.kohsuke.github.GHMyself;
 import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHUser;
+import org.kohsuke.github.GHOrganization.Permission;
 
 public class ConfigServlet extends HttpServlet {
     final String ORG_NAME = "TestTestOrgTestTest";
@@ -38,9 +41,9 @@ public class ConfigServlet extends HttpServlet {
     }
 
     private void parseParams(HttpServletRequest req) {
-        gitUsername = "gitUser";
+        gitUsername = "ItsAlxl";
         jenkinsUri = "jenkinsUri";
-        projName = "Project Name";
+        projName = "Test Project Name";
         usingGHActions = false;
     }
 
@@ -55,5 +58,10 @@ public class ConfigServlet extends HttpServlet {
 
     private void createGHActions(GHRepository repo) {
 
+    }
+
+    public static void main(String[] args) throws IOException {
+        GitHubAPI git = new GitHubAPI();
+        git.getInstance().getOrganization("TestTestOrgTestTest").createRepository("Test Proj").autoInit(true).create().addCollaborators(Permission.ADMIN, git.getInstance().getUser("ItsAlxl"));
     }
 }
