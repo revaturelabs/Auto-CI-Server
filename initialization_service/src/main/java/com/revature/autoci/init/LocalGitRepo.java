@@ -69,6 +69,11 @@ public class LocalGitRepo implements AutoCloseable{
         PushCommand pushCmd = repo.push();
         pushCmd.setRemote(uri);
         pushCmd.setCredentialsProvider(credentials);
+        try {
+            pushCmd.call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
     }
 
     public void close()

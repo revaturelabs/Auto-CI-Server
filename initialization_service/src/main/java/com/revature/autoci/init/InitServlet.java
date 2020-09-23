@@ -3,6 +3,8 @@ package com.revature.autoci.init;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Instant;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,9 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import org.apache.commons.io.FileUtils;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.apache.commons.lang3.SystemUtils;
 
 public class InitServlet extends HttpServlet 
 {
@@ -23,7 +23,7 @@ public class InitServlet extends HttpServlet
     public void init() throws ServletException {
         super.init();
         // Load in github credentials
-        token = System.getProperty("GITHUB_TOKEN", null);
+        token = System.getProperty("GITHUB_TOKEN", "");
     } 
 
     @Override
@@ -39,14 +39,18 @@ public class InitServlet extends HttpServlet
             // create temp directory
             if(data.isMaven())
             {
-                // Call Maven generator
+                System.out.println("Generating maven project");
+                GenerateMavenProject.generateNewMavenProject(data.getMetadataValue("groupId"), data.getMetadataValue("artifactId"), 
+                "0.0.1", data.getMetadataValue("description"), data.getMetadataValue("name"), data.getGithubURL(), 
+                data.getMetadataValue("packaging"), data.getMetadataValue("javaVersion"), data.getMetadataValue("mainClass"), 
+                data.getDependencies(), data.getMetadataValue("IDE"), tempPath.toAbsolutePath().toString());
             }
             else // Is node
             {
                 // Call Node generator
             }
 
-            // git init, commit, push
+            // git add, commit, push
             git.addAndCommitAll();
             git.pushToRemote();
             success = true;
@@ -54,7 +58,10 @@ public class InitServlet extends HttpServlet
         finally
         {
             // delete temp directory
-            FileUtils.deleteDirectory(tempPath.toFile());
+            if(!SystemUtils.IS_OS_WINDOWS)
+            {
+                FileUtils.deleteDirectory(tempPath.toFile());
+            }
         }
         
         if(success)
