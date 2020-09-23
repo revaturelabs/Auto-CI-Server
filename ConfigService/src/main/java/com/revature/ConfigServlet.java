@@ -1,8 +1,6 @@
 package com.revature;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,24 +8,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GitHubBuilder;
-
 @WebServlet("/configure")
 public class ConfigServlet extends HttpServlet {
-    GitHub github;
-
+    GitHubAPI github = new GitHubAPI();
     String gitUsername;
     String jenkinsUri;
     String projName;
     boolean usingGHActions;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        githubLogin("auth_token");
-
-        parseParams();
+        parseParams(request);
 
         String ghRepoUri = createRepo();
 
@@ -40,11 +32,7 @@ public class ConfigServlet extends HttpServlet {
         response.getWriter().write(ghRepoUri);
     }
 
-    private void githubLogin(String token) throws IOException {
-        github = new GitHubBuilder().withOAuthToken(token).build();
-    }
-
-    private void parseParams() {
+    private void parseParams(HttpServletRequest req) {
         gitUsername = "gitUser";
         jenkinsUri = "jenkinsUri";
         projName = "Project Name";
