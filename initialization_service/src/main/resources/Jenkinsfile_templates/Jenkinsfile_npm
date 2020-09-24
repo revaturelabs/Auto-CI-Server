@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs "node"
+    }
+
+    stages {
+        stage('Pull')
+        {
+            steps {
+                git ${githubURL}
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Test') {
+            // Run the maven build
+            steps {
+                sh 'npm test'
+            }
+        }
+        stage('Deploy') {
+            steps 
+            {
+                script 
+                {
+                    docker.withTool('docker')
+                    {
+                        repoId = ${dockerUser} +"/" +${projectName}
+                        sh 'docker -v'
+                        image = docker.build(repoId)
+                        docker.withRegistry(${ContainerRegistryURL}, ${ContainerRegistryCredId})
+                        {
+                            image.push()
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+}

@@ -16,16 +16,23 @@ import java.util.regex.Pattern;
 
 public class GenerateJenkinsfile {
     
-    public static void generateJenkinsfile(String githubURL, String dockerUser, String projectName, String credentialId, String pathToProject) throws IOException
+    // Generates a Jenkinsfile from a template. The template used depends on whether it is a Maven or NPM project.
+    public static void generateJenkinsfile(String githubURL, String dockerRegistryURL, String dockerUser, String projectName, String credentialId, boolean isMaven, String pathToProject) throws IOException
     {
+        // Compile regex to replace variables with arguments
         Map<String, String> pairs = new HashMap<>();
         pairs.put("githubURL", githubURL);
         pairs.put("dockerUser", dockerUser);
         pairs.put("projectName", projectName);
-        pairs.put("ContainerRepoCredId", credentialId);
+        pairs.put("ContainerRegistryURL", dockerRegistryURL);
+        pairs.put("ContainerRegistryCredId", credentialId);
         Map<Pattern, String> replaceVals = compileRegex(pairs);
 
-        InputStream templateStream = GenerateJenkinsfile.class.getClassLoader().getResourceAsStream("Jenkinsfile_templates/Jenkinsfile");
+        // Determine the template to use
+        String template = isMaven? "Jenkinsfile_templates/Jenkinsfile_maven" : "Jenkinsfile_templates/Jenkinsfile_npm";
+
+        // Fill in the template and create new Jenkinsfile
+        InputStream templateStream = GenerateJenkinsfile.class.getClassLoader().getResourceAsStream(template);
         try(BufferedReader buf = new BufferedReader(new InputStreamReader(templateStream)))       
         {
             File jenkinsfile = Paths.get(pathToProject,"Jenkinsfile").toFile();

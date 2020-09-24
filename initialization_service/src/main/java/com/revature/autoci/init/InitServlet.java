@@ -3,8 +3,6 @@ package com.revature.autoci.init;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.Instant;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -49,6 +47,9 @@ public class InitServlet extends HttpServlet
             {
                 // Call Node generator
             }
+
+
+            
 
             // git add, commit, push
             git.addAndCommitAll();
