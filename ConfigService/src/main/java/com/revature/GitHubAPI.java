@@ -6,7 +6,7 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 public class GitHubAPI {
-    final private String token = "NEVER_COMMIT_TOKENS";
+    final private String token = ""; // NEVER COMMIT TOKENS
 
     private GitHub gh = null;
 
