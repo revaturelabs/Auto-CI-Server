@@ -1,0 +1,16 @@
+antisamy-markup-formatter
+bouncycastle-api
+command-launcher
+configuration-as-code-groovy
+configuration-as-code-secret-ssm
+external-monitor-job
+github
+greenballs
+job-dsl
+ldap
+matrix-auth
+matrix-project
+pam-auth
+pipeline-maven
+pipeline-model-definition
+windows-slaves
