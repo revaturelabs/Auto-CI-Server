@@ -1,15 +1,10 @@
 package com.revature.autoci.init;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +22,8 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 public class GenerateMavenProject {
 
+    // Generates a new Maven project in the designated directory. Creates standard folder structure, generates 
+    // a generic .gitignore file, generates a generic main java file, and generates a basic pom.xml file
     public static void generateNewMavenProject(String groupId, String artifactId, String version, String description, String name, String url, String packaging, String javaVersion, String mainClass, List<Map<String, String>> dependencies, String IDE, String directoryToPush) {
         generateMvnFileStructure(groupId, directoryToPush);
         generateGitIgnoreFile(IDE, directoryToPush);
@@ -35,6 +32,7 @@ public class GenerateMavenProject {
                 dependencies, directoryToPush);
     }
 
+    // Creates the standard Maven project file structure in the designated directory
     private static void generateMvnFileStructure(String groupId, String directoryToPush) {
         // Parsing group id to determine folder structure in src
         String groupIdFolders = GetFoldersFromGroupId(groupId);
@@ -55,6 +53,8 @@ public class GenerateMavenProject {
         testJavaDir.mkdirs();
     }
 
+    // Parse the groupID and returns what folders to create to follow standard Maven project folder structure
+    // com.example.project -> com/example/project
     private static String GetFoldersFromGroupId(String groupId) {
         String[] groupIdParts = groupId.split("\\.");
         String groupIdFolders = "";
@@ -64,16 +64,21 @@ public class GenerateMavenProject {
         return groupIdFolders;
     }
 
+    // Generates a generic .gitignore file for the maven project by sending a get request to gitignore.io.
+    // Includes common files to ignore for maven, java, git, and the IDE supplied by the user.
+    // Before using, insure that IDE string is compatible with gitignore.io
     private static void generateGitIgnoreFile(String IDE, String directoryToPush) {
         // URL to generate .gitignore for Maven, Java, and Git
         String gitIgnoreIoUrl = "https://www.toptal.com/developers/gitignore/api/maven,java,git";
         if (IDE != null) {
             gitIgnoreIoUrl += "," + IDE;
         }
-
+        // Generating .gitignore from URL and saving .gitignore file to directory
         GenerateProjectUtils.generateGitIgnoreFromUrl(gitIgnoreIoUrl, directoryToPush);
     }
 
+    // Generates the main java file using the name (and possibly folder names) supplied.
+    // If something like: "appFiles/app" will create the appFiles folder and put app.java in that folder
     private static void generateMainJavaFile(String mainClass, String groupId, String directoryToPush) {
         // Parsing groupId to return folder structure: com.example returns com/return/
         String groupIdFolders = GetFoldersFromGroupId(groupId);
@@ -131,6 +136,8 @@ public class GenerateMavenProject {
         }
     }
 
+    // Generates pom.xml in the designated directory from supplied parameters using the apache.maven Model and
+    // other associated objects. Writes the Model object to the pom.xml file using the apache.maven MavenXpp3Writer
     private static void generatePomFile(String groupId, String artifactId, String version, String description,
             String name, String url, String packaging, String javaVersion, String mainClass,
             List<Map<String, String>> dependencies, String directoryToPush) {
@@ -214,7 +221,8 @@ public class GenerateMavenProject {
         }               
     }
 
-        // configuration details for the maven-assembly-plugin
+        // Returns configuration details for the maven-assembly-plugin, 
+        // which we'll want to package the project with dependencies for app deployment
         private static String getMvnAssemblyPluginConfig(String packaging) {
             String MvnAssemblyPluginConfig = "<configuration>" + "<descriptorRefs>" + "<descriptorRef>" + packaging
                     + "-with-dependencies</descriptorRef>" + "</descriptorRefs>" + "<archive>" + "<manifest>"
