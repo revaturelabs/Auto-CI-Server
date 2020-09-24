@@ -20,7 +20,6 @@ public class ConfigServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         parseParams(request);
-
         String ghRepoUri = createRepo();
 
         if (usingGHActions) {
@@ -40,15 +39,12 @@ public class ConfigServlet extends HttpServlet {
     }
 
     private String createRepo() {
-
         return "repo_uri";
     }
 
     private void createWebhook() {
-
     }
 
     private void createGHActions() {
-
     }
 }

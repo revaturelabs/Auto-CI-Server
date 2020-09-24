@@ -1,0 +1,28 @@
+name: Testing
+
+on:
+  push:
+    branches: [ Config_GithubActions ]
+  pull_request:
+    branches: [ Config_GithubActions ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout client repository"
+        uses: actions/checkout@v2
+        with: 
+          repository: 'https://github.com/FOX10147/WorkflowTest.git'
+      
+      - name: Run a one-line script
+        run: cd WorkflowTest
+      - name: check for changes
+        run: git status
+      - name: stage changed files
+        run: git add .github/workflows/Dummy.yaml
+      - name: commit changed files
+        run: git commit -m "First Commit"
+      - name: push code to master
+        run: git push origin HEAD:master
