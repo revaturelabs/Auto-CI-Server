@@ -15,7 +15,8 @@ jobs:
         uses: actions/checkout@v2
         with: 
           repository: FOX10147/WorkflowTest
-      
+      - name: see stuff
+        run: ls -a
       - name: Run a one-line script
         run: cd WorkflowTest
       - name: check for changes
