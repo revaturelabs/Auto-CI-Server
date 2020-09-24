@@ -3,8 +3,6 @@ package com.revature.autoci.init;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.Instant;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,11 +17,15 @@ import org.apache.commons.lang3.SystemUtils;
 public class InitServlet extends HttpServlet 
 {
     private String token;
+    private String containerRegistryURL;
+    private String containerRegistryCredentialId;
     @Override
     public void init() throws ServletException {
         super.init();
         // Load in github credentials
-        token = System.getProperty("GITHUB_TOKEN", "");
+        token = System.getProperty("GITHUB_TOKEN");
+        containerRegistryURL = System.getProperty("CONTAINER_REGISTRY_URL", "REPLACEME");
+        containerRegistryCredentialId = System.getProperty("CONTAINER_REGISTRY_URL", "REPLACEME");
     } 
 
     @Override
@@ -50,6 +52,11 @@ public class InitServlet extends HttpServlet
                 // Call Node generator
             }
 
+            // Generate jenkinsfile in top-level directory
+            GenerateJenkinsfile.generateJenkinsfile(data.getGithubURL(), containerRegistryURL,
+             "REPLACE_WITH_REGISTRY_USERNAME", data.getMetadataValue("artifactId"), containerRegistryCredentialId, 
+             data.isMaven(), tempPath.toString());
+            
             // git add, commit, push
             git.addAndCommitAll();
             git.pushToRemote();
