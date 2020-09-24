@@ -71,43 +71,7 @@ public class GenerateMavenProject {
             gitIgnoreIoUrl += "," + IDE;
         }
 
-        // Creating and sending HTTP Request
-        try {
-            URL requestURL;
-            requestURL = new URL(gitIgnoreIoUrl);
-            String readLine = null;
-            HttpURLConnection connection = (HttpURLConnection) requestURL.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            int responseCode = connection.getResponseCode();
-            String gitIgnorePath = Paths.get(directoryToPush,".gitignore").toString();
-            File gitIgnoreFile = new File(gitIgnorePath);
-            FileWriter writer = new FileWriter(gitIgnoreFile);
-
-            // Writing the HTTP response to the .gitignore file
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                while ((readLine = in.readLine()) != null) {
-                    writer.write(readLine + "\n");
-                }
-                writer.close();
-                in.close();
-            } else {
-                System.err.println("Problem connecting to/receiving response from gitignore.io");
-            }
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return;
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return;
-        } catch (Exception e) {
-             // TODO Auto-generated catch block
-             e.printStackTrace();
-             return;
-        }
+        GenerateProjectUtils.generateGitIgnoreFromUrl(gitIgnoreIoUrl, directoryToPush);
     }
 
     private static void generateMainJavaFile(String mainClass, String groupId, String directoryToPush) {
