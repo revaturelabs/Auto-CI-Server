@@ -14,7 +14,7 @@ jobs:
       - name: "Checkout client repository"
         uses: actions/checkout@v2
         with: 
-          repository: 'https://github.com/FOX10147/WorkflowTest.git'
+          repository: FOX10147/WorkflowTest
       
       - name: Run a one-line script
         run: cd WorkflowTest
