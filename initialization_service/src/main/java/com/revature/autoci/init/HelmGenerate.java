@@ -12,6 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.nio.file.Paths;
 
+/** 
+ * The method chartGenerate generates a new file structure for helm chart, and print out the status on command
+ * The method must specifi the below parameter
+ * 
+ * chartName        a name for the chart, which will be reflected in the name of the file and chart.yaml
+ * apiVersion       the API version, v2, v1... which will be reflected in chart.yaml
+ * type             the type of the helm chart, such as application, also reflected in chart.yaml
+ * directoryToPush  the file directory for the chart being built
+ * 
+ * For example, this method shall be 
+ * HelmGenerate test = new HelmGenerate();
+ * test.chartGenerate("testChart", "v2", "application","C:/Users/xxx/");
+ * 
+ */
 
 public class HelmGenerate {
 
@@ -95,7 +109,20 @@ public class HelmGenerate {
 
     }
 
-    // this method is solely for creating a template
+    /** 
+    * The method helmTemplates generate a new template yaml file under the template file in the helm chart for helm to install
+    * This method must speficy the parameters below
+    *
+    * chartName
+    * apiVersion
+    * kind
+    * templateName
+    * data
+    * directoryToPush
+    * 
+    * For example, the method should look like 
+    * test.helmTemplates("testChart", "v1", "ConfigMap", "configmap-test", "\"hello there\"", "C:/Users/xxx/");* 
+    */
  
     public static void helmTemplates(String chartName, String apiVersion, String kind, String templateName,
             String data, String directoryToPush) {
