@@ -11,9 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GHOrganization.Permission;
 import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHUser;
 
 public class ConfigServlet extends HttpServlet {
+    final String ORG_NAME = "revaturelabs";
+
     GitHubAPI github = new GitHubAPI();
     String gitUsername;
     String jenkinsUri;
@@ -46,7 +51,7 @@ public class ConfigServlet extends HttpServlet {
         try {
             BufferedReader reader = req.getReader();
             while ((line = reader.readLine()) != null)
-            jb.append(line);
+                jb.append(line);
         } catch (Exception e) {
             throw new IOException("Error reading input!");
         }
@@ -73,8 +78,17 @@ public class ConfigServlet extends HttpServlet {
     }
 
     private GHRepository createRepo() throws IOException {
-        
-        return null;
+        try {
+            GHUser user = github.getInstance().getUser(gitUsername);
+
+            GHOrganization org = github.getInstance().getOrganization(ORG_NAME);
+            GHRepository repo = org.createRepository(projName).autoInit(true).create();
+            repo.addCollaborators(Permission.ADMIN, user);
+
+            return repo;
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     private void createWebhook(GHRepository repo) {
