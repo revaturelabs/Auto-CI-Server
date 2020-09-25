@@ -22,6 +22,7 @@ import org.kohsuke.github.GHUser;
 
 public class ConfigServlet extends HttpServlet {
     final String ORG_NAME = "revaturelabs";
+    final String DBG_ORG_NAME = "alxllabs";
 
     GitHubAPI github = new GitHubAPI();
     String gitUsername;
@@ -45,7 +46,7 @@ public class ConfigServlet extends HttpServlet {
             }
 
             response.setContentType("application/json");
-            response.getWriter().write("{repoUrl: \"" + ghRepo.getHttpTransportUrl() + "\"}");
+            response.getWriter().write("{\n\t\"repoUrl\": \"" + ghRepo.getHttpTransportUrl() + "\"\n}");
         }
     }
 
@@ -73,6 +74,9 @@ public class ConfigServlet extends HttpServlet {
             jenkinsUri = json.getString("jenkinsUrl");
             projName = json.getString("projName");
             usingGHActions = !json.getBoolean("useJenkins");
+            if (json.has("debug") && !json.getBoolean("debug")) {
+                github.debugMode = false;
+            }
         } catch (JSONException e) {
             String err = "Error parsing JSON request string";
             if (json != null) {
@@ -86,7 +90,12 @@ public class ConfigServlet extends HttpServlet {
         try {
             GHUser user = github.getInstance().getUser(gitUsername);
 
-            GHOrganization org = github.getInstance().getOrganization(ORG_NAME);
+            String orgName = ORG_NAME;
+            if (github.debugMode) {
+                orgName = DBG_ORG_NAME;
+            }
+
+            GHOrganization org = github.getInstance().getOrganization(orgName);
             GHRepository repo = org.createRepository(projName).autoInit(true).create();
             repo.addCollaborators(Permission.ADMIN, user);
 
