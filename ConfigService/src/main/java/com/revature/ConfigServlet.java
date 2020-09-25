@@ -2,7 +2,6 @@ package com.revature;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import org.kohsuke.github.GHEvent;
 import org.kohsuke.github.GHOrganization;
 import org.kohsuke.github.GHOrganization.Permission;
@@ -31,21 +31,29 @@ public class ConfigServlet extends HttpServlet {
     boolean usingJenkins;
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        JSONObject responseJson = new JSONObject();
         parseParams(request);
 
         GHRepository ghRepo = createRepo();
         if (ghRepo == null) {
-            response.getWriter().write("Error connecting to GitHub");
+            responseJson.put("errorMsg", "Couldn't connect to GitHub");
         } else {
-            if (usingJenkins) {
-                createWebhook(ghRepo);
+            try {
+                boolean madeHook = false;
+                if (usingJenkins) {
+                    madeHook = createWebhook(ghRepo);
+                }
+                
+                responseJson.put("repoUrl", ghRepo.getHttpTransportUrl());
+                responseJson.put("madeHook", madeHook);
+            } catch (Exception e) {
+                responseJson.put("errorMsg", e.getMessage());
             }
-
-            response.setContentType("application/json");
-            response.getWriter().write("{\n\t\"repoUrl\": \"" + ghRepo.getHttpTransportUrl() + "\"\n}");
         }
+
+        response.setContentType("application/json");
+        response.getWriter().write(responseJson.toString(0));
     }
 
     private void parseParams(HttpServletRequest req) throws IOException {
@@ -111,14 +119,15 @@ public class ConfigServlet extends HttpServlet {
         }
     }
 
-    private void createWebhook(GHRepository repo) throws IOException {
+    private boolean createWebhook(GHRepository repo) throws IOException {
         List<GHEvent> events = new ArrayList<GHEvent>();
         events.add(GHEvent.PUSH);
         try {
             URL ju = new URL(jenkinsUri);
             repo.createWebHook(ju, events);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
