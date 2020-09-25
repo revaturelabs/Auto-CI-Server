@@ -28,7 +28,7 @@ public class ConfigServlet extends HttpServlet {
     String gitUsername;
     String jenkinsUri;
     String projName;
-    boolean usingGHActions;
+    boolean usingJenkins;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -39,9 +39,7 @@ public class ConfigServlet extends HttpServlet {
         if (ghRepo == null) {
             response.getWriter().write("Error connecting to GitHub");
         } else {
-            if (usingGHActions) {
-                createGHActions(ghRepo);
-            } else {
+            if (usingJenkins) {
                 createWebhook(ghRepo);
             }
 
@@ -50,7 +48,6 @@ public class ConfigServlet extends HttpServlet {
         }
     }
 
-    // Reads the request, puts it into variable jb
     private void parseParams(HttpServletRequest req) throws IOException {
         JSONObject json = parseRequestToJSON(req);
         parseJsonToVars(json);
@@ -82,7 +79,7 @@ public class ConfigServlet extends HttpServlet {
             gitUsername = json.getString("gitUser");
             jenkinsUri = json.getString("jenkinsUrl");
             projName = json.getString("projName");
-            usingGHActions = !json.getBoolean("useJenkins");
+            usingJenkins = json.getBoolean("useJenkins");
             if (json.has("debug") && !json.getBoolean("debug")) {
                 github.debugMode = false;
             }
@@ -123,9 +120,5 @@ public class ConfigServlet extends HttpServlet {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-    }
-
-    private void createGHActions(GHRepository repo) {
-
     }
 }
