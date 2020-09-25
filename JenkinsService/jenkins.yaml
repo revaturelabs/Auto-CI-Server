@@ -89,19 +89,20 @@ tool:
     triggerDownstreamUponResultUnstable: false
 jobs:
   # Groovy Script Here, I guess
-  - script: >
-      pipelineJob('do-tests') {
-        definition {
-          cpsScm {
-            scm {
-              git {
-                remote {
-                  url('https://github.com/Malokingi/NumTheFun')
-                }
-                branch('*/master')
-              }
-            }
-            lightweight()
-          }
-        }
-      }
+  # - script: >
+  #     pipelineJob('do-tests') {
+  #       definition {
+  #         cpsScm {
+  #           scm {
+  #             git {
+  #               remote {
+  #                 url('https://github.com/Malokingi/NumTheFun')
+  #               }
+  #               branch('*/master')
+  #             }
+  #           }
+  #           lightweight()
+  #         }
+  #       }
+  #     }
+  - url: https://raw.githubusercontent.com/Malokingi/NumTheFun/master/getajob.groovy
