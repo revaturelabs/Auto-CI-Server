@@ -52,6 +52,11 @@ public class ConfigServlet extends HttpServlet {
 
     // Reads the request, puts it into variable jb
     private void parseParams(HttpServletRequest req) throws IOException {
+        JSONObject json = parseRequestToJSON(req);
+        parseJsonToVars(json);
+    }
+
+    private JSONObject parseRequestToJSON(HttpServletRequest req) throws IOException {
         StringBuffer jb = new StringBuffer();
         String line = null;
         try {
@@ -69,6 +74,10 @@ public class ConfigServlet extends HttpServlet {
             String err = "Request string is not JSON: " + jb.toString();
             throw new IOException(err);
         }
+        return json;
+    }
+
+    private void parseJsonToVars(JSONObject json) throws IOException {
         try {
             gitUsername = json.getString("gitUser");
             jenkinsUri = json.getString("jenkinsUrl");
