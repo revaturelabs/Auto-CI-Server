@@ -35,11 +35,11 @@ public class ConfigServlet extends HttpServlet {
         JSONObject responseJson = new JSONObject();
         parseParams(request);
 
-        GHRepository ghRepo = createRepo();
-        if (ghRepo == null) {
-            responseJson.put("errorMsg", "Couldn't connect to GitHub");
-        } else {
-            try {
+        try {
+            GHRepository ghRepo = createRepo();
+            if (ghRepo == null) {
+                responseJson.put("errorMsg", "Couldn't connect to GitHub");
+            } else {
                 boolean madeHook = false;
                 if (usingJenkins) {
                     madeHook = createWebhook(ghRepo);
@@ -47,9 +47,9 @@ public class ConfigServlet extends HttpServlet {
                 
                 responseJson.put("repoUrl", ghRepo.getHttpTransportUrl());
                 responseJson.put("madeHook", madeHook);
-            } catch (Exception e) {
-                responseJson.put("errorMsg", e.getMessage());
             }
+        } catch (Exception e) {
+            responseJson.put("errorMsg", e.getMessage());
         }
 
         response.setContentType("application/json");
