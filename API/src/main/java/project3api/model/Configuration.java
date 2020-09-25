@@ -1,23 +1,52 @@
 package project3api.model;
 
-public class JenkinsPost {
+public class Configuration {
 
-    private String status;
+    private String gitUser;
+    private String jenkinsURI;
+    private String jenOrGit; // Was Jenkins specified, or are we using Github Actions?
+    private String projMetadata;
 
-    public JenkinsPost(){
+    public Configuration() { }
 
+    public Configuration(String gitUser, String jenkinsURI, String jenOrGit, String projMetadata) {
+        this.gitUser = gitUser;
+        this.jenkinsURI = jenkinsURI;
+        this.jenOrGit = jenOrGit;
+        this.projMetadata = projMetadata;
     }
 
-    public JenkinsPost(String status){
-        this.status = status;
+    public String getGitUser() {
+        return gitUser;
     }
 
-    public String getStats() {
-        return this.status;
+    public void setGitUser(String gitUser) {
+        this.gitUser = gitUser;
     }
 
-    public void setStats(String status) {
-        this.status = status;
+    public String getJenkinsURI() {
+        return jenkinsURI;
     }
+
+    public void setJenkinsURI(String jenkinsURI) {
+        this.jenkinsURI = jenkinsURI;
+    }
+
+    public String getJenOrGit() {
+        return jenOrGit;
+    }
+
+    public void setJenOrGit(String jenOrGit) {
+        this.jenOrGit = jenOrGit;
+    }
+
+    public String getProjMetadata() {
+        return projMetadata;
+    }
+
+    public void setProjMetadata(String projMetadata) {
+        this.projMetadata = projMetadata;
+    }
+
     
 }
