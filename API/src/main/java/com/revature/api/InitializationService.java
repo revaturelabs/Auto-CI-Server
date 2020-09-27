@@ -1,4 +1,4 @@
-package project3api.api;
+package com.revature.api;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebServlet(name = "InitializationService", urlPatterns = { "", "/initialization" })
+@WebServlet(name = "InitializationService", urlPatterns = { "/initialization" })
 public class InitializationService extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -24,7 +24,7 @@ public class InitializationService extends HttpServlet {
         //create entities
         // to do make model object to work with this endpoint
 
-        String result = objectMapper.writeValueAsString("replace with bject");
+        String result = objectMapper.writeValueAsString("replace with object");
         PrintWriter out = resp.getWriter();
 
         //return 

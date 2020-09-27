@@ -1,4 +1,4 @@
-package project3api.model;
+package com.revature.model;
 
 public class Initialization {
 

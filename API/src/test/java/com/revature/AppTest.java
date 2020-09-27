@@ -1,4 +1,4 @@
-package project3api;
+package com.revature;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
