@@ -1,2 +1,0 @@
-git checkout -b "$*"
-git push -u origin "$*"

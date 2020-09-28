@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoci-jenkins-svlt
+  labels:
+    app: autoci-jenkins-svlt
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: autoci-jenkins-svlt
+  template:
+    metadata:
+      labels:
+        app: autoci-jenkins-svlt
+    spec:
+      containers:
+        - name: autoci-jenkins-svlt
+          image: alxl/autoci-jenkins-svlt:latest
+          ports:
+          - containerPort: 8080
