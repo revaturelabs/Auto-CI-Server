@@ -44,7 +44,7 @@ public class InitServlet extends HttpServlet {
                 System.out.println("Generating maven project");
                 GenerateMavenProject.generateNewMavenProject(data.getMetadataValue("groupId"),
                         data.getMetadataValue("artifactId"), "1.0.0", data.getMetadataValue("description"),
-                        data.getMetadataValue("author"), data.getGithubURL(), data.getMetadataValue("packaging"),
+                        data.getMetadataValue("projectName"), data.getGithubURL(), data.getMetadataValue("packaging"),
                         data.getMetadataValue("javaVersion"), data.getMetadataValue("mainClass"),
                         data.getDependencies(), data.getMetadataValue("IDE"), tempPath.toAbsolutePath().toString());
             } else // Is node
