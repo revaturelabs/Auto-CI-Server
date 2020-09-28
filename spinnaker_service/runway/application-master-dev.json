@@ -1,0 +1,12 @@
+{
+    "app": {
+        "instance_type": "t2.micro"
+    },
+    "asg": {
+        "max_inst": 1,
+        "min_inst": 1
+    },
+    "regions": [
+        "us-east-1"
+    ]
+ }

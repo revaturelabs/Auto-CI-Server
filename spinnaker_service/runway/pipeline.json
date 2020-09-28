@@ -1,0 +1,4 @@
+{
+    "deployment": "spinnaker",
+    "env": [ "dev"]
+ }
