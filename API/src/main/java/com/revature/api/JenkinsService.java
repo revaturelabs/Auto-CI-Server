@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.model.JenkinsServiceObject;
 
 @WebServlet(name = "JenkinsService", urlPatterns = { "/jenkins" })
 public class JenkinsService extends HttpServlet {
@@ -21,10 +22,17 @@ public class JenkinsService extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
+        // Vars
+        String repoURL = req.getParameter("repoURL");
+        String jenkinsURI = req.getParameter("jenkinsURI");
+        String projMetadata = req.getParameter("projMetadata");
+
+        JenkinsServiceObject jSer = new JenkinsServiceObject(repoURL, jenkinsURI, projMetadata);
+
         //create entities
         // to do make model object to work with this endpoint
 
-        String result = objectMapper.writeValueAsString("replace with object");
+        String result = objectMapper.writeValueAsString(jSer);
         PrintWriter out = resp.getWriter();
 
         //return 

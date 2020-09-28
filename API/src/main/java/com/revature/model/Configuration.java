@@ -48,5 +48,11 @@ public class Configuration {
         this.projMetadata = projMetadata;
     }
 
+    @Override
+    public String toString() {
+        return "Configuration [gitUser=" + gitUser + ", jenOrGit=" + jenOrGit + ", jenkinsURI=" + jenkinsURI
+                + ", projMetadata=" + projMetadata + "]";
+    }
+
     
 }

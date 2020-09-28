@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.model.Initialization;
 
 @WebServlet(name = "InitializationService", urlPatterns = { "/initialization" })
 public class InitializationService extends HttpServlet {
@@ -21,10 +22,19 @@ public class InitializationService extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
+        // Vars
+        String gitUser = req.getParameter("gitUser");
+        String repoURL = req.getParameter("repoURL");
+        String mvnOrNpm = req.getParameter("mvnOrNpm"); // Are we doind maven, or bpm?
+        String projMetadata = req.getParameter("projMetadata");
+        String depends = req.getParameter("depends");
+
+        Initialization initn = new Initialization(gitUser, repoURL, mvnOrNpm, projMetadata, depends);
+
         //create entities
         // to do make model object to work with this endpoint
 
-        String result = objectMapper.writeValueAsString("replace with object");
+        String result = objectMapper.writeValueAsString(initn);
         PrintWriter out = resp.getWriter();
 
         //return 

@@ -1,15 +1,15 @@
 package com.revature.model;
 
-public class SpinnakerService {
+public class SpinnakerServiceObject {
 
     private String repoURL;
     private String jobName; // Name of the job made in JenkinsService
     private String projMetadata;
 
-    public SpinnakerService() {
+    public SpinnakerServiceObject() {
     }
 
-    public SpinnakerService(String repoURL, String jobName, String projMetadata) {
+    public SpinnakerServiceObject(String repoURL, String jobName, String projMetadata) {
         this.repoURL = repoURL;
         this.jobName = jobName;
         this.projMetadata = projMetadata;
@@ -37,5 +37,11 @@ public class SpinnakerService {
 
     public void setProjMetadata(String projMetadata) {
         this.projMetadata = projMetadata;
+    }
+
+    @Override
+    public String toString() {
+        return "SpinnakerServiceObject [jobName=" + jobName + ", projMetadata=" + projMetadata + ", repoURL=" + repoURL
+                + "]";
     }
 }

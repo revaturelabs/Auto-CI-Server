@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.model.Configuration;
 
 @WebServlet(name = "ConfigurationService", urlPatterns = {"/configuration" })
 public class ConfigurationService extends HttpServlet {
@@ -19,12 +20,21 @@ public class ConfigurationService extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Jackson stuff
         ObjectMapper objectMapper = new ObjectMapper();
+
+        // Vars
+        String gitUser = req.getParameter("gitUser");
+        String jenkinsURI = req.getParameter("jenkinsURI");
+        String jenOrGit = req.getParameter("jenOrGit"); // Was Jenkins specified, or are we using Github Actions?
+        String projMetadata = req.getParameter("projMetadata");
+
+        Configuration conf = new Configuration(gitUser, jenkinsURI, jenOrGit, projMetadata);
 
         //create entities
         // to do make model object to work with this endpoint
 
-        String result = objectMapper.writeValueAsString("replace with object");
+        String result = objectMapper.writeValueAsString(conf);
         PrintWriter out = resp.getWriter();
 
         //return 

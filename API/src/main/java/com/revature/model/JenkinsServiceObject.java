@@ -1,14 +1,14 @@
 package com.revature.model;
 
-public class JenkinsService {
+public class JenkinsServiceObject {
 
     private String repoURL;
     private String jenkinsURI;
     private String projMetadata;
 
-    public JenkinsService() { }
+    public JenkinsServiceObject() { }
 
-    public JenkinsService(String repoURL, String jenkinsURI, String projMetadata) {
+    public JenkinsServiceObject(String repoURL, String jenkinsURI, String projMetadata) {
         this.repoURL = repoURL;
         this.jenkinsURI = jenkinsURI;
         this.projMetadata = projMetadata;
@@ -36,5 +36,11 @@ public class JenkinsService {
 
     public void setProjMetadata(String projMetadata) {
         this.projMetadata = projMetadata;
+    }
+
+    @Override
+    public String toString() {
+        return "JenkinsService [jenkinsURI=" + jenkinsURI + ", projMetadata=" + projMetadata + ", repoURL=" + repoURL
+                + "]";
     }
 }

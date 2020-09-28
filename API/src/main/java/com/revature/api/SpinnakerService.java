@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.model.SpinnakerServiceObject;
 
 @WebServlet(name = "Spinnaker", urlPatterns = { "/spinnaker" })
 public class SpinnakerService extends HttpServlet {
@@ -21,10 +22,16 @@ public class SpinnakerService extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
+        // Vars
+        String repoURL = req.getParameter("repoURL");
+        String jobName = req.getParameter("jobName");
+        String projMetadata = req.getParameter("projMetadata");
+
+        SpinnakerServiceObject sSer = new SpinnakerServiceObject(repoURL, jobName, projMetadata);
         //create entities
         // to do make model object to work with this endpoint
 
-        String result = objectMapper.writeValueAsString("replace with object");
+        String result = objectMapper.writeValueAsString(sSer);
         PrintWriter out = resp.getWriter();
 
         //return 

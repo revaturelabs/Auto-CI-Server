@@ -57,4 +57,10 @@ public class Initialization {
     public void setDepends(String depends) {
         this.depends = depends;
     }
+
+    @Override
+    public String toString() {
+        return "Initialization [depends=" + depends + ", gitUser=" + gitUser + ", mvnOrNpm=" + mvnOrNpm
+                + ", projMetadata=" + projMetadata + ", repoURL=" + repoURL + "]";
+    }
 }
