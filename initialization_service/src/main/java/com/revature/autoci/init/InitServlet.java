@@ -42,6 +42,7 @@ public class InitServlet extends HttpServlet {
             // create temp directory
             if (data.isMaven()) {
                 System.out.println("Generating maven project");
+                
                 GenerateMavenProject.generateNewMavenProject(data.getMetadataValue("groupId"),
                         data.getMetadataValue("artifactId"), "1.0.0", data.getMetadataValue("description"),
                         data.getMetadataValue("projectName"), data.getGithubURL(), data.getMetadataValue("packaging"),
@@ -75,6 +76,11 @@ public class InitServlet extends HttpServlet {
                 success = false;
                 e.printStackTrace();
             }
+        }
+        catch(GenerationException e)
+        {
+            success = false;
+            e.printStackTrace();
         }
         finally
         {
