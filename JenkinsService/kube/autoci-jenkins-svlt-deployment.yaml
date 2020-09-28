@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: autoci-jenkins-svlt
+  namespace: autoci
   labels:
     app: autoci-jenkins-svlt
 spec:

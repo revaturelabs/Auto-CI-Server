@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: autoci-jenkins-svlt-svc
+  namespace: autoci
 spec:
   type: NodePort
   selector:
