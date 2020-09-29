@@ -15,7 +15,7 @@ public class JenkinsServlet extends HttpServlet {
     String repoUrl;
     String projName;
     String slackChannel;
-    String jenkinsUrl = "";
+    String jenkinsUrl;
   
     final String jenkinsAuth = "user:token";
 	
@@ -26,7 +26,7 @@ public class JenkinsServlet extends HttpServlet {
 
         try {
             makeJob();
-            responseJson.put("jobName", projName + "-Pipe");
+            responseJson.put("jobName", projName.toLowerCase() + "-pipe");
         } catch (Exception e) {
             responseJson.put("errorMsg", e.getMessage());
         }
