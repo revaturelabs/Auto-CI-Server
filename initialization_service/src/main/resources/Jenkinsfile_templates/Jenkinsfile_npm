@@ -17,7 +17,12 @@ pipeline {
                 sh 'npm install'
             }
         }
-
+        stage('Lint')
+        {
+            steps {
+                sh 'npm run lint'
+            }
+        }
         stage('Test') {
             // Run the maven build
             steps {

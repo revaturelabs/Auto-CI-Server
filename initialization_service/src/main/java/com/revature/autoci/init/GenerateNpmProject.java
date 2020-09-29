@@ -3,6 +3,8 @@ package com.revature.autoci.init;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
@@ -13,14 +15,17 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
 public class GenerateNpmProject {
-
+    static final String ESLINT_VERSION = "^7.10.0";
+    static final String ESLINT_CONFIG_FILENAME = ".eslintrc.json";
     // Generates a new npm project in the designated directory. Creates standard folder structure, generates 
     // a generic .gitignore file, and generates a basic package.json file
     public static void generateNewNpmProject(String projectName, String author, String version, String description,
             String mainEntrypoint, String gitUrl, String license, Map<String, String> scripts, List<String> keywords,
-            Map<String, String> dependencies, Map<String, String> devDependencies, String IDE, String directoryToPush) {
+            Map<String, String> dependencies, Map<String, String> devDependencies, String IDE, String directoryToPush)
+            throws GenerationException {
         generateNpmFileStructure(directoryToPush);
         generateGitIgnoreFile(IDE, directoryToPush);
+        addESLintConfig(directoryToPush);
         generatePackageJSON(projectName, version, description, mainEntrypoint, gitUrl, scripts, keywords, author, license, dependencies, devDependencies, directoryToPush);
     }
 
@@ -49,9 +54,20 @@ public class GenerateNpmProject {
         if (IDE != null) {
             gitIgnoreIoUrl += "," + IDE;
         }
-
+    
         // Generating .gitignore from URL and saving .gitignore file to directory
         GenerateProjectUtils.generateGitIgnoreFromUrl(gitIgnoreIoUrl, directoryToPush);
+    }
+
+    private static void addESLintConfig(String directoryToPush) throws GenerationException
+    {
+        InputStream fileStream = GenerateNpmProject.class.getClassLoader().getResourceAsStream(ESLINT_CONFIG_FILENAME);
+        try {
+            Files.copy(fileStream, Paths.get(directoryToPush, ESLINT_CONFIG_FILENAME));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new GenerationException(String.format("Could not copy %s to new project", ESLINT_CONFIG_FILENAME));
+        }
     }
 
     // Generates the package.json file in designated directory using the supplied parameters for the npm project.
@@ -61,8 +77,13 @@ public class GenerateNpmProject {
         Map<String, String> repository = new HashMap<String, String>();
         repository.put("type", "git");
         repository.put("url", gitUrl);
+        Map<String, String> finalDevDependencies = new HashMap<>(devDependencies);
+        finalDevDependencies.putIfAbsent("eslint", ESLINT_VERSION);
+
+        Map<String, String> finalScripts = new HashMap<>(scripts);
+        finalScripts.putIfAbsent("lint", "eslint . --ext .js");
         // initializing project object from paramaters
-        NpmProject project = new NpmProject(projectName, description, version, mainEntrypoint, scripts, repository, keywords, author, license, dependencies, devDependencies);
+        NpmProject project = new NpmProject(projectName, description, version, mainEntrypoint, finalScripts, repository, keywords, author, license, dependencies, finalDevDependencies);
 
         // converting the project object to JSON and writing it to package.json
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

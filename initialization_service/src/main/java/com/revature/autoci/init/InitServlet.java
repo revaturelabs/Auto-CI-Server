@@ -40,22 +40,32 @@ public class InitServlet extends HttpServlet {
         System.out.println(tempPath.toAbsolutePath().toString());
         try (LocalGitRepo git = new LocalGitRepo(data.getGithubURL(), tempPath, token)) {
             // create temp directory
+            String projectName = null;
             if (data.isMaven()) {
+                MavenJSON mavenData = data.getMavenData();
+                projectName = mavenData.getProjectName();
                 System.out.println("Generating maven project");
-                GenerateMavenProject.generateNewMavenProject(data.getMetadataValue("groupId"),
-                        data.getMetadataValue("artifactId"), "1.0.0", data.getMetadataValue("description"),
-                        data.getMetadataValue("projectName"), data.getGithubURL(), data.getMetadataValue("packaging"),
-                        data.getMetadataValue("javaVersion"), data.getMetadataValue("mainClass"),
-                        data.getDependencies(), data.getMetadataValue("IDE"), tempPath.toAbsolutePath().toString());
+                
+                GenerateMavenProject.generateNewMavenProject(mavenData.getGroupId(),
+                    mavenData.getArtifactId(), mavenData.getVersion(), mavenData.getDescription(),
+                    mavenData.getDescription(), data.getGithubURL(), mavenData.getPackaging(),
+                    mavenData.getJavaVersion(), mavenData.getMainClass(),
+                    mavenData.getDependencies(), data.getIDE(), tempPath.toString());
             } else // Is node
             {
+                NpmJSON npmData = data.getNpmData();
+                projectName = npmData.getProjectName();
                 System.out.println("Generating Node project");
 
+                GenerateNpmProject.generateNewNpmProject(npmData.getProjectName(), npmData.getAuthor(), npmData.getVersion(), 
+                    npmData.getDescription(), npmData.getMainEntrypoint(), data.getGithubURL(),
+                    npmData.getLicense(), npmData.getScripts(), npmData.getKeywords(),
+                    npmData.getDependencies(), npmData.getDevDependencies(), data.getIDE(), tempPath.toString());
             }
 
             // Generate jenkinsfile in top-level directory
             GenerateJenkinsfile.generateJenkinsfile(data.getGithubURL(), containerRegistryURL,
-                    "REPLACE_WITH_REGISTRY_USERNAME", data.getMetadataValue("artifactId"),
+                    "REPLACE_WITH_REGISTRY_USERNAME", projectName,
                     containerRegistryCredentialId, data.isMaven(), tempPath.toString());
 
             try 
@@ -75,6 +85,11 @@ public class InitServlet extends HttpServlet {
                 success = false;
                 e.printStackTrace();
             }
+        }
+        catch(GenerationException e)
+        {
+            success = false;
+            e.printStackTrace();
         }
         finally
         {
