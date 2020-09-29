@@ -80,6 +80,13 @@
           "type": "deployManifest"
         }
       ],
-      "triggers": [],
+      "triggers": [
+        {
+          "enabled": true,
+          "job": "seed",
+          "master": "my-jenkins-master",
+          "type": "jenkins"
+        }
+      ],
       "updateTs": "1601405160000"
 }
