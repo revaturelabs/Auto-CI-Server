@@ -26,6 +26,7 @@ public class JenkinsServlet extends HttpServlet {
 
         try {
             makeJob();
+            responseJson.put("jobName", projName + "-Pipe");
         } catch (Exception e) {
             responseJson.put("errorMsg", e.getMessage());
         }
