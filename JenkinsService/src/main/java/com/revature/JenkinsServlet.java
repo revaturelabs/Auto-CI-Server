@@ -15,6 +15,7 @@ public class JenkinsServlet extends HttpServlet {
 	String repoUrl;
     String projName;
     String slackChannel;
+    final String token = "user:token";
 	
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -72,7 +73,7 @@ public class JenkinsServlet extends HttpServlet {
 	
     void makeJob() throws IOException {
 		ProcessBuilder pBuilder = new ProcessBuilder();
-        String cmd = "curl -X POST -u admin:11ad8f2b8d118e7735acd93a4d4c4cdda6 http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/job/seed/buildWithParameters --data githubURL=" + repoUrl + " --data projectName=" + projName + " --data slackChannel=" + slackChannel;
+        String cmd = "curl -X POST -u " + token + " http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/job/seed/buildWithParameters --data githubURL=" + repoUrl + " --data projectName=" + projName + " --data slackChannel=" + slackChannel;
         pBuilder.command("sh", "-c", cmd);
         Process process = pBuilder.start();
         int exitCode = 1;
