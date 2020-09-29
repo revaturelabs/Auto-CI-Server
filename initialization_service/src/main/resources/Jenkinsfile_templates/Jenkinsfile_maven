@@ -46,5 +46,14 @@ pipeline {
             }
         }
     }
+    post
+    {
+        success {
+            slackSend(color: '#BDFFC3', message: 'Maven project ' + ${projectName} + ' has passed all tests and was successfully pushed to container registry')
+        }
+        failure {
+            slackSend(color: '#FF0000', message: 'Maven project ' + ${projectName} + ' has failed to complete pipeline.')
+        }
+    }
     
 }
