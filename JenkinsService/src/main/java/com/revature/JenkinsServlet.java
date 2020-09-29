@@ -12,10 +12,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JenkinsServlet extends HttpServlet {
-	String repoUrl;
+    String repoUrl;
     String projName;
     String slackChannel;
-    final String token = "user:token";
+    String jenkinsUrl = "";
+  
+    final String jenkinsAuth = "user:token";
 	
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -23,7 +25,7 @@ public class JenkinsServlet extends HttpServlet {
         parseParams(request);
 
         try {
-			makeJob();
+            makeJob();
         } catch (Exception e) {
             responseJson.put("errorMsg", e.getMessage());
         }
@@ -62,6 +64,8 @@ public class JenkinsServlet extends HttpServlet {
         try {
             repoUrl = json.getString("repoUrl");
             projName = json.getString("projName");
+            slackChannel = json.getString("slackChannel");
+            jenkinsUrl = json.getString("jenkinsUrl");
         } catch (JSONException e) {
             String err = "Error parsing JSON request string";
             if (json != null) {
@@ -72,8 +76,8 @@ public class JenkinsServlet extends HttpServlet {
     }
 	
     void makeJob() throws IOException {
-		ProcessBuilder pBuilder = new ProcessBuilder();
-        String cmd = "curl -X POST -u " + token + " http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/job/seed/buildWithParameters --data githubURL=" + repoUrl + " --data projectName=" + projName + " --data slackChannel=" + slackChannel;
+        ProcessBuilder pBuilder = new ProcessBuilder();
+        String cmd = "curl -X POST -u " + jenkinsAuth + " " + jenkinsUrl + "/job/seed/buildWithParameters --data githubURL=" + repoUrl + " --data projectName=" + projName + " --data slackChannel=" + slackChannel;
         pBuilder.command("sh", "-c", cmd);
         Process process = pBuilder.start();
         int exitCode = 1;
