@@ -20,11 +20,4 @@ public class ApplicationCreation {
 
     }
 
-    public static void main(String[] args) {
-        String [] cloudProvider = {"aa", "bb", "ccc"};
-        String projectName = "a";
-        String gitHubEmail = "b";
-        ApplicationCreation test = new ApplicationCreation();
-        test.create(projectName, gitHubEmail, cloudProvider);
-    }
 }
