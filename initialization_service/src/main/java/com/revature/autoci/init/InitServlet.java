@@ -63,6 +63,9 @@ public class InitServlet extends HttpServlet {
                     npmData.getDependencies(), npmData.getDevDependencies(), data.getIDE(), tempPath.toString());
             }
 
+            // Generate Spinnaker pipeline JSON file
+            GenerateSpinnaker.generateSpinnaker(projectName, tempPath.toString());
+
             // Generate jenkinsfile in top-level directory
             GenerateJenkinsfile.generateJenkinsfile(data.getGithubURL(), containerRegistryURL,
                     "REPLACE_WITH_REGISTRY_USERNAME", projectName,
