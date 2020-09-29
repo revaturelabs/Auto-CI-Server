@@ -80,8 +80,10 @@ public class GenerateNpmProject {
         Map<String, String> finalDevDependencies = new HashMap<>(devDependencies);
         finalDevDependencies.putIfAbsent("eslint", ESLINT_VERSION);
 
+        Map<String, String> finalScripts = new HashMap<>(scripts);
+        finalScripts.putIfAbsent("lint", "eslint . --ext .js");
         // initializing project object from paramaters
-        NpmProject project = new NpmProject(projectName, description, version, mainEntrypoint, scripts, repository, keywords, author, license, dependencies, devDependencies);
+        NpmProject project = new NpmProject(projectName, description, version, mainEntrypoint, finalScripts, repository, keywords, author, license, dependencies, finalDevDependencies);
 
         // converting the project object to JSON and writing it to package.json
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
