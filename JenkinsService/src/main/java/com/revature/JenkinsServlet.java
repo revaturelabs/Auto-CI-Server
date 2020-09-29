@@ -81,16 +81,16 @@ public class JenkinsServlet extends HttpServlet {
         String cmd = "curl -X POST -u " + jenkinsAuth + " " + jenkinsUrl + "/job/seed/buildWithParameters --data githubURL=" + repoUrl + " --data projectName=" + projName + " --data slackChannel=" + slackChannel;
         pBuilder.command("sh", "-c", cmd);
         Process process = pBuilder.start();
+        
         int exitCode = 1;
         try {
             exitCode = process.waitFor();
         } catch (InterruptedException e) {
-            System.err.println("JenkinsServlet makeJob process interrupted");
+            throw new IOException(e.getMessage());
         }
-        if(exitCode == 0){
-            System.err.println("Curl Success");
-        }else{
-            System.err.println("Curl Failure");
+
+        if (exitCode != 0) {
+            throw new IOException("cURL failed");
         }
 	}
 }
