@@ -2,7 +2,7 @@ package revature.projectFactory.spinnaker.spinnakerServices;
 
 public class ApplicationCreation {
     
-    String execDirectory;
+    private final String execDirectory = "~";
 
     public void create(String projectName, String gitHubEmail, String... cloudProvider) {
         String spinCommand = "spin application save --application-name " + projectName + " --owner-email " + gitHubEmail
