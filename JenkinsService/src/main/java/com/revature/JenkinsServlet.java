@@ -13,7 +13,8 @@ import org.json.JSONObject;
 
 public class JenkinsServlet extends HttpServlet {
 	String repoUrl;
-	String projName;
+    String projName;
+    String slackChannel;
 	
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -60,6 +61,7 @@ public class JenkinsServlet extends HttpServlet {
         try {
             repoUrl = json.getString("repoUrl");
             projName = json.getString("projName");
+            slackChannel = json.getString("slackChannel");
         } catch (JSONException e) {
             String err = "Error parsing JSON request string";
             if (json != null) {
