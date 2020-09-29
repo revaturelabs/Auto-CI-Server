@@ -26,7 +26,7 @@ public class JenkinsServlet extends HttpServlet {
 
         try {
             makeJob();
-            responseJson.put("jobName", projName.toLowerCase() + "-pipe");
+            responseJson.put("jobName", projName + "-pipe");
         } catch (Exception e) {
             responseJson.put("errorMsg", e.getMessage());
         }
@@ -64,7 +64,7 @@ public class JenkinsServlet extends HttpServlet {
     private void parseJsonToVars(JSONObject json) throws IOException {
         try {
             repoUrl = json.getString("repoUrl");
-            projName = json.getString("projName");
+            projName = json.getString("projName").toLowerCase();
             slackChannel = json.getString("slackChannel");
             jenkinsUrl = json.getString("jenkinsUrl");
         } catch (JSONException e) {
