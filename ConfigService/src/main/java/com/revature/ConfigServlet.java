@@ -45,7 +45,7 @@ public class ConfigServlet extends HttpServlet {
                     madeHook = createWebhook(ghRepo);
                 }
                 
-                responseJson.put("repoUrl", ghRepo.getHttpTransportUrl());
+                responseJson.put("githubURL", ghRepo.getHttpTransportUrl());
                 responseJson.put("madeHook", madeHook);
             }
         } catch (Exception e) {
@@ -84,13 +84,11 @@ public class ConfigServlet extends HttpServlet {
 
     private void parseJsonToVars(JSONObject json) throws IOException {
         try {
-            gitUsername = json.getString("gitUser");
+            gitUsername = json.getString("githubUsername");
             jenkinsUri = json.getString("jenkinsUrl");
-            projName = json.getString("projName");
-            usingJenkins = json.getBoolean("useJenkins");
-            if (json.has("debug") && !json.getBoolean("debug")) {
-                github.debugMode = false;
-            }
+            projName = json.getString("projectName");
+            usingJenkins = !json.getBoolean("generateGithubActions");
+            github.debugMode = json.has("debug") && json.getBoolean("debug");
         } catch (JSONException e) {
             String err = "Error parsing JSON request string";
             if (json != null) {
