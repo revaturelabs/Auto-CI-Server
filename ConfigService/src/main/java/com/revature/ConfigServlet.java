@@ -85,7 +85,7 @@ public class ConfigServlet extends HttpServlet {
     private void parseJsonToVars(JSONObject json) throws IOException {
         try {
             gitUsername = json.getString("githubUsername");
-            jenkinsUri = json.getString("jenkinsUrl");
+            jenkinsUri = json.getString("jenkinsURL");
             projName = json.getString("projectName");
             usingJenkins = !json.getBoolean("generateGithubActions");
             github.debugMode = json.has("debug") && json.getBoolean("debug");
