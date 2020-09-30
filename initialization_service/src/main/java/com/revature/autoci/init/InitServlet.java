@@ -63,6 +63,9 @@ public class InitServlet extends HttpServlet {
                     npmData.getDependencies(), npmData.getDevDependencies(), data.getIDE(), tempPath.toString());
             }
 
+            // Generate Helm Chart
+            HelmGenerate.generateHelmChart(projectName.trim().replace(' ', '-'), tempPath.toString(), false);
+
             // Generate Spinnaker pipeline JSON file
             GenerateSpinnaker.generateSpinnaker(projectName, tempPath.toString());
 
