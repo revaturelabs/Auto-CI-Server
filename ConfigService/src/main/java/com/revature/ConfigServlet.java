@@ -123,7 +123,7 @@ public class ConfigServlet extends HttpServlet {
         List<GHEvent> events = new ArrayList<GHEvent>();
         events.add(GHEvent.PUSH);
         try {
-            URL ju = new URL(jenkinsUri);
+            URL ju = new URL(jenkinsUri + "github-webhook/");
             repo.createWebHook(ju, events);
             return true;
         } catch (Exception e) {
