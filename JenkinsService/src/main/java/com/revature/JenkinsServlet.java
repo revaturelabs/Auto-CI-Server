@@ -63,10 +63,10 @@ public class JenkinsServlet extends HttpServlet {
 
     private void parseJsonToVars(JSONObject json) throws IOException {
         try {
-            repoUrl = json.getString("repoUrl");
-            projName = json.getString("projName").toLowerCase();
+            repoUrl = json.getString("githubURL");
+            projName = json.getString("projectName").toLowerCase();
             slackChannel = json.getString("slackChannel");
-            jenkinsUrl = json.getString("jenkinsUrl");
+            jenkinsUrl = json.getString("jenkinsURL");
         } catch (JSONException e) {
             String err = "Error parsing JSON request string";
             if (json != null) {
