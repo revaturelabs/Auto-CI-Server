@@ -6,7 +6,8 @@ RUN curl -LO https://storage.googleapis.com/spinnaker-artifacts/spin/$(curl -s h
 RUN chmod +x spin
 RUN mv spin /usr/local/bin/spin
 RUN mkdir /root/.spin/
-COPY ./spin/config /root/.spin/config
+COPY spin/config /root/.spin/config
 COPY src/main/resources/* src/main/resources/
 COPY target/spinnaker_service-1.0-SNAPSHOT-jar-with-dependencies.jar ./target/Application.jar
+COPY app.properties app.properties
 ENTRYPOINT java -jar target/Application.jar

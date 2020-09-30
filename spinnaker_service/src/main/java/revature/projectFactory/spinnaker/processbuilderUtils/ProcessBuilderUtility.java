@@ -1,12 +1,12 @@
-package revature.projectFactory.spinnaker.spinnakerServices;
+package revature.projectFactory.spinnaker.processbuilderUtils;
 
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class ApplicationPB {
+public class ProcessBuilderUtility {
 
-    public static String pbGenerate(String buildcommand, String execDirectory) {
+    public static int pbGenerate(String buildcommand, String execDirectory) {
 
         ProcessBuilder processBuilder = new ProcessBuilder();
 
@@ -20,37 +20,34 @@ public class ApplicationPB {
 
         } else {
 
-            processBuilder.command("sh", "-c", buildcommand);
-
+            processBuilder.command("sh", "-c", "spin application save --application-name test --owner-email testemail --cloud-providers \"testProviders,Other\"");
         }
 
         processBuilder.directory(new File(execDirectory));
         Process process = null;
         int exited = 0;
-        String output = "";
+        //String output = "";
 
         try {
             process = processBuilder.start();
-
-            try (BufferedReader inputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            /*try (BufferedReader inputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                     BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-                exited = process.waitFor();
-                while (errorReader.ready()) {
-                    output += errorReader.readLine() + "\n";
-                }
                 while (inputReader.ready()) {
                     output += inputReader.readLine() + "\n";
                 }
-
+                while (errorReader.ready()) {
+                    output += errorReader.readLine() + "\n";
+                }*/
+            try{
+                exited = process.waitFor();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return output + exited;
+        return exited;
 
     }
 }

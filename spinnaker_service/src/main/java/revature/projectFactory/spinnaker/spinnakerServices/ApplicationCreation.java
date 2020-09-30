@@ -1,23 +1,24 @@
 package revature.projectFactory.spinnaker.spinnakerServices;
 
-public class ApplicationCreation {
+import java.io.File;
+
+import revature.projectFactory.spinnaker.processbuilderUtils.ProcessBuilderUtility;
+
+public class ApplicationCreation implements IApplicationCreation{
     
-    private final String execDirectory = "~";
+    private final String execDirectory = new File("/").getAbsolutePath();
 
     public void create(String projectName, String gitHubEmail, String... cloudProvider) {
-        String spinCommand = "spin application save --application-name " + projectName + " --owner-email " + gitHubEmail
-                + " --cloud-providers \"";
+        String spinCommand ="spin application save" + " --application-name " + projectName + " --owner-email " + gitHubEmail +" --cloud-providers \"";
         for (int i = 0; i < cloudProvider.length; i++) {
             if(i == cloudProvider.length-1) {
-                spinCommand += cloudProvider[i] + "\" ";
+                spinCommand += cloudProvider[i] + "\"";
             } else {
                 spinCommand += cloudProvider[i] + ",";
-            }
-            
+            }      
         }
-
-        ApplicationPB.pbGenerate(spinCommand, execDirectory);
-
+        System.out.println(spinCommand);
+        System.out.println(ProcessBuilderUtility.pbGenerate(spinCommand, execDirectory));
     }
 
 }
