@@ -6,6 +6,8 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.startup.Tomcat;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Hello world!
@@ -15,6 +17,7 @@ public class InitServer
 {
     public static void main( String[] args ) throws LifecycleException
     {
+        final Logger log = LoggerFactory.getLogger(InitServer.class);
         int port = 8080;
         if(args.length > 0)
         {

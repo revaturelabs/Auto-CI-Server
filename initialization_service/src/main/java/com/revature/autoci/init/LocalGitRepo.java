@@ -11,6 +11,9 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class LocalGitRepo implements AutoCloseable{
     private String uri;
     private Path cloneDir;

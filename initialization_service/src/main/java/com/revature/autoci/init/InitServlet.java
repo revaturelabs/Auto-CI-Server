@@ -17,11 +17,15 @@ import com.google.gson.Gson;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class InitServlet extends HttpServlet {
     static final String SECRET_DIR = "secrets/";
     private String token;
     private String containerRegistryURL;
     private String containerRegistryCredentialId;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void init() throws ServletException {

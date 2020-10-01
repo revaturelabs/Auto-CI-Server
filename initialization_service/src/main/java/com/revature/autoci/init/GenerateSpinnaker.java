@@ -13,8 +13,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GenerateSpinnaker {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // Generates a Jenkinsfile from a template. The template used depends on whether it is a Maven or NPM project.
     public static void generateSpinnaker(String projectName, String pathToProject) throws IOException

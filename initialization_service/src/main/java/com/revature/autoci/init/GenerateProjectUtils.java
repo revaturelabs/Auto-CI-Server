@@ -8,8 +8,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GenerateProjectUtils {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // Generates a .gitignore file by sending a GET request to gitignore.io
     // Creates request using the url then writes the response line by line to a .gitignore in the desired directory
