@@ -23,7 +23,13 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class GenerateMavenProject {
+    
+    private static final Logger log = LoggerFactory.getLogger(GenerateJenkinsfile.class);
+    
     static final String MAVEN_MODEL_VERSION = "4.0.0";
     static final String ASSEMBLY_PLUGIN_VERSION = "3.3.0";
     static final String CHECKSTYLE_PLUGIN_VERSION = "3.1.1";
