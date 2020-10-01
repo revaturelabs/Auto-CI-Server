@@ -9,7 +9,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import revature.projectFactory.spinnaker.POJO.PipelinePojo;
+import revature.projectFactory.spinnaker.POJO.ReturnMessage;
 import revature.projectFactory.spinnaker.connectionUtils.ConnectionConstants;
+import revature.projectFactory.spinnaker.mapper.Mapper;
 import revature.projectFactory.spinnaker.spinnakerServices.ApplicationCreation;
 import revature.projectFactory.spinnaker.spinnakerServices.IApplicationCreation;
 import revature.projectFactory.spinnaker.spinnakerServices.IPipeLineCreation;
@@ -36,23 +38,28 @@ public class pipelineServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.info("Spinnaker Service Recieved Request for a new pipeline");
         String body = "";
+        resp.setStatus(200);
         while(req.getReader().ready()){
             body += req.getReader().readLine() + "\n";
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        PipelinePojo obj = objectMapper.readValue(body, PipelinePojo.class);
+        Mapper mapper = new Mapper();
+        PipelinePojo obj = mapper.pipelinePojoReadMapper(body);
+        ReturnMessage result = new ReturnMessage();
         if(APPBUILDER.create(obj.getProjectName(), obj.getEmail(), obj.getCloudProviders()) == 1){
-            resp.getWriter().println("Application failed creating");
+            result.setApplicationCreated(false);;
             log.error("Application failed to create");
+            resp.setStatus(500);
         }else{
-            resp.getWriter().println("Application created");
+            result.setApplicationCreated(true);
         }
         IPipeLineCreation PIPELINEBUILDER = new PipelineCreation(ConnectionConstants.getSPINNAKERURI(), obj.getGitUri(), obj.getBranch());
         if(PIPELINEBUILDER.create()){
-            resp.getWriter().println("Pipeline created");
+            result.setPipelineCreated(true);
         }else{
-            resp.getWriter().println("Pipeline failed creating");
+            result.setPipelineCreated(false);
+            log.error("Pipeline failed to create");
+            resp.setStatus(500);
         }
-        resp.setStatus(200);
+        resp.getWriter().write(mapper.writeMapper(result));
     }
 }
