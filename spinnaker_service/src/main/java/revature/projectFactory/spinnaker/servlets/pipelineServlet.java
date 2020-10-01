@@ -32,7 +32,7 @@ public class pipelineServlet extends HttpServlet{
 
     @Override  
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("The logger is working!");
+        log.info("Recieved Request for a new pipeline");
         String body = "";
         while(req.getReader().ready()){
             body += req.getReader().readLine() + "\n";
@@ -42,8 +42,11 @@ public class pipelineServlet extends HttpServlet{
         System.out.println(body); 
         System.out.println(obj.getJobName() + " " + obj.getGitUri() + " " + obj.getMetaData());
         System.out.println(ConnectionConstants.getSPINNAKERURI());
-        APPBUILDER.create(obj.getProjectName(), obj.getEmail(), obj.getCloudProviders());
+        if(APPBUILDER.create(obj.getProjectName(), obj.getEmail(), obj.getCloudProviders()) == 1){
+            resp.getWriter().println("Application failed creating");
+        }else{
+            resp.getWriter().println("Application created");
+        }
         resp.setStatus(200);
-        resp.getWriter().println("success");
     }
 }

@@ -1,13 +1,13 @@
 package revature.projectFactory.spinnaker.processbuilderUtils;
 
 import java.io.File;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProcessBuilderUtility {
+    private final static Logger log = LoggerFactory.getLogger(ProcessBuilderUtility.class);
 
     public static int pbGenerate(String buildcommand, String execDirectory) {
-
         ProcessBuilder processBuilder = new ProcessBuilder();
 
         // check system
@@ -31,7 +31,7 @@ public class ProcessBuilderUtility {
             process = processBuilder.start();
             exited = process.waitFor();
         } catch (Exception e) {
-            e.printStackTrace();
+          log.error(e.getMessage());   
         }
         return exited;
 
