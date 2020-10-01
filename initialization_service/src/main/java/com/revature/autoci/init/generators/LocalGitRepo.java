@@ -49,7 +49,18 @@ public class LocalGitRepo implements AutoCloseable{
         return repo;
     }
 
-    public void addAndCommitAll()
+    public void branchDevAndProd() throws GenerationException
+    {
+        try {
+            repo.branchCreate().setName("dev").call();
+            repo.branchCreate().setName("prod").call();
+        } catch (GitAPIException e) {
+            throw new GenerationException("Failed to create dev and prod branches.");
+        }
+        
+    }
+
+    public void addAndCommitAll() throws GenerationException
     {
         AddCommand addCmd = repo.add();
         addCmd.addFilepattern(".");
@@ -58,32 +69,33 @@ public class LocalGitRepo implements AutoCloseable{
             log.info("Adding and commiting repo succeed");
         } catch (GitAPIException e) {
             log.error("Adding and commiting repo failed ", e);
-            e.printStackTrace();
+            throw new GenerationException("Failed to stage files.");
         }
         CommitCommand commitCmd = repo.commit();
-        commitCmd.setAuthor("Auto-CI", "<>");
-        commitCmd.setCommitter("Auto-CI", "<>");
-        commitCmd.setMessage("Setting up a new project");
+        commitCmd.setAuthor("Project Factory", "<>");
+        commitCmd.setCommitter("Project Factory", "<>");
+        commitCmd.setMessage("New project, hot off the press");
         try {
             commitCmd.call();
             log.info("commiting author, committer, message succeed");
         } catch (GitAPIException e) {
             log.error("Calling commit command failed ", e);
-            e.printStackTrace();
+            throw new GenerationException("Failed to commit staged files");
         }
     }
 
-    public void pushToRemote()
+    public void pushToRemote() throws GenerationException
     {
         PushCommand pushCmd = repo.push();
         pushCmd.setRemote(uri);
         pushCmd.setCredentialsProvider(credentials);
+        pushCmd.setPushAll();
         try {
             pushCmd.call();
             log.info("Push repo to remote succeed");
         } catch (GitAPIException e) {
             log.error("pushing to remote failed", e);
-            e.printStackTrace();
+            throw new GenerationException("Failed to push to remote");
         }
     }
 
