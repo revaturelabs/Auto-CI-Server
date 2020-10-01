@@ -204,15 +204,15 @@ public class GenerateMavenProject {
         Dependency newDependency;
         for (Map<String, String> dependencyMap : dependencies) {
             newDependency = new Dependency();
-            newDependency.setGroupId(dependencyMap.get(groupId));
-            newDependency.setArtifactId(dependencyMap.get(artifactId));
+            newDependency.setGroupId(dependencyMap.get("groupId"));
+            newDependency.setArtifactId(dependencyMap.get("artifactId"));
             if (dependencyMap.get("version") == null) {
                 newDependency.setVersion("RELEASE");
             } else {
                 newDependency.setVersion(dependencyMap.get("version"));
             }
             if (dependencyMap.get("scope") != null) {
-                newDependency.setVersion(dependencyMap.get("scope"));
+                newDependency.setScope(dependencyMap.get("scope"));
             }
             allDependencies.add(newDependency);
         }
