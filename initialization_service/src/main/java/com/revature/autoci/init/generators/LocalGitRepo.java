@@ -1,4 +1,4 @@
-package com.revature.autoci.init;
+package com.revature.autoci.init.generators;
 
 import java.nio.file.Path;
 
@@ -68,7 +68,7 @@ public class LocalGitRepo implements AutoCloseable{
             commitCmd.call();
             log.info("commiting author, committer, message succeed");
         } catch (GitAPIException e) {
-            log.error("Calling commit command failed ", e);;
+            log.error("Calling commit command failed ", e);
             e.printStackTrace();
         }
     }
@@ -80,9 +80,9 @@ public class LocalGitRepo implements AutoCloseable{
         pushCmd.setCredentialsProvider(credentials);
         try {
             pushCmd.call();
-            log.info("Push repo to repote succeed");
+            log.info("Push repo to remote succeed");
         } catch (GitAPIException e) {
-            log.error("pushing to repore failed", e);
+            log.error("pushing to remote failed", e);
             e.printStackTrace();
         }
     }
