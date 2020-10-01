@@ -13,10 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.JenkinsServiceObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @WebServlet(name = "JenkinsService", urlPatterns = { "/jenkins" })
 public class JenkinsService extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private final java.util.logging.Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -41,5 +45,7 @@ public class JenkinsService extends HttpServlet {
         resp.setStatus(200);
         out.print(result);
         out.flush();
+
+        log.info("Jenkins Service Servlet successfully started");
     }
 }
