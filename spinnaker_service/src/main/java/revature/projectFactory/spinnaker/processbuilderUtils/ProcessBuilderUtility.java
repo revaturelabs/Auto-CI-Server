@@ -32,7 +32,7 @@ public class ProcessBuilderUtility {
         try {
             process = processBuilder.start();
             exited = process.waitFor();
-            log.info("Sinnaker Process Builder Command Ran");
+            log.info("Spinnaker Process Builder Command Ran");
         } catch (Exception e) {
           log.error(e.getMessage());   
         }
