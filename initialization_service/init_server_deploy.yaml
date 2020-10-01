@@ -1,25 +1,32 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  namespace: project3 #(TBD)
-  name: testserver-deployment # TBD, testing using nginx
+  namespace: init-service #(TBD)
+  name: init-deploy # TBD, testing using nginx
   #More TBD
 spec:
   selector:
     matchLabels:
-      app: testserver
+      app: init-service
   replicas: 1 
   template:
     metadata:
       labels:
-        app: testserver
+        app: init-service
     spec:
       containers:
       - name: testserver # TBD, testing using nginx
         image: reblank/autoci-init # TBD, testing using nginx
         imagePullPolicy: Always
-        #volumeMounts:
-        #- name:
-        #- mountPath:
+        volumeMounts:
+        - name: secrets
+          mountPath: "/apps/secrets/"
+          readOnly: true
+      volumes:
+      - name: secrets
+        secret:
+            secretName: init-secrets
+      
+        
       
 # use service to set other info...

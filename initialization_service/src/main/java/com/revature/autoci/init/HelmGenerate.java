@@ -28,8 +28,24 @@ import java.nio.file.Paths;
  */
 
 public class HelmGenerate {
+    static final String DEFAULT_CHART_VERSION = "v2";
+    static final String DEFAULT_CHART_TYPE = "application";
+    
+    public static void generateHelmChart(String chartName, String apiVersion, String chartType, String directoryToPush, boolean verbose)
+    {
+        chartGenerate(chartName, apiVersion, chartType, directoryToPush, verbose);
+    }
+    public static void generateHelmChart(String chartName, String chartType, String directoryToPush, boolean verbose)
+    {
+        chartGenerate(chartName, DEFAULT_CHART_VERSION, chartType, directoryToPush, verbose);
+    }
 
-    public static void chartGenerate(String chartName, String apiVersion, String type, String directoryToPush) {
+    public static void generateHelmChart(String chartName, String directoryToPush, boolean verbose)
+    {
+        chartGenerate(chartName, DEFAULT_CHART_VERSION, DEFAULT_CHART_TYPE, directoryToPush, verbose);
+    }
+
+    private static void chartGenerate(String chartName, String apiVersion, String chartType, String directoryToPush, boolean verbose) {
 
         List<String> lines = new ArrayList<String>();
         String line;
@@ -63,20 +79,26 @@ public class HelmGenerate {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                if(verbose)
+                {
+                    System.out.println(line);
+                }
             }
 
             int exitCode = process.waitFor();
-            System.out.println("\nBuilt with " + exitCode + " error(s).");
-
-            String path  = Paths.get(directoryToPush, chartName + "/Chart.yaml").toString();
+            if(verbose)
+            {
+                System.out.println("\nBuilt with " + exitCode + " error(s).");
+            }
+            
+            String path  = Paths.get(directoryToPush, chartName, "Chart.yaml").toString();
             File newchart = new File(path);
             FileReader fr = new FileReader(newchart);
             BufferedReader br = new BufferedReader(fr);
             while ((line = br.readLine()) != null) {
                 if (line.contains("description: A Helm chart for Kubernetes"))
                     line = line.replace("description: A Helm chart for Kubernetes",
-                            "description: This is a test chart for sample " + chartName);
+                            "description: This is a sample chart for project " + chartName);
                 lines.add(line);
             }
             while ((line = br.readLine()) != null) {
@@ -86,7 +108,7 @@ public class HelmGenerate {
             }
             while ((line = br.readLine()) != null) {
                 if (line.contains("type: application"))
-                    line = line.replace("type: application", "type: " + type);
+                    line = line.replace("type: application", "type: " + chartType);
                 lines.add(line);
             }
             fr.close();
@@ -124,9 +146,9 @@ public class HelmGenerate {
     * test.helmTemplates("testChart", "v1", "ConfigMap", "configmap-test", "\"hello there\"", "C:/Users/xxx/");* 
     */
  
-    public static void helmTemplates(String chartName, String apiVersion, String kind, String templateName,
+    private static void helmTemplates(String chartName, String apiVersion, String kind, String templateName,
             String data, String directoryToPush) {
-        String filepath = Paths.get(directoryToPush, chartName + "/templates/", templateName+".yaml" ).toString();
+        String filepath = Paths.get(directoryToPush, chartName, "templates", templateName+".yaml" ).toString();
 
         Writer writer;
         try {
@@ -163,12 +185,8 @@ public class HelmGenerate {
 
 
 // Quick Explaination: 
-// creating new instance of Helm Generate: HelmGenerate test = new
-// HelmGenerate();
-// Generating a new Helm Chart Chart: test.ChartGenerate("testChart", "v2",
-// "application");
-// Create a template
-// test.HelmTemplates("testChart", "v1", "ConfigMap", "configmap-test", "\"hello there\"");
+// Generating a new Helm Chart with templaate: test.generateHelmChart("testChart", "v2",
+// "application", directory);
 
 // Install a new template template: test.HelmInstall(yourInstallName); Deleted
 // for Now

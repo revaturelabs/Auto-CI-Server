@@ -16,7 +16,7 @@ public class LocalGitRepo implements AutoCloseable{
     private Path cloneDir;
     private CredentialsProvider credentials;
     private Git repo;
-    public LocalGitRepo(String URI, Path cloneDir, String token)
+    public LocalGitRepo(String URI, Path cloneDir, String token) throws GenerationException
     {
         uri = URI;
         this.cloneDir = cloneDir;
@@ -24,7 +24,7 @@ public class LocalGitRepo implements AutoCloseable{
         repo = cloneRepo();
     }
 
-    private Git cloneRepo()
+    private Git cloneRepo() throws GenerationException
     {
         CloneCommand cloneCmd = Git.cloneRepository();
         cloneCmd.setURI(uri);
@@ -37,7 +37,8 @@ public class LocalGitRepo implements AutoCloseable{
         }
         catch(GitAPIException e)
         {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            throw new GenerationException(e.getMessage());
         }
         return repo;
     }

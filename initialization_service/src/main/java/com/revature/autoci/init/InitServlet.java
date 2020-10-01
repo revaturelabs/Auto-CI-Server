@@ -1,9 +1,10 @@
 package com.revature.autoci.init;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeoutException;
 
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 
 public class InitServlet extends HttpServlet {
+    static final String SECRET_DIR = "secrets/";
     private String token;
     private String containerRegistryURL;
     private String containerRegistryCredentialId;
@@ -25,9 +27,20 @@ public class InitServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         // Load in github credentials
-        token = System.getProperty("GITHUB_TOKEN");
+        if((token = System.getProperty("GITHUB_TOKEN")) == null)
+        {
+            try
+            {
+                
+                token = new String(Files.readAllBytes(Paths.get(SECRET_DIR, "github-token")), StandardCharsets.UTF_8).trim();
+            }
+            catch(IOException e)
+            {
+                throw new ServletException("Failed to find github token in environment or secrets/");
+            }
+        }
         containerRegistryURL = System.getProperty("CONTAINER_REGISTRY_URL", "REPLACEME");
-        containerRegistryCredentialId = System.getProperty("CONTAINER_REGISTRY_URL", "REPLACEME");
+        containerRegistryCredentialId = System.getProperty("CONTAINER_CREDENTIAL_ID", "REPLACEME");
     }
 
     @Override
@@ -36,7 +49,7 @@ public class InitServlet extends HttpServlet {
         Gson gson = new Gson();
         JSONRequest data = gson.fromJson(req.getReader(), JSONRequest.class);
         boolean success = false;
-        Path tempPath = Files.createTempDirectory("test");
+        Path tempPath = Files.createTempDirectory("init");
         System.out.println(tempPath.toAbsolutePath().toString());
         try (LocalGitRepo git = new LocalGitRepo(data.getGithubURL(), tempPath, token)) {
             // create temp directory
@@ -62,6 +75,9 @@ public class InitServlet extends HttpServlet {
                     npmData.getLicense(), npmData.getScripts(), npmData.getKeywords(),
                     npmData.getDependencies(), npmData.getDevDependencies(), data.getIDE(), tempPath.toString());
             }
+
+            // Generate Helm Chart
+            HelmGenerate.generateHelmChart(projectName.trim().replace(' ', '-'), tempPath.toString(), false);
 
             // Generate Spinnaker pipeline JSON file
             GenerateSpinnaker.generateSpinnaker(projectName, tempPath.toString());

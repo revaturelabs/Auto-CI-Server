@@ -1,3 +1,4 @@
-FROM openjdk:8-jdk
-COPY target/initialization-service-0.0.1.jar ./server.jar
-ENTRYPOINT java -jar -DGITHUB_TOKEN="$GITHUB_TOKEN" server.jar
+FROM alpine/helm:3.3.4
+RUN apk add --no-cache openjdk8-jre-base
+COPY target/initialization-service-1.0.0.jar ./server.jar
+ENTRYPOINT java -jar server.jar
