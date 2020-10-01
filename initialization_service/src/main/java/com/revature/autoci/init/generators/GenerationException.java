@@ -1,4 +1,4 @@
-package com.revature.autoci.init;
+package com.revature.autoci.init.generators;
 
 public class GenerationException extends Exception
 {

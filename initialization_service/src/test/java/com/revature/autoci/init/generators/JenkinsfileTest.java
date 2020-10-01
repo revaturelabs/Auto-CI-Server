@@ -1,4 +1,4 @@
-package com.revature.autoci.init;
+package com.revature.autoci.init.generators;
 
 import static org.junit.Assert.assertTrue;
 
