@@ -22,8 +22,6 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GenerateMavenProject {
     static final String MAVEN_MODEL_VERSION = "4.0.0";
@@ -31,7 +29,6 @@ public class GenerateMavenProject {
     static final String CHECKSTYLE_PLUGIN_VERSION = "3.1.1";
     static final String CHECKSTYLE_FILENAME = "rev_checks.xml";
     static final int TAB_SPACES = 4;
-    private static final Logger log = LoggerFactory.getLogger(GenerateMavenProject.class);
 
     // Generates a new Maven project in the designated directory. Creates standard
     // folder structure, generates a generic .gitignore file, generates a generic
@@ -66,8 +63,6 @@ public class GenerateMavenProject {
         String testJavaPath = Paths.get(directoryToPush, "src/test/java/", groupIdFolders).toString();
         File testJavaDir = new File(testJavaPath);
         testJavaDir.mkdirs();
-
-        log.info("Maven Project Structure Generated");
     }
 
     // Parse the groupID and returns what folders to create to follow standard Maven
@@ -93,17 +88,14 @@ public class GenerateMavenProject {
         }
         // Generating .gitignore from URL and saving .gitignore file to directory
         GenerateProjectUtils.generateGitIgnoreFromUrl(gitIgnoreIoUrl, directoryToPush);
-        log.info("Git Ingore File Created and Updated");
     }
 
     private static void addCheckstyleFile(String directoryToPush) throws GenerationException {
         InputStream fileStream = GenerateMavenProject.class.getClassLoader().getResourceAsStream(CHECKSTYLE_FILENAME);
         try {
             Files.copy(fileStream, Paths.get(directoryToPush, CHECKSTYLE_FILENAME));
-            log.info("Checkstyle File Created and Updated");
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("Could not copy checkstyle file", e);
             throw new GenerationException(String.format("Could not copy %s to new project", CHECKSTYLE_FILENAME));
         }
 
@@ -161,19 +153,17 @@ public class GenerateMavenProject {
         File javaFile = new File(javaFilePath);
         try {
             javaFile.createNewFile();
-            log.info("Java file template created and generated");
         } catch (IOException e1) {
-            log.error("Java file generation failed", e1);;
+            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        // Ensure UTF-8 charset
+        // TODO: Ensure UTF-8 charset
         try {
             FileWriter writer = new FileWriter(javaFile);
             writer.write(javaString);
             writer.close();
-            log.info("Java file information write updated");
         } catch (IOException e) {
-            log.error("Java file write failed", e);;
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -258,7 +248,6 @@ public class GenerateMavenProject {
         try {
             execConfigDom = createCheckstyleExecutionConfig(true);
         } catch (XmlPullParserException | IOException e) {
-            log.warn("failed to generate config DOM");
             throw new GenerationException("Failed to generate config DOM");
         }
         execution.setConfiguration(execConfigDom);
@@ -273,7 +262,6 @@ public class GenerateMavenProject {
             configDomAssembly = createMvnAssemblyPluginConfig(packaging);
             configDomCheckstyle = createMvnCheckstylePluginConfig(CHECKSTYLE_FILENAME);
         } catch (XmlPullParserException | IOException e) {
-            log.warn("failed to generate config DOM");
             throw new GenerationException("Failed to generate config DOM");
         }
         mvnAssemblyPlugin.setConfiguration(configDomAssembly);
@@ -288,9 +276,8 @@ public class GenerateMavenProject {
             writer = new FileWriter(Paths.get(filepath, filename).toString());
             new MavenXpp3Writer().write(writer, mvnFile);
             writer.close();
-            log.info("pom.xml file successfully generated");
         } catch (IOException e) {
-            log.error("pom.xml file generation failed", e);
+            // TODO Auto-generated catch block
             e.printStackTrace();
             throw new GenerationException("Failed to create pom.xml file");
         }
@@ -304,7 +291,6 @@ public class GenerateMavenProject {
                 + "<mainClass>${exec.mainClass}</mainClass>" + "</manifest>" + "</archive>"
                 + "<appendAssemblyId>true</appendAssemblyId>" + "</configuration>";
 
-        log.info("maven-assembly-plugin configurated");
         return Xpp3DomBuilder.build(new StringReader(mvnAssemblyPluginConfig));
 
     }
@@ -314,7 +300,6 @@ public class GenerateMavenProject {
             throws XmlPullParserException, IOException {
         String pluginConfig = String.format("<configuration> <configLocation> %s </configLocation> </configuration>",
                 checkstyleFilename);
-        log.info("maven-checkstyle-plugin configurated");
         return Xpp3DomBuilder.build(new StringReader(pluginConfig));
     }
 
@@ -324,7 +309,6 @@ public class GenerateMavenProject {
             throws XmlPullParserException, IOException {
         String config = String.format("<configuration> <failOnViolation> %b </failOnViolation> </configuration>",
                 failOnViolation);
-        log.info("maven-checkstyle-plugin validated");
         return Xpp3DomBuilder.build(new StringReader(config));
     }
 
