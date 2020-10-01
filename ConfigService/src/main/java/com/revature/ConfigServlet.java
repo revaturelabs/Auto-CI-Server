@@ -20,9 +20,13 @@ import org.kohsuke.github.GHOrganization.Permission;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ConfigServlet extends HttpServlet {
     final String ORG_NAME = "revaturelabs";
     final String DBG_ORG_NAME = "alxllabs";
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     GitHubAPI github = new GitHubAPI();
     String gitUsername;
@@ -48,7 +52,9 @@ public class ConfigServlet extends HttpServlet {
                 responseJson.put("githubURL", ghRepo.getHttpTransportUrl());
                 responseJson.put("madeHook", madeHook);
             }
+            log.info("post actions for ConfigServlet successful");
         } catch (Exception e) {
+            log.error(e.getMessage());
             responseJson.put("errorMsg", e.getMessage());
         }
 
@@ -68,14 +74,18 @@ public class ConfigServlet extends HttpServlet {
             BufferedReader reader = req.getReader();
             while ((line = reader.readLine()) != null)
                 jb.append(line);
+            log.info("Request read for parsing to Json in ConfigServlet");
         } catch (Exception e) {
+            log.error(e.getMessage());
             throw new IOException("Error reading input!");
         }
 
         JSONObject json = null;
         try {
             json = new JSONObject(jb.toString());
+            log.info("JSONObject created in ConfigServlet");
         } catch (JSONException e) {
+            log.error(e.getMessage());
             String err = "Request string is not JSON: " + jb.toString();
             throw new IOException(err);
         }
@@ -89,7 +99,9 @@ public class ConfigServlet extends HttpServlet {
             projName = json.getString("projectName");
             usingJenkins = !json.getBoolean("generateGithubActions");
             github.debugMode = json.has("debug") && json.getBoolean("debug");
+            log.info("Json successfully parsed in ConfigServlet");
         } catch (JSONException e) {
+            log.error(e.getMessage());
             String err = "Error parsing JSON request string";
             if (json != null) {
                 err += ": " + json.toString();
@@ -110,9 +122,11 @@ public class ConfigServlet extends HttpServlet {
             GHOrganization org = github.getInstance().getOrganization(orgName);
             GHRepository repo = org.createRepository(projName).autoInit(true).create();
             repo.addCollaborators(Permission.ADMIN, user);
+            log.info("GHRepository object successfully created in ConfigServlet");
 
             return repo;
         } catch (NullPointerException e) {
+            log.error(e.getMessage());
             return null;
         }
     }
@@ -123,8 +137,10 @@ public class ConfigServlet extends HttpServlet {
         try {
             URL ju = new URL(jenkinsUri + "github-webhook/");
             repo.createWebHook(ju, events);
+            log.info("Webhook successfully created in ConfigServlet");
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }
