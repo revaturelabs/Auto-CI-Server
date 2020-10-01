@@ -42,7 +42,7 @@ public class GenerateJenkinsfile {
             jenkinsfile.createNewFile();
             try (FileWriter writer = new FileWriter(jenkinsfile)) {
                 replaceVariablesInFile(buf, writer, replaceVals);
-                log.info("Template and Jenkinsfile Created");
+                log.info("Template and Jenkinsfile successfully created");
             }
         }
     }
@@ -68,6 +68,6 @@ public class GenerateJenkinsfile {
             }
             writer.write(s + "\n");
         }
-        log.info("JenkinsFile information updated");
+        log.info("JenkinsFile information successfully updated");
     }
 }

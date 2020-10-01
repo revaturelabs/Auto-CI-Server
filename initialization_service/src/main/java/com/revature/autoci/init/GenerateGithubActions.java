@@ -40,7 +40,7 @@ public class GenerateGithubActions {
         try
         {
             finished = proc.waitFor(3, TimeUnit.SECONDS);
-            log.info("Github Action Generate Command Ran");
+            log.info("Github Action Generate Command successfully ran");
         }
         catch(InterruptedException e)
         {
@@ -50,6 +50,7 @@ public class GenerateGithubActions {
         if(!finished)
         {
             proc.destroyForcibly();
+            log.warn("Github action connection failed, timed out or interrupted");
             throw new TimeoutException("Process timed out or interrupted");
         }
 

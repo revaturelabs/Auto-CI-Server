@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GenerateNpmProject {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private static final Logger log = LoggerFactory.getLogger(GenerateNpmProject.class);
     static final String ESLINT_VERSION = "^7.10.0";
     static final String ESLINT_CONFIG_FILENAME = ".eslintrc.json";
     // Generates a new npm project in the designated directory. Creates standard folder structure, generates 
@@ -60,6 +60,7 @@ public class GenerateNpmProject {
     
         // Generating .gitignore from URL and saving .gitignore file to directory
         GenerateProjectUtils.generateGitIgnoreFromUrl(gitIgnoreIoUrl, directoryToPush);
+        log.info(".gitignore file successfully generated");
     }
 
     private static void addESLintConfig(String directoryToPush) throws GenerationException
@@ -69,6 +70,7 @@ public class GenerateNpmProject {
             Files.copy(fileStream, Paths.get(directoryToPush, ESLINT_CONFIG_FILENAME));
         } catch (IOException e) {
             e.printStackTrace();
+            log.error(".gitignore file generation failed ",e);
             throw new GenerationException(String.format("Could not copy %s to new project", ESLINT_CONFIG_FILENAME));
         }
     }

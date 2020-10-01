@@ -67,7 +67,7 @@ public class GenerateMavenProject {
         File testJavaDir = new File(testJavaPath);
         testJavaDir.mkdirs();
 
-        log.info("Maven Project Structure Generated");
+        log.info("Maven Project File Structure successfully generated");
     }
 
     // Parse the groupID and returns what folders to create to follow standard Maven
@@ -93,17 +93,17 @@ public class GenerateMavenProject {
         }
         // Generating .gitignore from URL and saving .gitignore file to directory
         GenerateProjectUtils.generateGitIgnoreFromUrl(gitIgnoreIoUrl, directoryToPush);
-        log.info("Git Ingore File Created and Updated");
+        log.info("Git Ingore File succesfully created and updated");
     }
 
     private static void addCheckstyleFile(String directoryToPush) throws GenerationException {
         InputStream fileStream = GenerateMavenProject.class.getClassLoader().getResourceAsStream(CHECKSTYLE_FILENAME);
         try {
             Files.copy(fileStream, Paths.get(directoryToPush, CHECKSTYLE_FILENAME));
-            log.info("Checkstyle File Created and Updated");
+            log.info("Checkstyle File succesfully created and updated");
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("Could not copy checkstyle file", e);
+            log.error("Copying file to new project failed", e);
             throw new GenerationException(String.format("Could not copy %s to new project", CHECKSTYLE_FILENAME));
         }
 
@@ -155,6 +155,7 @@ public class GenerateMavenProject {
             File javaFileDirectory = new File(
                     Paths.get(directoryToPush, "src/main/java/", groupIdFolders, mainClassFolders).toString());
             javaFileDirectory.mkdir();
+            log.info("Java directory successfully created");
         }
 
         // Creating java file
@@ -171,7 +172,7 @@ public class GenerateMavenProject {
             FileWriter writer = new FileWriter(javaFile);
             writer.write(javaString);
             writer.close();
-            log.info("Java file information write updated");
+            log.info("Java file information write and updated");
         } catch (IOException e) {
             log.error("Java file write failed", e);;
             e.printStackTrace();
