@@ -36,7 +36,7 @@ public class App
             server.getServer().await();
             log.info("Tomcat server created");
         } catch (LifecycleException e) {
-            log.error("Server createion failed ", e);
+            log.error("Server creation failed ", e);
             e.printStackTrace();
             System.out.println();
         }
