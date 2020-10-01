@@ -7,6 +7,7 @@ import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -42,6 +43,12 @@ public class LocalGitRepo implements AutoCloseable{
         return repo;
     }
 
+    public void branchDevAndProd()
+    {
+        repo.branchCreate().setName("dev").call();
+        repo.branchCreate().setName("prod").call();
+    }
+
     public void addAndCommitAll()
     {
         AddCommand addCmd = repo.add();
@@ -69,6 +76,7 @@ public class LocalGitRepo implements AutoCloseable{
         PushCommand pushCmd = repo.push();
         pushCmd.setRemote(uri);
         pushCmd.setCredentialsProvider(credentials);
+        pushCmd.setPushAll();
         try {
             pushCmd.call();
         } catch (GitAPIException e) {

@@ -75,7 +75,8 @@ public class InitServlet extends HttpServlet {
                     GenerateGithubActions.GenerateFile(tempPath.toString());
                 }
                 
-                // git add, commit, push
+                // git branch, add, commit, push
+                git.branchDevAndProd();
                 git.addAndCommitAll();
                 git.pushToRemote();
                 success = true;
