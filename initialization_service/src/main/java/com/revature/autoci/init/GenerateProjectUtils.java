@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class GenerateProjectUtils {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private static final Logger log = LoggerFactory.getLogger(GenerateProjectUtils.class);
 
     // Generates a .gitignore file by sending a GET request to gitignore.io
     // Creates request using the url then writes the response line by line to a .gitignore in the desired directory
@@ -40,19 +40,21 @@ public class GenerateProjectUtils {
                 }
                 writer.close();
                 in.close();
+                log.info("Successfully received http response for .gitignote file");
             } else {
+                log.warn("receiving http response for .gitignote file failed due to connection");
                 System.err.println("Problem connecting to/receiving response from gitignore.io");
             }
         } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
+            log.error("receiving http response for .gitignote file failed due to Malformed URL", e);
             e.printStackTrace();
             return;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            log.error("receiving http response for .gitignote file failed ", e);
             e.printStackTrace();
             return;
         } catch (Exception e) {
-             // TODO Auto-generated catch block
+            log.error("receiving http response for .gitignote file failed ", e);
              e.printStackTrace();
              return;
         }

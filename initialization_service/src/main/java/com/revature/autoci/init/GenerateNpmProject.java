@@ -97,8 +97,9 @@ public class GenerateNpmProject {
             FileWriter writer = new FileWriter(packageJSON);
             gson.toJson(project, writer);
             writer.close();
+            log.info("Package.json file successfully generated");
         } catch (JsonIOException | IOException e) {
-            // TODO Auto-generated catch block
+            log.error("package.json file generation failed", e);
             e.printStackTrace();
         }
         
