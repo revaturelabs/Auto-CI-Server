@@ -1,3 +1,5 @@
+Logger added for all current servelets. See below for additional information
+
 # Logger usage
 - The settings for the logger are configured within the logback.xml within the resources folder (needs to stay in the same folder as the webpage files, to my understanding).  Currently setup to create a new log file upon each execution of the program and will name that file with a date.  Note the sizing configuration within the logback.xml may need to change later if this application runs for long periods of time.  The log files will output into the log folder in the root of the project.  Ask Will or Lawrence if you need help changing this.
 
