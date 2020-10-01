@@ -20,10 +20,9 @@ import org.slf4j.LoggerFactory;
  */
 public class App 
 {
-
+    final static Logger log = LoggerFactory.getLogger(App.class);
     public static void main( String[] args )
     {
-        final Logger log = LoggerFactory.getLogger(App.class);
         load();
         Tomcat server = new Tomcat();
         server.setPort(8080);
@@ -42,7 +41,6 @@ public class App
         }
     }
     private static void load(){
-        final Logger log = LoggerFactory.getLogger(App.class);
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream("app.properties"));
