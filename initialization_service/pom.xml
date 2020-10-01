@@ -18,6 +18,7 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <tomcat.version>9.0.37</tomcat.version>
     <exec.mainClass>com.revature.autoci.init.InitServer</exec.mainClass>
+    <logback.version>1.2.3</logback.version>
   </properties>
 
   <dependencies>
@@ -70,6 +71,24 @@
         <artifactId>org.eclipse.jgit</artifactId>
         <version>5.9.0.202009080501-r</version>
     </dependency>
+    <dependency>
+	    <groupId>ch.qos.logback</groupId>
+	    <artifactId>logback-core</artifactId>
+	    <version>${logback.version}</version>
+	</dependency>
+	 
+	<dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-api</artifactId>
+	    <version>1.7.30</version>
+	</dependency>
+
+    <dependency>
+	    <groupId>ch.qos.logback</groupId>
+	    <artifactId>logback-classic</artifactId>
+	    <version>${logback.version}</version>
+	</dependency>
+
   </dependencies>
 
   <build>
