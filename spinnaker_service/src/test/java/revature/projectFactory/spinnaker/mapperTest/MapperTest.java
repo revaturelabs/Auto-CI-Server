@@ -8,8 +8,8 @@ import revature.projectFactory.spinnaker.POJO.PipelinePojo;
 import revature.projectFactory.spinnaker.mapper.Mapper;
 
 public class MapperTest {
-    private String jsonTest = "{\"jobName\":\"testJob\",\"gitUri\":\"testUri/.:?\",\"metaData\":\"testData\",\"cloudProviders\":\"testProviders,Other\",\"email\":\"testemail\",\"projectName\":\"test\"}";
-    private PipelinePojo expectedObj = new PipelinePojo("testJob", "testUri/.:?", "testData", "testProviders,Other", "testemail", "test");
+    private String jsonTest = "{\"jobName\":\"testJob\",\"gitUri\":\"testUri/.:?\",\"metaData\":\"testData\",\"cloudProviders\":\"testProviders,Other\",\"email\":\"testemail\",\"projectName\":\"test\",\"branch\":\"testBranch\"}";
+    private PipelinePojo expectedObj = new PipelinePojo("testJob", "testUri/.:?", "testData", "testProviders,Other", "testemail", "test", "testBranch");
     
     @Test
     public void testPipelinePojoReadMapper(){

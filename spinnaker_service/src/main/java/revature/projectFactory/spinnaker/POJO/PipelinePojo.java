@@ -7,11 +7,20 @@ public class PipelinePojo {
     private String cloudProviders;
     private String email;
     private String projectName;
+    private String branch;
 
     public PipelinePojo() {
         jobName = "";
         gitUri = "";
         metaData = "";
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
     }
 
     public String getProjectName() {
@@ -64,16 +73,17 @@ public class PipelinePojo {
 
     @Override
     public String toString(){
-        return "jobName: " +jobName +", gitUri: " + gitUri + ", metaData: " + metaData + ", cloudProviders: " + cloudProviders + ", email: " + email + ", projectName: " + projectName;
+        return "jobName: " +jobName +", gitUri: " + gitUri + ", metaData: " + metaData + ", cloudProviders: " + cloudProviders + ", email: " + email + ", projectName: " + projectName + ", branch: " + branch;
     }
 
     public PipelinePojo(String jobName, String gitUri, String metaData, String cloudProviders, String email,
-            String projectName) {
+            String projectName, String branch) {
         this.jobName = jobName;
         this.gitUri = gitUri;
         this.metaData = metaData;
         this.cloudProviders = cloudProviders;
         this.email = email;
         this.projectName = projectName;
+        this.branch = branch;
     }
 }
