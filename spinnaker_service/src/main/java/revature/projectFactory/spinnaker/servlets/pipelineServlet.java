@@ -12,6 +12,8 @@ import revature.projectFactory.spinnaker.POJO.PipelinePojo;
 import revature.projectFactory.spinnaker.connectionUtils.ConnectionConstants;
 import revature.projectFactory.spinnaker.spinnakerServices.ApplicationCreation;
 import revature.projectFactory.spinnaker.spinnakerServices.IApplicationCreation;
+import revature.projectFactory.spinnaker.spinnakerServices.IPipeLineCreation;
+import revature.projectFactory.spinnaker.spinnakerServices.PipelineCreation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,13 +41,16 @@ public class pipelineServlet extends HttpServlet{
         }
         ObjectMapper objectMapper = new ObjectMapper();
         PipelinePojo obj = objectMapper.readValue(body, PipelinePojo.class);
-        System.out.println(body); 
-        System.out.println(obj.getJobName() + " " + obj.getGitUri() + " " + obj.getMetaData());
-        System.out.println(ConnectionConstants.getSPINNAKERURI());
         if(APPBUILDER.create(obj.getProjectName(), obj.getEmail(), obj.getCloudProviders()) == 1){
             resp.getWriter().println("Application failed creating");
         }else{
             resp.getWriter().println("Application created");
+        }
+        IPipeLineCreation PIPELINEBUILDER = new PipelineCreation(ConnectionConstants.getSPINNAKERURI(), obj.getGitUri(), obj.getBranch());
+        if(PIPELINEBUILDER.create()){
+            resp.getWriter().println("Pipeline created");
+        }else{
+            resp.getWriter().println("Pipeline failed creating");
         }
         resp.setStatus(200);
     }

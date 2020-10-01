@@ -7,31 +7,35 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import revature.projectFactory.spinnaker.POJO.PipelineCreationPojo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PipelineCreation implements IPipeLineCreation {
     private final String pipelineCreateEndpoint;
     private String gitHubUri;
     private final String branch;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private void setupGitUri(){
-        gitHubUri.replaceFirst("github", "raw.githubusercontent");
+        gitHubUri = gitHubUri.replaceFirst("github", "raw.githubusercontent");
         gitHubUri +="/"+branch+"/Spinnaker.json";
     }
 
     private String getJSONFile(){
         setupGitUri();
-        StringBuilder responseBody = new StringBuilder();
+        StringBuffer responseBody = new StringBuffer();
         try{
             URL url = new URL(gitHubUri);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            connection.setDoOutput(true);
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
             BufferedReader reader = new BufferedReader( new InputStreamReader(connection.getInputStream()));
-            while(reader.ready()){
-                responseBody.append(reader.readLine() + "\n");
+            String append;
+            while((append = reader.readLine()) != null){
+                responseBody.append(append + "\n");
             }
-            System.out.println("Response:" + connection.getResponseCode() + "\n" + responseBody);
+            log.info("making request to " +gitHubUri + " Response: "+ connection.getResponseCode() + "\n" + responseBody);
             reader.close();
+            connection.disconnect();
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -39,7 +43,8 @@ public class PipelineCreation implements IPipeLineCreation {
     }
     
     @Override
-    public boolean create(PipelineCreationPojo pipline) {
+    public boolean create() {
+        boolean status = false;
         String jsonInputString = getJSONFile();
         try{
             URL url = new URL(pipelineCreateEndpoint);
@@ -52,21 +57,23 @@ public class PipelineCreation implements IPipeLineCreation {
                 byte[] input = jsonInputString.getBytes("utf-8");
                 os.write(input, 0, input.length);			
             }
-            StringBuilder responseBody = new StringBuilder();
+            StringBuffer responseBody = new StringBuffer();
             BufferedReader reader = new BufferedReader( new InputStreamReader(connection.getInputStream()));
             while(reader.ready()){
                 responseBody.append(reader.readLine() + "\n");
             }
-            System.out.println("Response:" + connection.getResponseCode() + "\n" + responseBody);
+            status = connection.getResponseCode() > 199 && connection.getResponseCode()<300;
+            log.info("PipeLine creation response: " + connection.getResponseCode() + "\n" + responseBody);
             reader.close();
+            connection.disconnect();
         }catch(IOException e){
             e.printStackTrace();
         }
-        return false;
+        return status;
     }
 
     public PipelineCreation(String pipelineCreateEndpoint, String gitHubUri, String branch) {
-        this.pipelineCreateEndpoint = pipelineCreateEndpoint;
+        this.pipelineCreateEndpoint = pipelineCreateEndpoint + "/pipelines";
         this.gitHubUri = gitHubUri;
         this.branch = branch;
     }
