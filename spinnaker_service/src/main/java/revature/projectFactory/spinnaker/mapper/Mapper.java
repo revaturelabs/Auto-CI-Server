@@ -36,7 +36,7 @@ public class Mapper {
             json = objectmapper.writeValueAsString(obj);
             log.info("Spinnaker object mapper write ran");
         } catch (JsonProcessingException e) {
-            log.error("Soinnaker Execption with wtite mapper ", e);
+            log.error("Spinnaker Exception with write mapper ", e);
             e.printStackTrace();
         }
         return json;
