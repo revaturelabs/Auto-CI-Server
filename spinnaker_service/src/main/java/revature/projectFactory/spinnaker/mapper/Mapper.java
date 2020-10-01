@@ -24,7 +24,7 @@ public class Mapper {
         try {
             obj = objectmapper.readValue(json, PipelinePojo.class);
         } catch (IOException e) {
-            log.error("Spinnaker Execption with pipeline mapper ", e);
+            log.error("Exception occurred when mapping Json String to a Pipeline object \n perhaps the Json was structured incorrectly" , e);
             e.printStackTrace();
         }
         return obj;
