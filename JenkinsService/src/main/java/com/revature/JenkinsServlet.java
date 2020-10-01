@@ -105,7 +105,7 @@ public class JenkinsServlet extends HttpServlet {
         }
 
         if (exitCode != 0) {
-            log.error("makeJob method failing due to cURL failure, exitCode=0");
+            log.error("makeJob method failing due to cURL failure, exitCode!=0");
             throw new IOException("cURL failed");
         }
 	}
