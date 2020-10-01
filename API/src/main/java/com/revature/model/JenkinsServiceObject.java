@@ -2,45 +2,50 @@ package com.revature.model;
 
 public class JenkinsServiceObject {
 
-    private String repoURL;
-    private String jenkinsURI;
-    private String projMetadata;
+    private String jenkinsURL;
+    private String githubURL;
+    private String projectName;
+    private String slackChannel;
 
     public JenkinsServiceObject() { }
 
-    public JenkinsServiceObject(String repoURL, String jenkinsURI, String projMetadata) {
-        this.repoURL = repoURL;
-        this.jenkinsURI = jenkinsURI;
-        this.projMetadata = projMetadata;
+    public JenkinsServiceObject(String jenkinsURL, String githubURL, String projectName, String slackChannel) {
+        this.jenkinsURL = jenkinsURL;
+        this.githubURL = githubURL;
+        this.projectName = projectName;
+        this.slackChannel = slackChannel;
     }
 
-    public String getRepoURL() {
-        return repoURL;
+    public String getJenkinsURL() {
+        return jenkinsURL;
     }
 
-    public void setRepoURL(String repoURL) {
-        this.repoURL = repoURL;
+    public void setJenkinsURL(String jenkinsURL) {
+        this.jenkinsURL = jenkinsURL;
     }
 
-    public String getJenkinsURI() {
-        return jenkinsURI;
+    public String getGithubURL() {
+        return githubURL;
     }
 
-    public void setJenkinsURI(String jenkinsURI) {
-        this.jenkinsURI = jenkinsURI;
+    public void setGithubURL(String githubURL) {
+        this.githubURL = githubURL;
     }
 
-    public String getProjMetadata() {
-        return projMetadata;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setProjMetadata(String projMetadata) {
-        this.projMetadata = projMetadata;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
-    @Override
-    public String toString() {
-        return "JenkinsService [jenkinsURI=" + jenkinsURI + ", projMetadata=" + projMetadata + ", repoURL=" + repoURL
-                + "]";
+    public String getSlackChannel() {
+        return slackChannel;
     }
+
+    public void setSlackChannel(String slackChannel) {
+        this.slackChannel = slackChannel;
+    }
+
 }

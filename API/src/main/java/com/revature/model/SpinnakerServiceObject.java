@@ -2,46 +2,62 @@ package com.revature.model;
 
 public class SpinnakerServiceObject {
 
-    private String repoURL;
-    private String jobName; // Name of the job made in JenkinsService
-    private String projMetadata;
+    private String gitUri;
+    private String cloudProviders;
+    private String email;
+    private String projectName;
+    private String branch;
 
     public SpinnakerServiceObject() {
     }
 
-    public SpinnakerServiceObject(String repoURL, String jobName, String projMetadata) {
-        this.repoURL = repoURL;
-        this.jobName = jobName;
-        this.projMetadata = projMetadata;
+    public SpinnakerServiceObject(String gitUri, String cloudProviders, String email, String projectName,
+            String branch) {
+        this.gitUri = gitUri;
+        this.cloudProviders = cloudProviders;
+        this.email = email;
+        this.projectName = projectName;
+        this.branch = branch;
     }
 
-    public String getRepoURL() {
-        return repoURL;
+    public String getGitUri() {
+        return gitUri;
     }
 
-    public void setRepoURL(String repoURL) {
-        this.repoURL = repoURL;
+    public void setGitUri(String gitUri) {
+        this.gitUri = gitUri;
     }
 
-    public String getJobName() {
-        return jobName;
+    public String getCloudProviders() {
+        return cloudProviders;
     }
 
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
+    public void setCloudProviders(String cloudProviders) {
+        this.cloudProviders = cloudProviders;
     }
 
-    public String getProjMetadata() {
-        return projMetadata;
+    public String getEmail() {
+        return email;
     }
 
-    public void setProjMetadata(String projMetadata) {
-        this.projMetadata = projMetadata;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "SpinnakerServiceObject [jobName=" + jobName + ", projMetadata=" + projMetadata + ", repoURL=" + repoURL
-                + "]";
+    public String getProjectName() {
+        return projectName;
     }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
 }

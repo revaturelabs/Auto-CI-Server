@@ -3,7 +3,6 @@ package com.revature.api;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Configuration;
+import com.revature.model.ConfigurationResp;
 
 @WebServlet(name = "ConfigurationService", urlPatterns = {"/configuration" })
 public class ConfigurationService extends HttpServlet {
@@ -23,18 +23,22 @@ public class ConfigurationService extends HttpServlet {
         // Jackson stuff
         ObjectMapper objectMapper = new ObjectMapper();
 
-        // Vars
-        String gitUser = req.getParameter("gitUser");
+        // Vars and Build Configuration Object
+        String githubUsername = req.getParameter("githubUsername");
         String jenkinsURI = req.getParameter("jenkinsURI");
-        String jenOrGit = req.getParameter("jenOrGit"); // Was Jenkins specified, or are we using Github Actions?
-        String projMetadata = req.getParameter("projMetadata");
+        String projectName = req.getParameter("projectName");
+        boolean generateGithubActions = req.getParameter("generateGithubActions").equals("true"); // Was Jenkins specified, or are we using Github Actions?
+        boolean debug = req.getParameter("debug").equals("true");
 
-        Configuration conf = new Configuration(gitUser, jenkinsURI, jenOrGit, projMetadata);
+        Configuration conf = new Configuration(githubUsername, jenkinsURI, projectName, generateGithubActions, debug);
 
-        //create entities
-        // to do make model object to work with this endpoint
+        // Vars and Build Configuration Response
+        String githubURL = "http://github.com/" + githubUsername + "/" + projectName + ".git";
+        boolean madeHook = !generateGithubActions;
 
-        String result = objectMapper.writeValueAsString(conf);
+        ConfigurationResp confResp = new ConfigurationResp(githubURL, madeHook);
+
+        String result = objectMapper.writeValueAsString(confResp);
         PrintWriter out = resp.getWriter();
 
         //return 

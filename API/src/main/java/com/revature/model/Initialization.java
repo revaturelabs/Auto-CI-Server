@@ -2,65 +2,93 @@ package com.revature.model;
 
 public class Initialization {
 
-    private String gitUser;
-    private String repoURL;
-    private String mvnOrNpm; // Are we doind maven, or bpm?
-    private String projMetadata;
-    private String depends; // stands for "Dependencies" (but also is a brand of adult diapers)
+    private String githubUsername;
+    private String githubURL;
+    private String IDE;
+    private boolean generateGithubActions;
+    private boolean isMaven;
+
+    private MvnDataObj mavenData;
+    private NpmDataObj npmData;
 
     public Initialization() { }
 
-    public Initialization(String gitUser, String repoURL, String mvnOrNpm, String projMetadata, String depends) {
-        this.gitUser = gitUser;
-        this.repoURL = repoURL;
-        this.mvnOrNpm = mvnOrNpm;
-        this.projMetadata = projMetadata;
-        this.depends = depends;
+    // if isMaven == true
+    public Initialization(String githubUsername, String githubURL, String IDE, boolean generateGithubActions,
+            boolean isMaven, MvnDataObj mavenData) {
+        this.githubUsername = githubUsername;
+        this.githubURL = githubURL;
+        this.IDE = IDE;
+        this.generateGithubActions = generateGithubActions;
+        this.isMaven = isMaven;
+        this.mavenData = mavenData;
     }
 
-    public String getGitUser() {
-        return gitUser;
+    // if isMaven == false
+    public Initialization(String githubUsername, String githubURL, String iDE, boolean generateGithubActions,
+            boolean isMaven, NpmDataObj npmData) {
+        this.githubUsername = githubUsername;
+        this.githubURL = githubURL;
+        IDE = iDE;
+        this.generateGithubActions = generateGithubActions;
+        this.isMaven = isMaven;
+        this.npmData = npmData;
     }
 
-    public void setGitUser(String gitUser) {
-        this.gitUser = gitUser;
+    public String getGithubUsername() {
+        return githubUsername;
     }
 
-    public String getRepoURL() {
-        return repoURL;
+    public void setGithubUsername(String githubUsername) {
+        this.githubUsername = githubUsername;
     }
 
-    public void setRepoURL(String repoURL) {
-        this.repoURL = repoURL;
+    public String getGithubURL() {
+        return githubURL;
     }
 
-    public String getMvnOrNpm() {
-        return mvnOrNpm;
+    public void setGithubURL(String githubURL) {
+        this.githubURL = githubURL;
     }
 
-    public void setMvnOrNpm(String mvnOrNpm) {
-        this.mvnOrNpm = mvnOrNpm;
+    public String getIDE() {
+        return IDE;
     }
 
-    public String getProjMetadata() {
-        return projMetadata;
+    public void setIDE(String iDE) {
+        IDE = iDE;
     }
 
-    public void setProjMetadata(String projMetadata) {
-        this.projMetadata = projMetadata;
+    public boolean isGenerateGithubActions() {
+        return generateGithubActions;
     }
 
-    public String getDepends() {
-        return depends;
+    public void setGenerateGithubActions(boolean generateGithubActions) {
+        this.generateGithubActions = generateGithubActions;
     }
 
-    public void setDepends(String depends) {
-        this.depends = depends;
+    public boolean isMaven() {
+        return isMaven;
     }
 
-    @Override
-    public String toString() {
-        return "Initialization [depends=" + depends + ", gitUser=" + gitUser + ", mvnOrNpm=" + mvnOrNpm
-                + ", projMetadata=" + projMetadata + ", repoURL=" + repoURL + "]";
+    public void setMaven(boolean isMaven) {
+        this.isMaven = isMaven;
     }
+
+    public MvnDataObj getMavenData() {
+        return mavenData;
+    }
+
+    public void setMavenData(MvnDataObj mavenData) {
+        this.mavenData = mavenData;
+    }
+
+    public NpmDataObj getNpmData() {
+        return npmData;
+    }
+
+    public void setNpmData(NpmDataObj npmData) {
+        this.npmData = npmData;
+    }
+
 }

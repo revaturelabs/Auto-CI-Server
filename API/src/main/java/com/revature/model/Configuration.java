@@ -2,26 +2,29 @@ package com.revature.model;
 
 public class Configuration {
 
-    private String gitUser;
+    private String githubUsername;
     private String jenkinsURI;
-    private String jenOrGit; // Was Jenkins specified, or are we using Github Actions?
-    private String projMetadata;
+    private String projectName;
+    private boolean generateGithubActions; // Was Jenkins specified, or are we using Github Actions?
+    private boolean debug; // Optional; leave to true to prevent polluting the revaturelabs org with our test repos
 
     public Configuration() { }
 
-    public Configuration(String gitUser, String jenkinsURI, String jenOrGit, String projMetadata) {
-        this.gitUser = gitUser;
+    public Configuration(String githubUsername, String jenkinsURI, String projectName, boolean generateGithubActions,
+            boolean debug) {
+        this.githubUsername = githubUsername;
         this.jenkinsURI = jenkinsURI;
-        this.jenOrGit = jenOrGit;
-        this.projMetadata = projMetadata;
+        this.projectName = projectName;
+        this.generateGithubActions = generateGithubActions;
+        this.debug = debug;
     }
 
-    public String getGitUser() {
-        return gitUser;
+    public String getGithubUsername() {
+        return githubUsername;
     }
 
-    public void setGitUser(String gitUser) {
-        this.gitUser = gitUser;
+    public void setGithubUsername(String githubUsername) {
+        this.githubUsername = githubUsername;
     }
 
     public String getJenkinsURI() {
@@ -32,27 +35,28 @@ public class Configuration {
         this.jenkinsURI = jenkinsURI;
     }
 
-    public String getJenOrGit() {
-        return jenOrGit;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setJenOrGit(String jenOrGit) {
-        this.jenOrGit = jenOrGit;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
-    public String getProjMetadata() {
-        return projMetadata;
+    public boolean isGenerateGithubActions() {
+        return generateGithubActions;
     }
 
-    public void setProjMetadata(String projMetadata) {
-        this.projMetadata = projMetadata;
+    public void setGenerateGithubActions(boolean generateGithubActions) {
+        this.generateGithubActions = generateGithubActions;
     }
 
-    @Override
-    public String toString() {
-        return "Configuration [gitUser=" + gitUser + ", jenOrGit=" + jenOrGit + ", jenkinsURI=" + jenkinsURI
-                + ", projMetadata=" + projMetadata + "]";
+    public boolean isDebug() {
+        return debug;
     }
 
-    
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+   
 }
