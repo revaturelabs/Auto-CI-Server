@@ -82,7 +82,7 @@ public class ConfigServlet extends HttpServlet {
         return json;
     }
 
-    private void parseJsonToVars(JSONObject json) throws IOException {
+    protected void parseJsonToVars(JSONObject json) throws IOException {
         try {
             gitUsername = json.getString("githubUsername");
             jenkinsUri = json.getString("jenkinsURL");
