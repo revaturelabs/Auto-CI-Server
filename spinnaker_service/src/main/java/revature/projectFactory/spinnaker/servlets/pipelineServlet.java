@@ -34,7 +34,7 @@ public class pipelineServlet extends HttpServlet{
 
     @Override  
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("Recieved Request for a new pipeline");
+        log.info("Spinnaker Service Recieved Request for a new pipeline");
         String body = "";
         while(req.getReader().ready()){
             body += req.getReader().readLine() + "\n";
@@ -43,6 +43,7 @@ public class pipelineServlet extends HttpServlet{
         PipelinePojo obj = objectMapper.readValue(body, PipelinePojo.class);
         if(APPBUILDER.create(obj.getProjectName(), obj.getEmail(), obj.getCloudProviders()) == 1){
             resp.getWriter().println("Application failed creating");
+            log.error("Application failed to create");
         }else{
             resp.getWriter().println("Application created");
         }

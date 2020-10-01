@@ -11,12 +11,16 @@ import org.apache.catalina.startup.Tomcat;
 import revature.projectFactory.spinnaker.connectionUtils.ConnectionConstants;
 import revature.projectFactory.spinnaker.servlets.pipelineServlet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Hello world!
  *
  */
 public class App 
 {
+    final static Logger log = LoggerFactory.getLogger(App.class);
     public static void main( String[] args )
     {
         load();
@@ -29,8 +33,9 @@ public class App
         try {
             server.start();
             server.getServer().await();
+            log.info("Tomcat server created");
         } catch (LifecycleException e) {
-            // TODO Auto-generated catch block
+            log.error("Server creation failed ", e);
             e.printStackTrace();
             System.out.println();
         }
@@ -41,8 +46,9 @@ public class App
             properties.load(new FileInputStream("app.properties"));
             ConnectionConstants.setSPINNAKERURI(properties.getProperty("SpinnakerURI", "localhost:8080"));
             System.out.println("properties loaded");
+            log.info("Spinnaker properties loaded");
         } catch (IOException e1) {
-            // TODO Auto-generated catch block
+            log.error("load spinnaker properties failed", e1);
             e1.printStackTrace();
         }
     }

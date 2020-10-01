@@ -18,6 +18,8 @@ public class ProcessBuilderUtility {
 
             processBuilder.command("cmd.exe", "/c", buildcommand);
 
+        // screen -dm command was used to replace sh for now to the command can be set
+
         } else {
             buildcommand = "screen -dm " + buildcommand;
             processBuilder.command(buildcommand.split(" "));
@@ -30,6 +32,7 @@ public class ProcessBuilderUtility {
         try {
             process = processBuilder.start();
             exited = process.waitFor();
+            log.info("Spinnaker Process Builder Command Ran");
         } catch (Exception e) {
           log.error(e.getMessage());   
         }
