@@ -1,16 +1,15 @@
 apiVersion: v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Service
 metadata:
-  namespace: project3
-  name: testserver-service
+  namespace: init-service
+  name: init-svc
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
-    app: testserver
+    app: init-service
   ports:
-    - name: sample
-      port: 8080
+    - name: tomcat
+      port: 80
       targetPort: 8080
-      nodePort: 30001
 
   

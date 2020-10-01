@@ -1,4 +1,4 @@
-package com.revature.autoci.init;
+package com.revature.autoci.init.generators;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,8 +13,11 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GenerateNpmProject {
+    private static final Logger log = LoggerFactory.getLogger(GenerateNpmProject.class);
     static final String ESLINT_VERSION = "^7.10.0";
     static final String ESLINT_CONFIG_FILENAME = ".eslintrc.json";
     // Generates a new npm project in the designated directory. Creates standard folder structure, generates 
@@ -57,6 +60,7 @@ public class GenerateNpmProject {
     
         // Generating .gitignore from URL and saving .gitignore file to directory
         GenerateProjectUtils.generateGitIgnoreFromUrl(gitIgnoreIoUrl, directoryToPush);
+        log.info(".gitignore file successfully generated");
     }
 
     private static void addESLintConfig(String directoryToPush) throws GenerationException
@@ -66,6 +70,7 @@ public class GenerateNpmProject {
             Files.copy(fileStream, Paths.get(directoryToPush, ESLINT_CONFIG_FILENAME));
         } catch (IOException e) {
             e.printStackTrace();
+            log.error(".gitignore file generation failed ",e);
             throw new GenerationException(String.format("Could not copy %s to new project", ESLINT_CONFIG_FILENAME));
         }
     }
@@ -92,8 +97,9 @@ public class GenerateNpmProject {
             FileWriter writer = new FileWriter(packageJSON);
             gson.toJson(project, writer);
             writer.close();
+            log.info("Package.json file successfully generated");
         } catch (JsonIOException | IOException e) {
-            // TODO Auto-generated catch block
+            log.error("package.json file generation failed", e);
             e.printStackTrace();
         }
         

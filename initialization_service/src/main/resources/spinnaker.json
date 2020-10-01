@@ -1,0 +1,92 @@
+{
+
+	"name": ${projectName},
+	"id": ${projectName},
+	"application": ${projectName},
+	"appConfig": {},
+	"description": "",
+	"executionEngine": "v2",
+	"keepWaitingPipelines": false,
+	"lastModifiedBy": "anonymous",
+	"limitConcurrent": true,
+	"parallel": true,
+	"parameterConfig": [{
+		"default": "v1",
+		"hasOptions": false,
+		"label": "helloworld image tag",
+		"name": "hellotag",
+		"options": [{
+			"value": ""
+		}],
+		"required": true
+	}],
+    "stages": [
+        {
+          "account": "my-k8s-account",
+          "cloudProvider": "kubernetes",
+          "manifests": [
+            {
+              "apiVersion": "apps/v1",
+              "kind": "Deployment",
+              "metadata": {
+                "labels": {
+                  "app": "sample"
+                },
+                "name": "sample"
+              },
+              "spec": {
+                "replicas": 1,
+                "selector": {
+                  "matchLabels": {
+                    "app": "sample"
+                  }
+                },
+                "template": {
+                  "metadata": {
+                    "labels": {
+                      "app": "sample"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "image": PARAMETER?,
+                        "imagePullPolicy": "Always",
+                        "name": "sample"
+                      }
+                    ],
+                    "restartPolicy": "Always"
+                  }
+                }
+              }
+            }
+          ],
+          "moniker": {
+            "app": "test"
+          },
+          "name": "Deploy (Manifest)",
+          "namespaceOverride": "default",
+          "refId": "1",
+          "requisiteStageRefIds": [],
+          "skipExpressionEvaluation": false,
+          "source": "text",
+          "trafficManagement": {
+            "enabled": false,
+            "options": {
+              "enableTraffic": false,
+              "services": []
+            }
+          },
+          "type": "deployManifest"
+        }
+      ],
+      "triggers": [
+        {
+          "enabled": true,
+          "job": "seed",
+          "master": "my-jenkins-master",
+          "type": "jenkins"
+        }
+      ],
+      "updateTs": "1601405160000"
+}
