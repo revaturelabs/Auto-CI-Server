@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
+import com.revature.autoci.init.generators.*;
 
 public class InitServlet extends HttpServlet {
     static final String SECRET_DIR = "secrets/";
@@ -54,9 +55,12 @@ public class InitServlet extends HttpServlet {
         try (LocalGitRepo git = new LocalGitRepo(data.getGithubURL(), tempPath, token)) {
             // create temp directory
             String projectName = null;
+            String appVersion = null;
+            String imageName = null;
             if (data.isMaven()) {
                 MavenJSON mavenData = data.getMavenData();
                 projectName = mavenData.getProjectName();
+                appVersion = mavenData.getVersion();
                 System.out.println("Generating maven project");
                 
                 GenerateMavenProject.generateNewMavenProject(mavenData.getGroupId(),
@@ -68,6 +72,7 @@ public class InitServlet extends HttpServlet {
             {
                 NpmJSON npmData = data.getNpmData();
                 projectName = npmData.getProjectName();
+                appVersion = npmData.getVersion();
                 System.out.println("Generating Node project");
 
                 GenerateNpmProject.generateNewNpmProject(npmData.getProjectName(), npmData.getAuthor(), npmData.getVersion(), 
@@ -75,9 +80,9 @@ public class InitServlet extends HttpServlet {
                     npmData.getLicense(), npmData.getScripts(), npmData.getKeywords(),
                     npmData.getDependencies(), npmData.getDevDependencies(), data.getIDE(), tempPath.toString());
             }
-
+            imageName = projectName;
             // Generate Helm Chart
-            HelmGenerate.generateHelmChart(projectName.trim().replace(' ', '-'), tempPath.toString(), false);
+            HelmGenerate.generateHelmChart(projectName.trim().replace(' ', '-'), appVersion, projectName, tempPath.toString(), false);
 
             // Generate Spinnaker pipeline JSON file
             GenerateSpinnaker.generateSpinnaker(projectName, tempPath.toString());
