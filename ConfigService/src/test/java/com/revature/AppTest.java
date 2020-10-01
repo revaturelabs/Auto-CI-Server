@@ -18,7 +18,6 @@ public class AppTest {
     {
         ConfigServlet servlet1 = new ConfigServlet();
         GitHubAPI github = new GitHubAPI();
-        boolean expectedDebugMode = true;
         JSONObject json = new JSONObject();
 
         String gitUsernameExpected = "New User";
@@ -27,11 +26,11 @@ public class AppTest {
         Boolean usingJenkinsExpected = false;
         Boolean debugModeExpected = true;
 
-        json.put("githubUsername","New User");
-        json.put("jenkinsURL","user.com");
-        json.put("projectName","New Project");
-        json.put("generateGithubActions",true);
-        json.put("debug",true);
+        json.put("githubUsername", gitUsernameExpected);
+        json.put("jenkinsURL", jenkinsUriExpected);
+        json.put("projectName", projNameExpected);
+        json.put("generateGithubActions", !usingJenkinsExpected);
+        json.put("debug",debugModeExpected);
 
         servlet1.parseJsonToVars(json);
 
