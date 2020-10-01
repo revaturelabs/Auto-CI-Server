@@ -76,8 +76,8 @@ public class InitServlet extends HttpServlet {
                 }
                 
                 // git branch, add, commit, push
-                git.branchDevAndProd();
                 git.addAndCommitAll();
+                git.branchDevAndProd();
                 git.pushToRemote();
                 success = true;
             } 

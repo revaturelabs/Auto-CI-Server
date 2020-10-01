@@ -7,7 +7,6 @@ import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
-import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -17,7 +16,7 @@ public class LocalGitRepo implements AutoCloseable{
     private Path cloneDir;
     private CredentialsProvider credentials;
     private Git repo;
-    public LocalGitRepo(String URI, Path cloneDir, String token)
+    public LocalGitRepo(String URI, Path cloneDir, String token) throws GenerationException
     {
         uri = URI;
         this.cloneDir = cloneDir;
@@ -25,7 +24,7 @@ public class LocalGitRepo implements AutoCloseable{
         repo = cloneRepo();
     }
 
-    private Git cloneRepo()
+    private Git cloneRepo() throws GenerationException
     {
         CloneCommand cloneCmd = Git.cloneRepository();
         cloneCmd.setURI(uri);
@@ -38,40 +37,43 @@ public class LocalGitRepo implements AutoCloseable{
         }
         catch(GitAPIException e)
         {
-            e.printStackTrace();
+            throw new GenerationException("Failed to clone repository.");
         }
         return repo;
     }
 
-    public void branchDevAndProd()
+    public void branchDevAndProd() throws GenerationException
     {
-        repo.branchCreate().setName("dev").call();
-        repo.branchCreate().setName("prod").call();
+        try {
+            repo.branchCreate().setName("dev").call();
+            repo.branchCreate().setName("prod").call();
+        } catch (GitAPIException e) {
+            throw new GenerationException("Failed to create dev and prod branches.");
+        }
+        
     }
 
-    public void addAndCommitAll()
+    public void addAndCommitAll() throws GenerationException
     {
         AddCommand addCmd = repo.add();
         addCmd.addFilepattern(".");
         try {
             addCmd.call();
         } catch (GitAPIException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new GenerationException("Failed to stage files.");
         }
         CommitCommand commitCmd = repo.commit();
-        commitCmd.setAuthor("Auto-CI", "<>");
-        commitCmd.setCommitter("Auto-CI", "<>");
-        commitCmd.setMessage("Setting up a new project");
+        commitCmd.setAuthor("Project Factory", "<>");
+        commitCmd.setCommitter("Project Factory", "<>");
+        commitCmd.setMessage("New project, hot off the press");
         try {
             commitCmd.call();
         } catch (GitAPIException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new GenerationException("Failed to commit staged files");
         }
     }
 
-    public void pushToRemote()
+    public void pushToRemote() throws GenerationException
     {
         PushCommand pushCmd = repo.push();
         pushCmd.setRemote(uri);
@@ -80,7 +82,7 @@ public class LocalGitRepo implements AutoCloseable{
         try {
             pushCmd.call();
         } catch (GitAPIException e) {
-            e.printStackTrace();
+            throw new GenerationException("Failed to push to remote");
         }
     }
 
