@@ -8,12 +8,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GenerateGithubActions {
     static final String GITHUB_ACTIONS_SCRIPT = "GithubActionsScript";
-    private static final Logger log = LoggerFactory.getLogger(GenerateGithubActions.class);
 
     // Generate the Github Actions yaml and directories. Due to the nature of the implementation as a shell script, the
     // script must be copied to the working directory, executed, then deleted.
@@ -45,7 +42,6 @@ public class GenerateGithubActions {
         catch(InterruptedException e)
         {
             finished = false;
-            log.error("Github Action Generate Command command failed ", e);
         }
         if(!finished)
         {
