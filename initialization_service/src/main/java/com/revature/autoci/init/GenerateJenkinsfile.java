@@ -13,8 +13,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GenerateJenkinsfile {
+
+    private static final Logger log = LoggerFactory.getLogger(GenerateJenkinsfile.class);
     
     // Generates a Jenkinsfile from a template. The template used depends on whether it is a Maven or NPM project.
     public static void generateJenkinsfile(String githubURL, String dockerRegistryURL, String dockerUser, String projectName, String credentialId, boolean isMaven, String pathToProject) throws IOException
@@ -40,6 +44,7 @@ public class GenerateJenkinsfile {
             try(FileWriter writer = new FileWriter(jenkinsfile))
             {
                 replaceVariablesInFile(buf, writer, replaceVals);
+                log.info("Template and Jenkinsfile successfully created");
             }
         }
     }
@@ -70,5 +75,6 @@ public class GenerateJenkinsfile {
             }
             writer.write(s + "\n");
         }
+        log.info("JenkinsFile information successfully updated");
     }
 }
