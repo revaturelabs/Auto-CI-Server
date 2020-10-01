@@ -19,10 +19,10 @@ public class ProcessBuilderUtility {
             processBuilder.command("cmd.exe", "/c", buildcommand);
 
         } else {
-
-            processBuilder.command("sh", "-c", "spin application save --application-name test --owner-email testemail --cloud-providers \"testProviders,Other\"");
+            buildcommand = "screen -dm " + buildcommand;
+            processBuilder.command(buildcommand.split(" "));
         }
-
+        System.out.println(processBuilder.command());
         processBuilder.directory(new File(execDirectory));
         Process process = null;
         int exited = 0;
