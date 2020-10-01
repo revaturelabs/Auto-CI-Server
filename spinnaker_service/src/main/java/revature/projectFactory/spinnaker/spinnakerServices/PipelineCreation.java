@@ -9,8 +9,12 @@ import java.net.URL;
 
 import revature.projectFactory.spinnaker.POJO.PipelineCreationPojo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PipelineCreation implements IPipeLineCreation {
     private final String pipelineCreateEndpoint;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     PipelineCreation(String spinnakerURI){
         pipelineCreateEndpoint = spinnakerURI+"/pipelines";
@@ -29,7 +33,8 @@ public class PipelineCreation implements IPipeLineCreation {
             String jsonInputString = "{ someJson: \"change me\"}";
             try(OutputStream os = connection.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes("utf-8");
-                os.write(input, 0, input.length);			
+                os.write(input, 0, input.length);
+                log.info("Spinnaker connection output stream ran in pipeline creation");		
             }
             StringBuilder responseBody = new StringBuilder();
             BufferedReader reader = new BufferedReader( new InputStreamReader(connection.getInputStream()));
@@ -40,8 +45,11 @@ public class PipelineCreation implements IPipeLineCreation {
             reader.close();
         }catch(IOException e){
             e.printStackTrace();
+            log.error("Spinnaker Get pipeline creation connection failed", e);
         }
+        log.info("Spinnaker pipeline creation connection is false");
         return false;
+
     }
     
 }
