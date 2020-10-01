@@ -61,6 +61,7 @@ public class HelmGenerate {
         mapping.put("project_name", chartName);
         mapping.put("chart_type", chartType);
         mapping.put("version", appVersion);
+        mapping.put("image_repo", imageRepo);
 
         Templater templater = new Templater(mapping);
 

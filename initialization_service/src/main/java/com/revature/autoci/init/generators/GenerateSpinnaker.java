@@ -36,7 +36,7 @@ public class GenerateSpinnaker {
             spinnaker.createNewFile();
             try(FileWriter writer = new FileWriter(spinnaker))
             {
-                templater.fillTemplate(buf, writer, "\'");
+                templater.fillTemplate(buf, writer, "\"");
                 log.info("Spinnaker Pipeline Template successfully updated");
             }
         }

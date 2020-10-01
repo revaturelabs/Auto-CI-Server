@@ -98,9 +98,7 @@ public class InitServlet extends HttpServlet {
             log.info("Pipeline JSON file with configuration successfully generated");
 
             // Generate jenkinsfile in top-level directory
-            GenerateJenkinsfile.generateJenkinsfile(data.getGithubURL(), containerRegistryURL,
-                    "REPLACE_WITH_REGISTRY_USERNAME", projectName,
-                    containerRegistryCredentialId, data.isMaven(), tempPath.toString());
+            GenerateJenkinsfile.generateJenkinsfile(data.isMaven(), tempPath.toString());
                 log.info("Jenkinsfile successfully generated");
 
             try 

@@ -29,19 +29,19 @@ public class JenkinsfileTest
     @Test
     public void createsFile() throws IOException
     {
-        GenerateJenkinsfile.generateJenkinsfile("http://test", "https://testreg", "testUser", "testProj", "abcdef", true, tempPath.toString());
+        GenerateJenkinsfile.generateJenkinsfile(true, tempPath.toString());
         assertTrue(Files.exists(Paths.get(tempPath.toString(), "Jenkinsfile")));
 
         tempPath = Files.createTempDirectory("jkt");
         tempPath.toFile().deleteOnExit();
-        GenerateJenkinsfile.generateJenkinsfile("http://test", "https://testreg", "testUser", "testProj", "abcdef", false, tempPath.toString());
+        GenerateJenkinsfile.generateJenkinsfile(false, tempPath.toString());
         assertTrue(Files.exists(Paths.get(tempPath.toString(), "Jenkinsfile")));
     }
 
     @Test
     public void CorrectFileTemplate() throws IOException
     {
-        GenerateJenkinsfile.generateJenkinsfile("http://test", "https://testreg", "testUser", "testProj", "abcdef", true, tempPath.toString());
+        GenerateJenkinsfile.generateJenkinsfile(true, tempPath.toString());
         File f = new File(tempPath.toString(), "Jenkinsfile");
         boolean isMaven = false;
         try(BufferedReader reader = new BufferedReader(new FileReader(f)))
@@ -58,7 +58,7 @@ public class JenkinsfileTest
 
         tempPath = Files.createTempDirectory("jkt");
         tempPath.toFile().deleteOnExit();
-        GenerateJenkinsfile.generateJenkinsfile("http://test", "https://testreg", "testUser", "testProj", "abcdef", false, tempPath.toString());
+        GenerateJenkinsfile.generateJenkinsfile(true, tempPath.toString());
         
         f = new File(tempPath.toString(), "Jenkinsfile");
         boolean isNode = false;
@@ -66,7 +66,7 @@ public class JenkinsfileTest
         {
             while(reader.ready())
             {
-                if(reader.readLine().contains("maven"));
+                if(reader.readLine().contains("npm"));
                 {
                     isNode = true;
                 }
