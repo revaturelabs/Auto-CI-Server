@@ -1,13 +1,14 @@
 pipeline {
     agent any
 
-    tools {maven "maven"}
+    tools {
+        maven 'maven'
+    }
 
     stages {
-        stage('Pull')
-        {
+        stage('Pull') {
             steps {
-                git ${githubURL}
+                git url: "${githubURL}", branch: "${gitBranch}"
             }
         }
         stage('Checkstyle') {
@@ -21,39 +22,30 @@ pipeline {
             }
         }
         stage('Build') {
-            // Run the maven build
             steps {
                 sh 'mvn package -DskipTests=true -Dcheckstyle.skip=true'
             }
         }
         stage('Deploy') {
-            steps 
-            {
-                script 
-                {
-                    docker.withTool('docker')
-                    {
-                        repoId = ${dockerUser} +"/" +${projectName}
-                        sh 'docker -v'
+            steps {
+                script {
+                    docker.withTool('docker') {
+                        repoId = "${dockerUser}/${projectName}"
                         image = docker.build(repoId)
-                        docker.withRegistry(${ContainerRegistryURL}, ${ContainerRegistryCredId})
-                        {
+                        docker.withRegistry("${ContainerRegistryURL}", "${ContainerRegistryCredId}") {
                             image.push()
                         }
                     }
                 }
-                
             }
         }
     }
-    post
-    {
+    post {
         success {
-            slackSend(color: '#BDFFC3', message: 'Maven project ' + ${projectName} + ' has passed all tests and was successfully pushed to container registry')
+            slackSend(color: 'good', channel: "${slackChannel}", message: "Maven project '${projectName}' [${gitBranch}] has passed all tests and was successfully built and pushed to the CR.")
         }
         failure {
-            slackSend(color: '#FF0000', message: 'Maven project ' + ${projectName} + ' has failed to complete pipeline.')
+            slackSend(color: 'danger', channel: "${slackChannel}", message: "Maven project '${projectName}' [${gitBranch}] has failed to complete pipeline.")
         }
     }
-    
 }
