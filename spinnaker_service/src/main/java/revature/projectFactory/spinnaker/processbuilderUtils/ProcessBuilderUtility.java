@@ -26,27 +26,13 @@ public class ProcessBuilderUtility {
         processBuilder.directory(new File(execDirectory));
         Process process = null;
         int exited = 0;
-        //String output = "";
 
         try {
             process = processBuilder.start();
-            /*try (BufferedReader inputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-                while (inputReader.ready()) {
-                    output += inputReader.readLine() + "\n";
-                }
-                while (errorReader.ready()) {
-                    output += errorReader.readLine() + "\n";
-                }*/
-            try{
-                exited = process.waitFor();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            exited = process.waitFor();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return exited;
 
     }
