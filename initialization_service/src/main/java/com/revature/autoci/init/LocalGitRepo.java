@@ -19,6 +19,7 @@ public class LocalGitRepo implements AutoCloseable{
     private Path cloneDir;
     private CredentialsProvider credentials;
     private Git repo;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     public LocalGitRepo(String URI, Path cloneDir, String token) throws GenerationException
     {
         uri = URI;
@@ -37,10 +38,12 @@ public class LocalGitRepo implements AutoCloseable{
         try
         {
             repo = cloneCmd.call();
+            log.info("Cloning local gir repo succeed");
         }
         catch(GitAPIException e)
         {
             System.out.println(e.getMessage());
+            log.error("Cloing local git repo failed ", e);
             throw new GenerationException(e.getMessage());
         }
         return repo;
@@ -52,8 +55,9 @@ public class LocalGitRepo implements AutoCloseable{
         addCmd.addFilepattern(".");
         try {
             addCmd.call();
+            log.info("Adding and commiting repo succeed");
         } catch (GitAPIException e) {
-            // TODO Auto-generated catch block
+            log.error("Adding and commiting repo failed ", e);
             e.printStackTrace();
         }
         CommitCommand commitCmd = repo.commit();
@@ -62,8 +66,9 @@ public class LocalGitRepo implements AutoCloseable{
         commitCmd.setMessage("Setting up a new project");
         try {
             commitCmd.call();
+            log.info("commiting author, committer, message succeed");
         } catch (GitAPIException e) {
-            // TODO Auto-generated catch block
+            log.error("Calling commit command failed ", e);;
             e.printStackTrace();
         }
     }
@@ -75,7 +80,9 @@ public class LocalGitRepo implements AutoCloseable{
         pushCmd.setCredentialsProvider(credentials);
         try {
             pushCmd.call();
+            log.info("Push repo to repote succeed");
         } catch (GitAPIException e) {
+            log.error("pushing to repore failed", e);
             e.printStackTrace();
         }
     }

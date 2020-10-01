@@ -32,5 +32,6 @@ public class InitServer
         wrapper.addMapping("/init/");
         wrapper.setLoadOnStartup(0);
         server.start();
+        log.info("Tomcat Server successfully started");
     }
 }
