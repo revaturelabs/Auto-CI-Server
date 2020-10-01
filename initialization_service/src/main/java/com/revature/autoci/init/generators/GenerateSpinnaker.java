@@ -6,17 +6,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Writer;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.revature.autoci.init.generators.utils.Templater;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GenerateSpinnaker {
     private static final Logger log = LoggerFactory.getLogger(GenerateSpinnaker.class);
