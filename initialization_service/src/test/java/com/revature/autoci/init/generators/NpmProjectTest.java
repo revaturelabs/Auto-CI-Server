@@ -64,6 +64,7 @@ public class NpmProjectTest {
         Path gitIgnorePath = Paths.get(tempPath.toString(), ".gitignore");
         Scanner reader = new Scanner(gitIgnorePath.toFile());
         boolean hasNode = false;
+        boolean hasGit = false;
         boolean hasIDE = false;
         String line;
         while (reader.hasNextLine()) {
@@ -71,12 +72,16 @@ public class NpmProjectTest {
             if (line.toLowerCase().contains("node")) {
                 hasNode = true;
             }
+            if (line.toLowerCase().contains("git")) {
+                hasGit = true;
+            }
             if (line.toLowerCase().contains(IDE.toLowerCase())) {
                 hasIDE = true;
             }
         }
         reader.close();
         assertTrue(hasNode);
+        assertTrue(hasGit);
         assertTrue(hasIDE);
     }
 
@@ -96,7 +101,7 @@ public class NpmProjectTest {
 
     @Test
     public void correctPackageJson() throws FileNotFoundException {
-        InputStreamReader expectedReader = new InputStreamReader(NpmProjectTest.class.getClassLoader().getResourceAsStream("package.json"));
+        InputStreamReader expectedReader = new InputStreamReader(NpmProjectTest.class.getClassLoader().getResourceAsStream("test_package.json"));
         JsonReader expectJsonReader = new JsonReader(expectedReader);
         JsonElement expectedJson = JsonParser.parseReader(expectJsonReader);
 
