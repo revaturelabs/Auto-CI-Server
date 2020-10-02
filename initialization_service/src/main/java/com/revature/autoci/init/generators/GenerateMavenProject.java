@@ -206,9 +206,13 @@ public class GenerateMavenProject {
         mvnFile.setName(name);
         mvnFile.setUrl(url);
 
-        // --- Adding properties ---
         // Making sure mainClass doesn't have a .java or .class at the end
         mainClass = mainClass.split("\\.")[0];
+        // giving the main class its fully qualified name
+        mainClass = mainClass.replaceAll("/", ".");
+        mainClass = groupId + "." + mainClass;
+        
+        // --- Adding properties ---
         mvnFile.addProperty("exec.mainClass", mainClass);
         mvnFile.addProperty("maven.compiler.source", javaVersion);
         mvnFile.addProperty("maven.compiler.target", javaVersion);

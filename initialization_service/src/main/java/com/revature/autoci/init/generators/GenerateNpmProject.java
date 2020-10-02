@@ -53,7 +53,7 @@ public class GenerateNpmProject {
     // Before using, insure that IDE string is compatible with gitignore.io
     private static void generateGitIgnoreFile(String IDE, String directoryToPush) {
         // URL to generate .gitignore for NodeJS
-        String gitIgnoreIoUrl = "https://www.toptal.com/developers/gitignore/api/node";
+        String gitIgnoreIoUrl = "https://www.toptal.com/developers/gitignore/api/node,git";
         if (IDE != null) {
             gitIgnoreIoUrl += "," + IDE;
         }
@@ -70,7 +70,7 @@ public class GenerateNpmProject {
             Files.copy(fileStream, Paths.get(directoryToPush, ESLINT_CONFIG_FILENAME));
         } catch (IOException e) {
             e.printStackTrace();
-            log.error(".gitignore file generation failed ",e);
+            log.error("ESLint config file generation failed ",e);
             throw new GenerationException(String.format("Could not copy %s to new project", ESLINT_CONFIG_FILENAME));
         }
     }

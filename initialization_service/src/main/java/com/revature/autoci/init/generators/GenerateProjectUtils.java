@@ -8,6 +8,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,8 +26,8 @@ public class GenerateProjectUtils {
             URL requestURL;
             requestURL = new URL(gitIgnoreIoUrl);
             String readLine = null;
-            String gitIgnorePath = directoryToPush + ".gitignore";
-            File gitIgnoreFile = new File(gitIgnorePath);
+            Path gitIgnorePath = Paths.get(directoryToPush, ".gitIgnore");
+            File gitIgnoreFile = gitIgnorePath.toFile();
             FileWriter writer = new FileWriter(gitIgnoreFile);
 
             // Creating request and making connection
