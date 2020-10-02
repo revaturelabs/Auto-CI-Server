@@ -1,4 +1,4 @@
-package com.revature.model;
+package com.revature.model.Spinnaker;
 
 public class SpinnakerServiceObject {
 

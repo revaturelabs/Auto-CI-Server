@@ -1,8 +1,10 @@
-package com.revature.model;
+package com.revature.model.Spinnaker;
 
 public class SpinnakerServiceResp {
     private boolean applicationCreated;
     private boolean pipelineCreated;
+
+    public SpinnakerServiceResp() { }
 
     public SpinnakerServiceResp(boolean applicationCreated, boolean pipelineCreated) {
         this.applicationCreated = applicationCreated;

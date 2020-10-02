@@ -1,5 +1,12 @@
-package com.revature.model;
+package com.revature.model.Frontend;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({ "projectName", "version", "description", "groupId", "artifactId", "packaging", "javaVersion", "mainClass"})
 public class MvnDataObj {
     private String projectName;
     private String version;
@@ -9,20 +16,9 @@ public class MvnDataObj {
     private String packaging;
     private String javaVersion;
     private String mainClass;
-    private MvnDependsObj dependencies; // make this an array
+    private List<MvnDependsObj> dependencies = null;
 
-    public MvnDataObj(String projectName, String version, String description, String groupId, String artifactId,
-            String packaging, String javaVersion, String mainClass, MvnDependsObj dependencies) {
-        this.projectName = projectName;
-        this.version = version;
-        this.description = description;
-        this.groupId = groupId;
-        this.artifactId = artifactId;
-        this.packaging = packaging;
-        this.javaVersion = javaVersion;
-        this.mainClass = mainClass;
-        this.dependencies = dependencies;
-    }
+    public MvnDataObj() { }
 
     public String getProjectName() {
         return projectName;
@@ -88,13 +84,13 @@ public class MvnDataObj {
         this.mainClass = mainClass;
     }
 
-    public MvnDependsObj getDependencies() {
+    public List<MvnDependsObj> getDependencies() {
         return dependencies;
     }
 
-    public void setDependencies(MvnDependsObj dependencies) {
+    public void setDependencies(List<MvnDependsObj> dependencies) {
         this.dependencies = dependencies;
     }
-
+    
     
 }

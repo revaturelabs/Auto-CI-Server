@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.model.JenkinsServiceObject;
-import com.revature.model.JenkinsServiceResp;
+import com.revature.model.Jenkins.JenkinsServiceObject;
+import com.revature.model.Jenkins.JenkinsServiceResp;
+
 
 @WebServlet(name = "JenkinsService", urlPatterns = { "/jenkins" })
 public class JenkinsService extends HttpServlet {

@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.model.SpinnakerServiceObject;
-import com.revature.model.SpinnakerServiceResp;
+import com.revature.model.Spinnaker.SpinnakerServiceObject;
+import com.revature.model.Spinnaker.SpinnakerServiceResp;
+
 
 @WebServlet(name = "Spinnaker", urlPatterns = { "/spinnaker" })
 public class SpinnakerService extends HttpServlet {

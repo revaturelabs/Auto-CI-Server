@@ -1,12 +1,15 @@
-package com.revature.model;
+package com.revature.model.Initialization;
+
+import com.revature.model.Frontend.MvnDataObj;
+import com.revature.model.Frontend.NpmDataObj;
 
 public class Initialization {
 
     private String githubUsername;
     private String githubURL;
-    private String IDE;
-    private boolean generateGithubActions;
-    private boolean isMaven;
+    private String ide;
+    private String generateGithubActions;
+    private String isMaven;
 
     private MvnDataObj mavenData;
     private NpmDataObj npmData;
@@ -14,22 +17,22 @@ public class Initialization {
     public Initialization() { }
 
     // if isMaven == true
-    public Initialization(String githubUsername, String githubURL, String IDE, boolean generateGithubActions,
-            boolean isMaven, MvnDataObj mavenData) {
+    public Initialization(String githubUsername, String githubURL, String ide, String generateGithubActions,
+            String isMaven, MvnDataObj mavenData) {
         this.githubUsername = githubUsername;
         this.githubURL = githubURL;
-        this.IDE = IDE;
+        this.ide = ide;
         this.generateGithubActions = generateGithubActions;
         this.isMaven = isMaven;
         this.mavenData = mavenData;
     }
 
     // if isMaven == false
-    public Initialization(String githubUsername, String githubURL, String iDE, boolean generateGithubActions,
-            boolean isMaven, NpmDataObj npmData) {
+    public Initialization(String githubUsername, String githubURL, String ide, String generateGithubActions,
+            String isMaven, NpmDataObj npmData) {
         this.githubUsername = githubUsername;
         this.githubURL = githubURL;
-        IDE = iDE;
+        ide = ide;
         this.generateGithubActions = generateGithubActions;
         this.isMaven = isMaven;
         this.npmData = npmData;
@@ -51,27 +54,27 @@ public class Initialization {
         this.githubURL = githubURL;
     }
 
-    public String getIDE() {
-        return IDE;
+    public String getide() {
+        return ide;
     }
 
-    public void setIDE(String iDE) {
-        IDE = iDE;
+    public void setide(String ide) {
+        ide = ide;
     }
 
-    public boolean isGenerateGithubActions() {
+    public String isGenerateGithubActions() {
         return generateGithubActions;
     }
 
-    public void setGenerateGithubActions(boolean generateGithubActions) {
+    public void setGenerateGithubActions(String generateGithubActions) {
         this.generateGithubActions = generateGithubActions;
     }
 
-    public boolean isMaven() {
+    public String isMaven() {
         return isMaven;
     }
 
-    public void setMaven(boolean isMaven) {
+    public void setMaven(String isMaven) {
         this.isMaven = isMaven;
     }
 

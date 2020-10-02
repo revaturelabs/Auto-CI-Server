@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.model.Configuration;
-import com.revature.model.ConfigurationResp;
+import com.revature.model.Configuration.Configuration;
+import com.revature.model.Configuration.ConfigurationResp;
 
 @WebServlet(name = "ConfigurationService", urlPatterns = {"/configuration" })
 public class ConfigurationService extends HttpServlet {
