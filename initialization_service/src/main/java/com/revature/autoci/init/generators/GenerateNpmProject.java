@@ -70,7 +70,7 @@ public class GenerateNpmProject {
             Files.copy(fileStream, Paths.get(directoryToPush, ESLINT_CONFIG_FILENAME));
         } catch (IOException e) {
             e.printStackTrace();
-            log.error(".gitignore file generation failed ",e);
+            log.error("ESLint config file generation failed ",e);
             throw new GenerationException(String.format("Could not copy %s to new project", ESLINT_CONFIG_FILENAME));
         }
     }
