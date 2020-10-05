@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     docker.withTool('docker') {
-                        repoId = "${dockerUser}/${projectName}"
+                        repoId = "${projectName}"
                         image = docker.build(repoId)
                         docker.withRegistry("${ContainerRegistryURL}", "${ContainerRegistryCredId}") {
                             image.push()
