@@ -37,18 +37,47 @@ import org.rauschig.jarchivelib.ArchiverFactory;
 public class HelmGenerate {
     static final String DEFAULT_CHART_VERSION = "v2";
     static final String DEFAULT_CHART_TYPE = "application";
-    
+    /**
+     * Generate a basic helm chart with the specified information.
+     * @param chartName The name of the helm chart
+     * @param apiVersion The helm chart format version
+     * @param appVersion The version of the application
+     * @param chartType The type of chart (application or library)
+     * @param imageRepo The repository containing the image for this application.
+     * @param directoryToPush The directory where the helm chart directory will be created.
+     * @param verbose Sets whether or not to print debug statements (Deprecated)
+     * @throws IOException
+     */
     public static void generateHelmChart(String chartName, String apiVersion, String appVersion, 
      String chartType, String imageRepo, String directoryToPush, boolean verbose) throws IOException
     {
         chartGenerate(chartName, apiVersion, appVersion, chartType, imageRepo, directoryToPush, verbose);
     }
+    /**
+     * Generate a basic helm chart with the specified information.
+     * @param chartName The name of the helm chart
+     * @param appVersion The version of the application
+     * @param chartType The type of chart (application or library)
+     * @param imageRepo The repository containing the image for this application.
+     * @param directoryToPush The directory where the helm chart directory will be created.
+     * @param verbose Sets whether or not to print debug statements (Deprecated)
+     * @throws IOException
+     */
     public static void generateHelmChart(String chartName, String appVersion, 
      String chartType, String imageRepo, String directoryToPush, boolean verbose) throws IOException
     {
         chartGenerate(chartName, DEFAULT_CHART_VERSION, appVersion, chartType, imageRepo, directoryToPush, verbose);
     }
 
+    /**
+     * Generate a basic helm chart with the specified information.
+     * @param chartName The name of the helm chart
+     * @param appVersion The version of the application
+     * @param imageRepo The repository containing the image for this application.
+     * @param directoryToPush The directory where the helm chart directory will be created.
+     * @param verbose Sets whether or not to print debug statements (Deprecated)
+     * @throws IOException
+     */
     public static void generateHelmChart(String chartName, String appVersion, String imageRepo, String directoryToPush, boolean verbose) throws IOException
     {
         chartGenerate(chartName, DEFAULT_CHART_VERSION, appVersion, DEFAULT_CHART_TYPE, imageRepo, directoryToPush, verbose);

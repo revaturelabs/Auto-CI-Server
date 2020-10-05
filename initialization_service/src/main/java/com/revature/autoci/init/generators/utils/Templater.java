@@ -15,11 +15,23 @@ import java.util.regex.Pattern;
 public class Templater {
     private Map<Pattern, String> regexMap;
 
+    /**
+     * Constructs a new templater that uses the mapping specified in the Map argument
+     * @param mapping A Map where the keys correspond to template variables and the values correspond to the value to insert
+     */
     public Templater(Map<String, String> mapping)
     {
         regexMap = compileRegex(mapping);
     }
 
+    /**
+     * Reads a template file, and fills the template according to this Templater's mapping. The inserted values
+     * may be wrapped in a string.
+     * @param reader The BufferedReader to read from the template file
+     * @param writer The Writer to write to the output file.
+     * @param wrapString A string that will be prepended and appended to the inserted values.
+     * @throws IOException
+     */
     public void fillTemplate(BufferedReader reader, Writer writer, String wrapString)
             throws IOException {
         while (reader.ready()) {

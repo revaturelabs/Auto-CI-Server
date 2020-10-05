@@ -14,34 +14,43 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LocalGitRepo implements AutoCloseable{
+/**
+ * Object representing a locally cloned Git repository. Provides methods to
+ * manipulate the local repository and push changes to the remote repository.
+ */
+public class LocalGitRepo implements AutoCloseable {
     private String uri;
     private Path cloneDir;
     private CredentialsProvider credentials;
     private Git repo;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    public LocalGitRepo(String URI, Path cloneDir, String token) throws GenerationException
-    {
+
+    public LocalGitRepo(String URI, Path cloneDir, String token) throws GenerationException {
         uri = URI;
         this.cloneDir = cloneDir;
         credentials = new UsernamePasswordCredentialsProvider(token, "");
         repo = cloneRepo();
     }
 
-    private Git cloneRepo() throws GenerationException
-    {
+    /**
+     * Returns the underlying Git object
+     * 
+     * @return the Git object used by this object
+     */
+    public Git getGitObject() {
+        return repo;
+    }
+
+    private Git cloneRepo() throws GenerationException {
         CloneCommand cloneCmd = Git.cloneRepository();
         cloneCmd.setURI(uri);
         cloneCmd.setCredentialsProvider(credentials);
         cloneCmd.setDirectory(cloneDir.toFile());
         Git repo = null;
-        try
-        {
+        try {
             repo = cloneCmd.call();
             log.info("Cloning local gir repo succeed");
-        }
-        catch(GitAPIException e)
-        {
+        } catch (GitAPIException e) {
             System.out.println(e.getMessage());
             log.error("Cloing local git repo failed ", e);
             throw new GenerationException(e.getMessage());
@@ -49,19 +58,27 @@ public class LocalGitRepo implements AutoCloseable{
         return repo;
     }
 
-    public void branchDevAndProd() throws GenerationException
-    {
+    /**
+     * Creates a dev and prod branch based on the current branch.
+     * 
+     * @throws GenerationException
+     */
+    public void branchDevAndProd() throws GenerationException {
         try {
             repo.branchCreate().setName("dev").call();
             repo.branchCreate().setName("prod").call();
         } catch (GitAPIException e) {
             throw new GenerationException("Failed to create dev and prod branches.");
         }
-        
+
     }
 
-    public void addAndCommitAll() throws GenerationException
-    {
+    /**
+     * Adds all files in the working branch, and commits them.
+     * 
+     * @throws GenerationException
+     */
+    public void addAndCommitAll() throws GenerationException {
         AddCommand addCmd = repo.add();
         addCmd.addFilepattern(".");
         try {
@@ -84,8 +101,12 @@ public class LocalGitRepo implements AutoCloseable{
         }
     }
 
-    public void pushToRemote() throws GenerationException
-    {
+    /**
+     * Pushes the currently committed changes to the remote repository.
+     * 
+     * @throws GenerationException
+     */
+    public void pushToRemote() throws GenerationException {
         PushCommand pushCmd = repo.push();
         pushCmd.setRemote(uri);
         pushCmd.setCredentialsProvider(credentials);
@@ -99,8 +120,10 @@ public class LocalGitRepo implements AutoCloseable{
         }
     }
 
-    public void close()
-    {
+    /**
+     * Closes the Git object and underlying repository.
+     */
+    public void close() {
         repo.getRepository().close();
         repo.close();
     }
