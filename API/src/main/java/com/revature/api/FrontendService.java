@@ -19,13 +19,17 @@ public class FrontendService extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Jackson stuff
+        
+        // get data from frontend website convert to java model
         ObjectMapper objectMapper = new ObjectMapper();        
-
-        FrontendReq init = objectMapper.readValue(req.getInputStream(), FrontendReq.class);
+        FrontendReq frontendReqObj = objectMapper.readValue(req.getInputStream(), FrontendReq.class);
     
+        //setup sington to allow us keep track of all service creations
 
-        String result = objectMapper.writeValueAsString(init);
+        //if this endpoint is called twice before finishing dont start and respond with currenly working
+
+
+        String result = objectMapper.writeValueAsString(frontendReqObj);
 
         PrintWriter out = resp.getWriter();
 
