@@ -22,8 +22,7 @@ public class FrontendService extends HttpServlet {
         // Jackson stuff
         ObjectMapper objectMapper = new ObjectMapper();        
 
-        FrontendReq init = objectMapper.readValue(req.getInputStream(), FrontendReq.class);
-    
+        FrontendReq init = objectMapper.readValue(req.getInputStream(), FrontendReq.class); 
 
         String result = objectMapper.writeValueAsString(init);
 

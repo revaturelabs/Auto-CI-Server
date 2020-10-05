@@ -1,29 +1,34 @@
 package com.revature.model.Spinnaker;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({ "applicationCreated", "pipelineCreated" })
 public class SpinnakerServiceResp {
-    private boolean applicationCreated;
-    private boolean pipelineCreated;
+    private String applicationCreated;
+    private String pipelineCreated;
 
     public SpinnakerServiceResp() { }
 
-    public SpinnakerServiceResp(boolean applicationCreated, boolean pipelineCreated) {
+    public SpinnakerServiceResp(String applicationCreated, String pipelineCreated) {
         this.applicationCreated = applicationCreated;
         this.pipelineCreated = pipelineCreated;
     }
 
-    public boolean isApplicationCreated() {
+    public String getApplicationCreated() {
         return applicationCreated;
     }
 
-    public void setApplicationCreated(boolean applicationCreated) {
+    public void setApplicationCreated(String applicationCreated) {
         this.applicationCreated = applicationCreated;
     }
 
-    public boolean isPipelineCreated() {
+    public String getPipelineCreated() {
         return pipelineCreated;
     }
 
-    public void setPipelineCreated(boolean pipelineCreated) {
+    public void setPipelineCreated(String pipelineCreated) {
         this.pipelineCreated = pipelineCreated;
     }
 }

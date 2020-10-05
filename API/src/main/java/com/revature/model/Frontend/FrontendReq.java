@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "githubUsername", "githubURL", "ide", "generateGithubActions", "isMaven", "mavenData", "npmData"})
+@JsonPropertyOrder({ "githubUsername", "githubURL", "ide", "generateGithubActions", "isMaven", "mavenData", "npmData" })
 public class FrontendReq {
 
     private String githubUsername;
@@ -16,8 +16,7 @@ public class FrontendReq {
     private MvnDataObj mavenData;
     private NpmDataObj npmData;
 
-    public FrontendReq() {
-    }
+    public FrontendReq() { }
 
     public String getGithubUsername() {
         return this.githubUsername;
@@ -109,6 +108,5 @@ public class FrontendReq {
         this.npmData = npmData;
         return this;
     }
-
 
 }
