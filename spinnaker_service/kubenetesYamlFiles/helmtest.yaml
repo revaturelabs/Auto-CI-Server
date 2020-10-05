@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+    name: application-helm-test
+    namespace: staging
+    label: 
+        app: application-helm-test
+spec:
+    ttlSecondsAfterFinished: 1
+    template:
+        spec:
+            containers:
+                - name: application-helm-test
+                  image: docker.io/alpine/helm
+                  args: ["gitRepo","chart-path", "chartName"]
+                  imagePullPolicy: Always
+            restartPolicy: Never
+    backoffLimit: 4
+                
+    
+

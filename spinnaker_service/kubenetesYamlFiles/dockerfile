@@ -1,0 +1,4 @@
+From alpine
+#steps to install helm
+#volume mounts to use helm or docker
+ENTRYPOINT some.sh
