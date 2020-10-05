@@ -1,3 +1,4 @@
+amazon-ecr
 configuration-as-code
 docker-plugin
 docker-workflow
