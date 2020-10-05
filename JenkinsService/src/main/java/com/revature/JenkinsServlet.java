@@ -2,6 +2,8 @@ package com.revature;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,8 +32,8 @@ public class JenkinsServlet extends HttpServlet {
         parseParams(request);
 
         try {
-            makeJob();
-            responseJson.put("jobName", projName + "-pipe");
+            makeContainerRepo(responseJson);
+            makeJob(responseJson);
             log.info("makeJob method and job name added to JSON successfully.");
         } catch (Exception e) {
             responseJson.put("errorMsg", e.getMessage());
@@ -89,24 +91,40 @@ public class JenkinsServlet extends HttpServlet {
         }
     }
 	
-    void makeJob() throws IOException {
+    private void makeJob(JSONObject response) throws IOException {
         log.info("Beginning makeJob method");
-        ProcessBuilder pBuilder = new ProcessBuilder();
+        CommandExecutor exec = new CommandExecutor();
         String cmd = "curl -X POST -u " + jenkinsAuth + " " + jenkinsUrl + "/job/seed/buildWithParameters --data githubURL=" + repoUrl + " --data projectName=" + projName + " --data slackChannel=" + slackChannel;
-        pBuilder.command("sh", "-c", cmd);
-        Process process = pBuilder.start();
+        String output = exec.execute(cmd);
         
-        int exitCode = 1;
-        try {
-            exitCode = process.waitFor();
-        } catch (InterruptedException e) {
-            log.error("Exception occurred within makeJob method.  " + e.getMessage());
-            throw new IOException(e.getMessage());
+        if (!exec.wasLastCmdSuccess()) {
+            log.error("makeJob method failing due to cURL failure: " + output);
+            throw new IOException(output);
         }
+        response.put("jobName", projName + "-pipe");
+    }
+    
+    private void makeContainerRepo(JSONObject response) throws IOException {
+        log.info("Beginning createContainerRepo method");
+        CommandExecutor exec = new CommandExecutor(getServletContext().getRealPath("/terra/"));
 
-        if (exitCode != 0) {
-            log.error("makeJob method failing due to cURL failure, exitCode!=0");
-            throw new IOException("cURL failed");
-        }
-	}
+        // Copy template.txt to exec.tf, populate its fields
+        Path templateFilePath = Path.of(getServletContext().getRealPath("/terra/template.txt"));
+        Path execFilePath = Path.of(getServletContext().getRealPath("/terra/temp_exec.tf"));
+
+        System.out.println("Writing temp file...");
+        String templateText = Files.readString(templateFilePath);
+        String execText = String.format(templateText, projName);
+        Files.writeString(execFilePath, execText);
+
+        String execOutput = "";
+
+        System.out.println("terraform init...");
+        execOutput = exec.execute("terraform init");
+        log.info(execOutput);
+
+        System.out.println("terraform apply...");
+        execOutput = exec.execute("terraform apply -auto-approve");
+        log.info(execOutput);
+    }
 }
