@@ -40,20 +40,17 @@ public class SpinnakerController {
                     spinnResp = objectMapper.readValue(response.body().byteStream(), SpinnakerServiceResp.class);
                     return spinnResp;
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
-                    System.out.println("111111111111" + e);
+                    System.out.println(e);
                 }
 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
-                System.out.println("22222222222222" + e);
+                System.out.println(e);
             }
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-            System.out.println("33333333333333" + e);
+            System.out.println(e);
         }
 
         return null;
