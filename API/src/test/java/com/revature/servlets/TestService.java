@@ -10,11 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.model.Spinnaker.SpinnakerServiceObject;
-import com.revature.model.Spinnaker.SpinnakerServiceResp;
+import com.revature.model.Frontend.FrontendReq;
 
-@WebServlet(name = "TestSpinn", urlPatterns = { "/testspinn" })
-public class TestSpinn extends HttpServlet {
+@WebServlet(name = "TestService", urlPatterns = { "/test" })
+public class TestService extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,11 +22,9 @@ public class TestSpinn extends HttpServlet {
         // Jackson stuff
         ObjectMapper objectMapper = new ObjectMapper();
 
-        SpinnakerServiceObject init = objectMapper.readValue(req.getInputStream(), SpinnakerServiceObject.class);
+        FrontendReq init = objectMapper.readValue(req.getInputStream(), FrontendReq.class);
 
-        SpinnakerServiceResp response = new SpinnakerServiceResp("true", "true");
-
-        String result = objectMapper.writeValueAsString(response);
+        String result = objectMapper.writeValueAsString(init);
 
         PrintWriter out = resp.getWriter();
 
