@@ -2,6 +2,7 @@ package com.revature.controller;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Configuration.Configuration;
 import com.revature.model.Configuration.ConfigurationResp;
@@ -19,28 +20,38 @@ public class Config {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     final String URL = "http://localhost:8080/configtest2";
+    public final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    public ConfigurationResp ConfigService(Configuration config) throws IOException {
+    public ConfigurationResp ConfigService(Configuration config) {
 
         log.info("Beginning ConfigService method");
 
         ObjectMapper mapper = new ObjectMapper();
-        OkHttpClient client = new OkHttpClient();
-        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-        // create the JSON body
-        String json = mapper.writeValueAsString(config);
-        RequestBody body = RequestBody.create(json, JSON);      
-
-        Request request = new Request.Builder().url(URL).post(body).build();
-
-        Response response = client.newCall(request).execute();
-
-        ConfigurationResp configresp = mapper.readValue(response.body().byteStream(), ConfigurationResp.class);
-
-        //Process.setConfig("Done");
-
-        return configresp;
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String json = mapper.writeValueAsString(config);
+            RequestBody body = RequestBody.create(json, JSON);      
+            Request request = new Request.Builder().url(URL).post(body).build();
+            Response response; 
+            try {
+                response = client.newCall(request).execute();
+                ConfigurationResp configresp;
+                try {
+                    configresp = mapper.readValue(response.body().byteStream(), ConfigurationResp.class);
+                    return configresp;
+                } catch (IOException e) {
+                    log.error("Failed setting configresp = " + e.getMessage());
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+                log.error("Failed setting response = " + e.getMessage());
+                e.printStackTrace();
+            }
+        } catch (JsonProcessingException e) {
+            log.error("Failed setting jsonString = " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
