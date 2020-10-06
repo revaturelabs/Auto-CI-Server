@@ -1,4 +1,4 @@
-package com.revature.servlets;
+package com.revature.testServlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.model.Spinnaker.SpinnakerServiceObject;
+// import com.revature.model.Spinnaker.SpinnakerServiceObject;
 import com.revature.model.Spinnaker.SpinnakerServiceResp;
 
 @WebServlet(name = "TestSpinn", urlPatterns = { "/testspinn" })
@@ -23,7 +23,8 @@ public class TestSpinn extends HttpServlet {
         // Jackson stuff
         ObjectMapper objectMapper = new ObjectMapper();
 
-        SpinnakerServiceObject init = objectMapper.readValue(req.getInputStream(), SpinnakerServiceObject.class);
+        // Commenting out Unused Vars 202010061001-mwg
+        // SpinnakerServiceObject init = objectMapper.readValue(req.getInputStream(), SpinnakerServiceObject.class);
 
         SpinnakerServiceResp response = new SpinnakerServiceResp("true", "true");
 

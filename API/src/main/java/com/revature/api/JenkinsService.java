@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+<<<<<<< HEAD
+=======
+import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.revature.model.Jenkins.JenkinsServiceObject;
+import com.revature.model.Jenkins.JenkinsServiceResp;
+>>>>>>> 7b603049eea57bef1201fff0ae65d4378741e5c0
 
 
 @WebServlet(name = "JenkinsService0", urlPatterns = { "/jenkins" })

@@ -37,15 +37,15 @@ public class Initialization {
                     spinnResp = objectMapper.readValue(response.body().byteStream(), SpinnakerServiceResp.class);
                     return spinnResp;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("Failed setting spinnResp = " + e.getMessage());
                     System.out.println(e);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Failed setting response = " + e.getMessage());
                 System.out.println(e);
             }
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error("Failed setting result = " + e.getMessage());
             System.out.println(e);
         }
 
