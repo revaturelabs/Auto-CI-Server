@@ -39,6 +39,15 @@ pipeline {
                 }
             }
         }
+        stage('Helm Tests') {
+            steps {
+                withKubeConfig([credentialsId: "${kubectlCreds}", serverUrl: "${kubectlServer}"]) {
+                    sh "helm install helmtest ${projectName} -n helm-test"
+                    sleep(10);
+                    sh 'helm test helmtest -n helm-test'
+                }
+            }
+        }
     }
     post {
         success {
@@ -46,6 +55,11 @@ pipeline {
         }
         failure {
             slackSend(color: 'danger', channel: "${slackChannel}", message: "Maven project '${projectName}' [${gitBranch}] has failed to complete pipeline.")
+        }
+        always {
+            withKubeConfig([credentialsId: "${kubectlCreds}", serverUrl: "${kubectlServer}"]) {
+                sh 'helm uninstall helmtest -n helm-test'
+            }
         }
     }
 }
