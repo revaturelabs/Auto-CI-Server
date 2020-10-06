@@ -12,7 +12,7 @@ public class NpmDataObj {
     private String version;
     private String description;
     private String mainEntrypoint;
-    private List<KeywordObj> keywords = null;
+    private List<String> keywords = null;
     private String author;
     private String license;
     private List<NpmDependsObj> dependencies = null;
@@ -55,11 +55,11 @@ public class NpmDataObj {
         this.mainEntrypoint = mainEntrypoint;
     }
 
-    public List<KeywordObj> getKeywords() {
+    public List<String> getKeywords() {
         return this.keywords;
     }
 
-    public void setKeywords(List<KeywordObj> keywords) {
+    public void setKeywords(List<String> keywords) {
         this.keywords = keywords;
     }
 
@@ -123,7 +123,7 @@ public class NpmDataObj {
         return this;
     }
 
-    public NpmDataObj keywords(List<KeywordObj> keywords) {
+    public NpmDataObj keywords(List<String> keywords) {
         this.keywords = keywords;
         return this;
     }

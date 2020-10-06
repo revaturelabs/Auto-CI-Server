@@ -40,7 +40,7 @@ public class ProgressSingleton {
         //1
         InitializationController ic = new InitializationController();
         InitializationResp initResp = ic.runInitialization(frontEndObj);
-        System.out.println("\nrunning init: " + initResp);
+        System.out.println("\nrunning init: finished");
 
         //2
         Configuration configObj = new Configuration();
@@ -48,8 +48,9 @@ public class ProgressSingleton {
         configObj.setJenkinsURL("http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/");
         Config configController = new Config();
         ConfigurationResp configResp = configController.ConfigService(configObj);
-        System.out.println("\nrunning config: " + configResp);
+        System.out.println("\nrunning config: finished");
         //3
+        
         JenkinsServiceObject jenkinsServiceObject = new JenkinsServiceObject();
         jenkinsServiceObject.setGithubURL(configResp.getGithubURL());
         jenkinsServiceObject.setJenkinsURL("http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/");
@@ -57,7 +58,7 @@ public class ProgressSingleton {
         jenkinsServiceObject.setSlackChannel("");
         Jenkins jenController = new Jenkins();
         JenkinsServiceResp jenkinsResp = jenController.JenkinsService(jenkinsServiceObject);
-        System.out.println("\nrunning jenkins:" + jenkinsResp);
+        System.out.println("\nrunning jenkins: finished");
 
         //4
         SpinnakerServiceObject spinnObj = new SpinnakerServiceObject();
@@ -68,7 +69,7 @@ public class ProgressSingleton {
         spinnObj.setBranch("false");
         SpinnakerController spinnController = new SpinnakerController();
         SpinnakerServiceResp spinnResp = spinnController.testSpinnaker(spinnObj);
-        System.out.println("\nrunning spinn: " + spinnResp);
+        System.out.println("\nrunning spinn: finished");
 
         //we have finshed
         runningStatus = false;
