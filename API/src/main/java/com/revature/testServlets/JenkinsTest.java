@@ -19,16 +19,12 @@ public class JenkinsTest extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-           System.out.println("SECOND SERVLET IS RUNNING");
-           ObjectMapper objectMapper2 = new ObjectMapper(); //IT'S BREAKING HERE.  SOMETHING WITH VISIBLITY       
-
+           ObjectMapper objectMapper2 = new ObjectMapper(); 
            JenkinsServiceResp jenkinsresp = new JenkinsServiceResp();
            jenkinsresp.setDevJob("project-name/dev-pipe");
            jenkinsresp.setProdJob("project-name/prod-pipe");
 
            String result = objectMapper2.writeValueAsString(jenkinsresp);
-
-           System.out.println("YOUR RESPONSE JSON:" + result);
 
            PrintWriter out = resp.getWriter();
 
