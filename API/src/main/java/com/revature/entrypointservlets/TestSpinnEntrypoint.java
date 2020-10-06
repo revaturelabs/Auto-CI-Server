@@ -1,4 +1,4 @@
-package com.revature.testServlets;
+package com.revature.entrypointservlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
