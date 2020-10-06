@@ -19,8 +19,8 @@ import okhttp3.Response;
 public class Config {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    final String URL = "http://localhost:8080/configtest2";
-    // final String URL = "10.100.144.140:30100";
+    // final String URL = "http://localhost:8080/configtest2";
+    final String URL = "http://10.100.144.140:30100";
     public final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public ConfigurationResp ConfigService(Configuration config) {

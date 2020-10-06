@@ -37,20 +37,22 @@ public class ProgressSingleton {
     }
 
     public void startInit(FrontendReq frontEndObj){
-        //1
-        InitializationController ic = new InitializationController();
-        InitializationResp initResp = ic.runInitialization(frontEndObj);
-        System.out.println("\nrunning init: finished");
 
-        //2
+        //1
         Configuration configObj = new Configuration();
         configObj.setGithubUsername(frontEndObj.getGithubUsername());
         configObj.setJenkinsURL("http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/");
         Config configController = new Config();
         ConfigurationResp configResp = configController.ConfigService(configObj);
         System.out.println("\nrunning config: finished");
+
+        //2
+        InitializationController ic = new InitializationController();
+        frontEndObj.setGithubURL(configResp.getGithubURL());
+        InitializationResp initResp = ic.runInitialization(frontEndObj);
+        System.out.println("\nrunning init: finished");
+
         //3
-        
         JenkinsServiceObject jenkinsServiceObject = new JenkinsServiceObject();
         jenkinsServiceObject.setGithubURL(configResp.getGithubURL());
         jenkinsServiceObject.setJenkinsURL("http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/");
