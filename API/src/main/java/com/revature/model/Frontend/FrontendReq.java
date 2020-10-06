@@ -10,8 +10,8 @@ public class FrontendReq {
     private String githubUsername;
     private String githubURL;
     private String ide;
-    private String generateGithubActions;
-    private String isMaven;
+    private Boolean generateGithubActions;
+    private Boolean isMaven;
 
     private MvnDataObj mavenData;
     private NpmDataObj npmData;
@@ -42,19 +42,19 @@ public class FrontendReq {
         this.ide = ide;
     }
 
-    public String getGenerateGithubActions() {
+    public Boolean getGenerateGithubActions() {
         return this.generateGithubActions;
     }
 
-    public void setGenerateGithubActions(String generateGithubActions) {
+    public void setGenerateGithubActions(Boolean generateGithubActions) {
         this.generateGithubActions = generateGithubActions;
     }
 
-    public String getIsMaven() {
+    public Boolean getIsMaven() {
         return this.isMaven;
     }
 
-    public void setIsMaven(String isMaven) {
+    public void setIsMaven(Boolean isMaven) {
         this.isMaven = isMaven;
     }
 
@@ -89,12 +89,12 @@ public class FrontendReq {
         return this;
     }
 
-    public FrontendReq generateGithubActions(String generateGithubActions) {
+    public FrontendReq generateGithubActions(Boolean generateGithubActions) {
         this.generateGithubActions = generateGithubActions;
         return this;
     }
 
-    public FrontendReq isMaven(String isMaven) {
+    public FrontendReq isMaven(Boolean isMaven) {
         this.isMaven = isMaven;
         return this;
     }

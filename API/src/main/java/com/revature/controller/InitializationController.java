@@ -17,8 +17,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class InitializationController {
-    private final String REQ_URL = "http://localhost:8080/testInit";
-    // private final String REQ_URL = "afca5d16ac8ca49af9c2eff568b6312a-1412118178.us-east-1.elb.amazonaws.com/init/";
+    // private final String REQ_URL = "http://localhost:8080/testInit";
+    private final String REQ_URL = " 10.100.50.248/init/";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 

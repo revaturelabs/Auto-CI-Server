@@ -20,6 +20,7 @@ import okhttp3.Response;
 public class Jenkins {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     final String URL = "http://localhost:8080/jenkinstest2";
+    // final String URL = "10.100.77.80:30110";
     public final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public JenkinsServiceResp JenkinsService(JenkinsServiceObject jenkins) {

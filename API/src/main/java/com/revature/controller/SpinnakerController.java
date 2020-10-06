@@ -18,6 +18,8 @@ import okhttp3.Response;
 
 public class SpinnakerController {
     private final String REQ_URL = "http://localhost:8080/testspinn";
+    // private final String REQ_URL = "http://a98ddfe1cc81045dea5d2a5703ac4c84-1333226332.us-east-1.elb.amazonaws.com:8080/api/pipeline";
+
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
