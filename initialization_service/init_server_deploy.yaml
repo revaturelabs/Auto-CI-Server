@@ -1,7 +1,7 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  namespace: init-service #(TBD)
+  namespace: autoci #(TBD)
   name: init-deploy # TBD, testing using nginx
   #More TBD
 spec:

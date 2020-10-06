@@ -73,15 +73,15 @@ public class InitServlet extends HttpServlet {
             public NpmJSON deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                     throws JsonParseException {
                 JsonObject jsonObj = json.getAsJsonObject();
-
                 Type listmap = new TypeToken<List<Map<String, String>>> (){}.getType();
                 Type listType = new TypeToken<List<String>> (){}.getType();
                 Type mapType = new TypeToken<Map<String,String>> (){}.getType();
 
                 List<Map<String, String>> depList = temp.fromJson(jsonObj.get("dependencies"), listmap);
+
                 List<Map<String, String>> devDepList = temp.fromJson(jsonObj.get("devDependencies"), listmap);
                 List<String> keywordList = temp.fromJson(jsonObj.get("keywords"), listType);
-                Map<String, String> scriptMap = temp.fromJson(jsonObj.get("scripts"), mapType);
+                List<Map<String, String>> scriptList = temp.fromJson(jsonObj.get("scripts"), listmap);
 
                 Map<String, String> dependencies = new HashMap<>();
                 for(Map<String, String> dep: depList)
@@ -95,10 +95,16 @@ public class InitServlet extends HttpServlet {
                     devDependencies.put(dep.get("name"), dep.get("version"));
                 }
 
+                Map<String, String> scripts = new HashMap<>();
+                for(Map<String, String> dep: scriptList)
+                {
+                    scripts.put(dep.get("command"), dep.get("script"));
+                }
+
                 return new NpmJSON(jsonObj.get("projectName").getAsString(), jsonObj.get("description").getAsString(), 
                 jsonObj.get("version").getAsString(), jsonObj.get("mainEntrypoint").getAsString(),
                 jsonObj.get("author").getAsString(), jsonObj.get("license").getAsString(), 
-                keywordList, dependencies, devDependencies, scriptMap);
+                keywordList, dependencies, devDependencies, scripts);
             }
         };
 

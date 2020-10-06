@@ -26,7 +26,7 @@ public class GenerateProjectUtils {
             URL requestURL;
             requestURL = new URL(gitIgnoreIoUrl);
             String readLine = null;
-            Path gitIgnorePath = Paths.get(directoryToPush, ".gitIgnore");
+            Path gitIgnorePath = Paths.get(directoryToPush, ".gitignore");
             File gitIgnoreFile = gitIgnorePath.toFile();
             FileWriter writer = new FileWriter(gitIgnoreFile);
 
