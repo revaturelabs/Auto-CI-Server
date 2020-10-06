@@ -6,6 +6,8 @@ import com.revature.model.Frontend.FrontendReq;
 import com.revature.model.Initialization.InitializationResp;
 import com.revature.model.Jenkins.JenkinsServiceObject;
 import com.revature.model.Jenkins.JenkinsServiceResp;
+import com.revature.model.Spinnaker.SpinnakerServiceObject;
+import com.revature.model.Spinnaker.SpinnakerServiceResp;
 
 /**
  * this method sets current progress object; It will be deleted once the
@@ -53,11 +55,18 @@ public class ProgressSingleton {
         jenkinsServiceObject.setJenkinsURL("http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/");
         jenkinsServiceObject.setProjectName("demo");
         jenkinsServiceObject.setSlackChannel("");
-        Jenkins controller = new Jenkins();
-        JenkinsServiceResp jenkinsResp = controller.JenkinsService(jenkinsServiceObject);
+        Jenkins jenController = new Jenkins();
+        JenkinsServiceResp jenkinsResp = jenController.JenkinsService(jenkinsServiceObject);
 
         //4
-        
+        SpinnakerServiceObject spinnObj = new SpinnakerServiceObject();
+        spinnObj.setGitUri("re-bank");
+        spinnObj.setCloudProviders("https://github.com/re-blank/test1.git");
+        spinnObj.setEmail("true");
+        spinnObj.setProjectName("visualstudiocode");
+        spinnObj.setBranch("false");
+        SpinnakerController spinnController = new SpinnakerController();
+        SpinnakerServiceResp spinnResp = spinnController.testSpinnaker(spinnObj);
 
 
         //we have finshed
