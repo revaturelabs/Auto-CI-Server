@@ -1,4 +1,4 @@
-package com.revature.api;
+package com.revature.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +19,7 @@ public class TestService extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
         // Jackson stuff
         ObjectMapper objectMapper = new ObjectMapper();
 
