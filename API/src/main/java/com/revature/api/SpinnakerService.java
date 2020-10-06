@@ -3,7 +3,6 @@ package com.revature.api;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.model.SpinnakerServiceObject;
+import com.revature.model.Spinnaker.SpinnakerServiceObject;
+import com.revature.model.Spinnaker.SpinnakerServiceResp;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,15 +28,20 @@ public class SpinnakerService extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
 
         // Vars
-        String repoURL = req.getParameter("repoURL");
-        String jobName = req.getParameter("jobName");
-        String projMetadata = req.getParameter("projMetadata");
+        String gitUri = req.getParameter("gitUri");
+        String cloudProviders = req.getParameter("cloudProviders");
+        String email = req.getParameter("email");
+        String projectName = req.getParameter("projectName");
+        String branch = req.getParameter("branch");
 
-        SpinnakerServiceObject sSer = new SpinnakerServiceObject(repoURL, jobName, projMetadata);
-        //create entities
-        // to do make model object to work with this endpoint
+        SpinnakerServiceObject sSer = new SpinnakerServiceObject(gitUri, cloudProviders, email, projectName, branch);
+        
+        boolean applicationCreated = createAppFunction(gitUri, projectName, branch);
+        boolean pipelineCreated = applicationCreated && createPipeFunction(gitUri, cloudProviders, email);
 
-        String result = objectMapper.writeValueAsString(sSer);
+        SpinnakerServiceResp sResp = new SpinnakerServiceResp(applicationCreated, pipelineCreated);
+
+        String result = objectMapper.writeValueAsString(sResp);
         PrintWriter out = resp.getWriter();
 
         //return 
@@ -46,5 +52,14 @@ public class SpinnakerService extends HttpServlet {
         out.flush();
 
         log.info("Spinnaker Service Servlet successfully started");
+    }
+
+    // Obvious temporary Function follow
+    private boolean createPipeFunction(String gitUri, String cloudProviders, String email) {
+        return true;
+    }
+
+    private boolean createAppFunction(String gitUri, String projectName, String branch) {
+        return true;
     }
 }

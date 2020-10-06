@@ -10,9 +10,6 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 
-/**
- * Robotap the app for developers
- */
 public class App {
     public static final Optional<String> port = Optional.ofNullable(System.getenv("PORT"));
 
