@@ -7,6 +7,7 @@ package com.revature.controller;
 
 public class ProgressSingleton {
 
+    private Boolean runningStatus = false;
     private String frontend;
     private String initialization;
     private String configuration;
@@ -16,13 +17,21 @@ public class ProgressSingleton {
     private static ProgressSingleton single_instance = null; 
     private ProgressSingleton(){}
 
-    public static ProgressSingleton setOrGet() 
+    public static ProgressSingleton instance() 
     { 
         if (single_instance == null) {
             single_instance = new ProgressSingleton(); 
         }
             
         return single_instance; 
+    }
+
+    public Boolean getRunningStatus() {
+        return this.runningStatus;
+    }
+
+    public void setRunningStatus(Boolean runningStatus) {
+        this.runningStatus = runningStatus;
     }
 
     public String getFrontend() {

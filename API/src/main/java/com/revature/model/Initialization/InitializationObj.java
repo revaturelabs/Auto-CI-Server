@@ -3,7 +3,7 @@ package com.revature.model.Initialization;
 import com.revature.model.Frontend.MvnDataObj;
 import com.revature.model.Frontend.NpmDataObj;
 
-public class Initialization {
+public class InitializationObj {
 
     private String githubUsername;
     private String githubURL;
@@ -14,10 +14,10 @@ public class Initialization {
     private MvnDataObj mavenData;
     private NpmDataObj npmData;
 
-    public Initialization() { }
+    public InitializationObj() { }
 
     // if isMaven == true
-    public Initialization(String githubUsername, String githubURL, String ide, String generateGithubActions,
+    public InitializationObj(String githubUsername, String githubURL, String ide, String generateGithubActions,
             String isMaven, MvnDataObj mavenData) {
         this.githubUsername = githubUsername;
         this.githubURL = githubURL;
@@ -28,11 +28,11 @@ public class Initialization {
     }
 
     // if isMaven == false
-    public Initialization(String githubUsername, String githubURL, String ide, String generateGithubActions,
+    public InitializationObj(String githubUsername, String githubURL, String ide, String generateGithubActions,
             String isMaven, NpmDataObj npmData) {
         this.githubUsername = githubUsername;
         this.githubURL = githubURL;
-        ide = ide;
+        this.ide = ide;
         this.generateGithubActions = generateGithubActions;
         this.isMaven = isMaven;
         this.npmData = npmData;
@@ -59,7 +59,7 @@ public class Initialization {
     }
 
     public void setide(String ide) {
-        ide = ide;
+        this.ide = ide;
     }
 
     public String isGenerateGithubActions() {
