@@ -25,27 +25,6 @@ public class InitializationService extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        // Vars
-        String gitUser = req.getParameter("gitUser");
-        String repoURL = req.getParameter("repoURL");
-        String mvnOrNpm = req.getParameter("mvnOrNpm"); // Are we doind maven, or bpm?
-        String projMetadata = req.getParameter("projMetadata");
-        String depends = req.getParameter("depends");
-
-        Initialization initn = new Initialization(gitUser, repoURL, mvnOrNpm, projMetadata, depends);
-
-        //create entities
-        // to do make model object to work with this endpoint
-
-        String result = objectMapper.writeValueAsString(initn);
-        PrintWriter out = resp.getWriter();
-
-        //return 
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        resp.setStatus(200);
-        out.print(result);
-        out.flush();
 
         log.info("Initialization Service Servlet successfully started");
 
