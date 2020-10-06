@@ -2,6 +2,7 @@ package com.revature.testServlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +28,14 @@ public class TestInitService extends HttpServlet {
         String result = objectMapper.writeValueAsString(response);
 
         PrintWriter out = resp.getWriter();
+
+        // to demo time it takes to respond
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         // return
         resp.setContentType("application/json");

@@ -28,7 +28,7 @@ public class Jenkins {
 
         // create the JSON body
         String json = mapper.writeValueAsString(jenkins);
-        RequestBody body = RequestBody.create(json, JSON);      
+        RequestBody body = RequestBody.create(json, JSON);
 
         Request request = new Request.Builder().url(URL).post(body).build();
 

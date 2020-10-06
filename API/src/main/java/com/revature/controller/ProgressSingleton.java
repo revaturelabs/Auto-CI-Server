@@ -1,7 +1,10 @@
 package com.revature.controller;
 
+import com.revature.model.Configuration.Configuration;
+import com.revature.model.Configuration.ConfigurationResp;
 import com.revature.model.Frontend.FrontendReq;
 import com.revature.model.Initialization.InitializationResp;
+import com.revature.model.Jenkins.JenkinsServiceObject;
 
 /**
  * this method sets current progress object; It will be deleted once the
@@ -31,9 +34,32 @@ public class ProgressSingleton {
     }
 
     public void startInit(FrontendReq frontEndObj){
+        //1
         InitializationController ic = new InitializationController();
         InitializationResp initResp = ic.runInitialization(frontEndObj);
-        System.out.println("\n\tresponse:" + initResp + "\n");
+        System.out.println("\nresponse:" + initResp + "\n");
+
+        //2
+        Configuration configObj = new Configuration();
+        configObj.setGithubUsername(frontEndObj.getGithubUsername());
+        configObj.setJenkinsURL("http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/");
+
+        Config configController = new Config();
+        ConfigurationResp configResp = configController.ConfigService(configObj);
+
+        //3
+        JenkinsServiceObject jenkinsServiceObject = new JenkinsServiceObject();
+        jenkinsServiceObject.setGithubURL(configResp.getGithubURL());
+        jenkinsServiceObject.setJenkinsURL("http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/");
+        jenkinsServiceObject.setProjectName("demo");
+        jenkinsServiceObject.setSlackChannel("");
+        Jenkins controller = new Jenkins();
+        JenkinsServiceResp jenkinsResp = controller.JenkinsService(jenkinsServiceObject);
+
+        
+        //4
+
+
 
         //we have finshed
         runningStatus = false;
