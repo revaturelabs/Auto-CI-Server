@@ -22,7 +22,7 @@ public class JenkinsServlet extends HttpServlet {
     String slackChannel;
     String jenkinsUrl;
   
-    final String jenkinsAuth = "user:token";
+    final String jenkinsAuth = System.getenv("JENKINS_API_UTOKEN");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
     @Override

@@ -37,3 +37,8 @@ spec:
               secretKeyRef:
                 name: terraform-aws
                 key: default_region
+          - name: JENKINS_API_UTOKEN
+            valueFrom:
+              secretKeyRef:
+                name: jenkins-token
+                key: user-token
