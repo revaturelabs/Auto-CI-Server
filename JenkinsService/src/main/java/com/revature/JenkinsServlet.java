@@ -101,7 +101,8 @@ public class JenkinsServlet extends HttpServlet {
             log.error("makeJob method failing due to cURL failure: " + output);
             throw new IOException(output);
         }
-        response.put("jobName", projName + "-pipe");
+        response.put("devJob", projName + "/dev-pipe");
+        response.put("prodJob", projName + "/prod-pipe");
     }
     
     private void makeContainerRepo(JSONObject response) throws IOException {
