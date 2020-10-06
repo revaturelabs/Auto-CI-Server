@@ -12,9 +12,10 @@ public class ProgressSingleton {
     private String initialization;
     private String configuration;
     private String jenkins;
-    private String Spinnaker;
+    private String spinnaker;
 
-    private static ProgressSingleton single_instance = null; 
+    private static ProgressSingleton single_instance = null;
+
     private ProgressSingleton(){}
 
     public static ProgressSingleton instance() 
@@ -67,10 +68,10 @@ public class ProgressSingleton {
     }
 
     public String getSpinnaker() {
-        return this.Spinnaker;
+        return this.spinnaker;
     }
 
-    public void setSpinnaker(String Spinnaker) {
-        this.Spinnaker = Spinnaker;
+    public void setSpinnaker(String spinnaker) {
+        this.spinnaker = spinnaker;
     }
 }

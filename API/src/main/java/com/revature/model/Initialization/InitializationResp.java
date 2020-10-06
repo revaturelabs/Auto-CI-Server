@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "isDone" })
-public class InitializationObj {
+public class InitializationResp {
     private String isDone;
 
-    public InitializationObj(String isDone) {
+    public InitializationResp(String isDone) {
         this.isDone = isDone;
     }
 
-    public InitializationObj() {
+    public InitializationResp() {
     }
 
     public String getIsDone() {

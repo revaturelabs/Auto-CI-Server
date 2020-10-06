@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Initialization.InitializationObj;
-import com.revature.model.Spinnaker.SpinnakerServiceResp;
+import com.revature.model.Initialization.InitializationResp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +16,13 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Initialization {
-    private final String REQ_URL = "http://localhost:8080/testspinn";
+public class InitializationController {
+    private final String REQ_URL = "http://localhost:8080/testInit";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public SpinnakerServiceResp testSpinnaker(InitializationObj initObj) {
-        
+    public InitializationResp testInitialization(InitializationObj initObj) {
+
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String result = objectMapper.writeValueAsString(initObj);
@@ -32,23 +32,28 @@ public class Initialization {
             Response response;
             try {
                 response = client.newCall(request).execute();
-                SpinnakerServiceResp spinnResp;
-                try {
-                    spinnResp = objectMapper.readValue(response.body().byteStream(), SpinnakerServiceResp.class);
-                    return spinnResp;
-                } catch (IOException e) {
-                    log.error("Failed setting spinnResp = " + e.getMessage());
-                    System.out.println(e);
+                int respCode = response.code();
+                if (respCode != 200) {
+                    log.warn("Got a bad Response Code in testInitialization = " + respCode);
+                    return new InitializationResp("false");
+                } else {
+                    InitializationResp initResp;
+                    try {
+                        initResp = objectMapper.readValue(response.body().byteStream(), InitializationResp.class);
+                        return initResp;
+                    } catch (IOException e) {
+                        log.error("Failed setting initResp = " + e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
             } catch (IOException e) {
                 log.error("Failed setting response = " + e.getMessage());
-                System.out.println(e);
+                e.printStackTrace();
             }
         } catch (JsonProcessingException e) {
             log.error("Failed setting result = " + e.getMessage());
-            System.out.println(e);
+            e.printStackTrace();
         }
-
         return null;
     }
 }
