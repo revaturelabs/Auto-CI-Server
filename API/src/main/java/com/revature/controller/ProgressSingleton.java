@@ -5,6 +5,7 @@ import com.revature.model.Configuration.ConfigurationResp;
 import com.revature.model.Frontend.FrontendReq;
 import com.revature.model.Initialization.InitializationResp;
 import com.revature.model.Jenkins.JenkinsServiceObject;
+import com.revature.model.Jenkins.JenkinsServiceResp;
 
 /**
  * this method sets current progress object; It will be deleted once the
@@ -43,7 +44,6 @@ public class ProgressSingleton {
         Configuration configObj = new Configuration();
         configObj.setGithubUsername(frontEndObj.getGithubUsername());
         configObj.setJenkinsURL("http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/");
-
         Config configController = new Config();
         ConfigurationResp configResp = configController.ConfigService(configObj);
 
@@ -56,9 +56,8 @@ public class ProgressSingleton {
         Jenkins controller = new Jenkins();
         JenkinsServiceResp jenkinsResp = controller.JenkinsService(jenkinsServiceObject);
 
-        
         //4
-
+        
 
 
         //we have finshed
