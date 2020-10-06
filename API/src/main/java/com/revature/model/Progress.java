@@ -10,13 +10,7 @@ public class Progress {
     private String jenkins;
     private String Spinnaker;
 
-    public Progress(){
-        this.frontend = "started";
-        this.initialization = "not done";
-        this.configuration = "not done";
-        this.jenkins = "not done";
-        this.Spinnaker = "not done";
-    }
+    public Progress(){}
 
     public String getFrontend() {
         return this.frontend;

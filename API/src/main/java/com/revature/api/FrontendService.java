@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.controller.ProgressSingleton;
 import com.revature.model.Frontend.FrontendReq;
 
 @WebServlet(name = "FrontendService", urlPatterns = { "/frontend" })
@@ -20,20 +21,31 @@ public class FrontendService extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
+        String result = "";
+
         // get data from frontend website convert to java model
         ObjectMapper objectMapper = new ObjectMapper();        
         FrontendReq frontendReqObj = objectMapper.readValue(req.getInputStream(), FrontendReq.class);
     
         //setup sington to allow us keep track of all service creations
+        ProgressSingleton ps = ProgressSingleton.instance();
 
-        //if this endpoint is called twice before finishing dont start and respond with currenly working
+        //if this endpoint is called twice before finishing, respond with currenly working
+        if(!ps.getRunningStatus()){
+            ps.setRunningStatus(true);
+            ps.setFrontend("started");
+            ps.setInitialization("not-done");
+            ps.setConfiguration("not-done");
+            ps.setJenkins("not-done");
+            ps.setSpinnaker("not-done");
 
+            result = objectMapper.writeValueAsString("started");
+        } else {
+            result = objectMapper.writeValueAsString("already running");
+        }
 
-        String result = objectMapper.writeValueAsString(frontendReqObj);
-
+        //return with json here
         PrintWriter out = resp.getWriter();
-
-        //return 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         resp.setStatus(200);

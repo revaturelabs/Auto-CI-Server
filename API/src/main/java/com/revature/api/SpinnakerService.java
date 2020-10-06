@@ -20,27 +20,23 @@ public class SpinnakerService extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        // Vars
-        String gitUri = req.getParameter("gitUri");
-        String cloudProviders = req.getParameter("cloudProviders");
-        String email = req.getParameter("email");
-        String projectName = req.getParameter("projectName");
-        String branch = req.getParameter("branch");
+        // Make req Object
+        SpinnakerServiceObject sSer = objectMapper.readValue(req.getInputStream(), SpinnakerServiceObject.class);
+ 
+        // Find Resp Values
+        String applicationCreated = createAppFunction(sSer.getGitUri(), sSer.getProjectName(), sSer.getBranch());
+        String pipelineCreated = applicationCreated.equals("true") ? createPipeFunction(sSer.getGitUri(), sSer.getCloudProviders(), sSer.getEmail()) : "false";
 
-        SpinnakerServiceObject sSer = new SpinnakerServiceObject(gitUri, cloudProviders, email, projectName, branch);
-        
-        boolean applicationCreated = createAppFunction(gitUri, projectName, branch);
-        boolean pipelineCreated = applicationCreated && createPipeFunction(gitUri, cloudProviders, email);
-
+        //Make resp Object
         SpinnakerServiceResp sResp = new SpinnakerServiceResp(applicationCreated, pipelineCreated);
 
         String result = objectMapper.writeValueAsString(sResp);
         PrintWriter out = resp.getWriter();
 
-        //return 
+        //return (print out for debugging)
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         resp.setStatus(200);
@@ -48,12 +44,18 @@ public class SpinnakerService extends HttpServlet {
         out.flush();
     }
 
-    // Obvious temporary Function follow
-    private boolean createPipeFunction(String gitUri, String cloudProviders, String email) {
-        return true;
+    // Obviously temporary Function follow
+    private String createPipeFunction(String gitUri, String cloudProviders, String email) {
+        return "true";
     }
 
-    private boolean createAppFunction(String gitUri, String projectName, String branch) {
-        return true;
+    private String createAppFunction(String gitUri, String projectName, String branch) {
+        return "true";
+    }
+
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Sorry! This servlet only takes POST commands. Sending request to POST...");
+        doPost(req, resp);
     }
 }

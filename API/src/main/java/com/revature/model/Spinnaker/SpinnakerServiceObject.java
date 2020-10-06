@@ -1,5 +1,10 @@
 package com.revature.model.Spinnaker;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({ "gitUri", "cloudProviders", "email", "projectName", "branch" })
 public class SpinnakerServiceObject {
 
     private String gitUri;
@@ -59,5 +64,4 @@ public class SpinnakerServiceObject {
     public void setBranch(String branch) {
         this.branch = branch;
     }
-
 }

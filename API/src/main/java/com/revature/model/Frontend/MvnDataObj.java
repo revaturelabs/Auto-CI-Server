@@ -91,6 +91,4 @@ public class MvnDataObj {
     public void setDependencies(List<MvnDependsObj> dependencies) {
         this.dependencies = dependencies;
     }
-    
-    
 }
