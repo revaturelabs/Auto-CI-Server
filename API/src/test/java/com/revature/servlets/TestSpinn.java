@@ -1,4 +1,4 @@
-package com.revature.api;
+package com.revature.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,29 +10,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.controller.SpinnakerController;
 import com.revature.model.Spinnaker.SpinnakerServiceObject;
 import com.revature.model.Spinnaker.SpinnakerServiceResp;
 
-@WebServlet(name = "TestSpinnEntrypoint", urlPatterns = { "/testspinnentrypoint" })
-public class TestSpinnEntrypoint extends HttpServlet{
+@WebServlet(name = "TestSpinn", urlPatterns = { "/testspinn" })
+public class TestSpinn extends HttpServlet {
 
-    private static final long serialVersionUID = -2693027601970028768L;
+    private static final long serialVersionUID = 1L;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        SpinnakerController sc = new SpinnakerController();
-
-        //testing Spinnaker Controller
-        SpinnakerServiceObject obj = new SpinnakerServiceObject("test", "test", "test", "test", "test");
-        SpinnakerServiceResp spinnResp = sc.testSpinnaker(obj);
-
-        System.out.println("herrrrrrrrrrrrrrrrrrrr:" + obj);
-
-        //sending results
+        // Jackson stuff
         ObjectMapper objectMapper = new ObjectMapper();
-        String result = objectMapper.writeValueAsString(spinnResp);
+
+        SpinnakerServiceObject init = objectMapper.readValue(req.getInputStream(), SpinnakerServiceObject.class);
+
+        SpinnakerServiceResp response = new SpinnakerServiceResp("true", "true");
+
+        String result = objectMapper.writeValueAsString(response);
+
         PrintWriter out = resp.getWriter();
 
         // return
