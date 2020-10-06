@@ -40,7 +40,7 @@ public class ProgressSingleton {
         //1
         InitializationController ic = new InitializationController();
         InitializationResp initResp = ic.runInitialization(frontEndObj);
-        System.out.println("running init: " + initResp);
+        System.out.println("\nrunning init: " + initResp);
 
         //2
         Configuration configObj = new Configuration();
@@ -48,7 +48,7 @@ public class ProgressSingleton {
         configObj.setJenkinsURL("http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/");
         Config configController = new Config();
         ConfigurationResp configResp = configController.ConfigService(configObj);
-        System.out.println("running config: " + configResp);
+        System.out.println("\nrunning config: " + configResp);
         //3
         JenkinsServiceObject jenkinsServiceObject = new JenkinsServiceObject();
         jenkinsServiceObject.setGithubURL(configResp.getGithubURL());
@@ -57,18 +57,18 @@ public class ProgressSingleton {
         jenkinsServiceObject.setSlackChannel("");
         Jenkins jenController = new Jenkins();
         JenkinsServiceResp jenkinsResp = jenController.JenkinsService(jenkinsServiceObject);
-        System.out.println("running jenkins:" + jenkinsResp);
+        System.out.println("\nrunning jenkins:" + jenkinsResp);
 
         //4
         SpinnakerServiceObject spinnObj = new SpinnakerServiceObject();
-        spinnObj.setGitUri("re-bank");
-        spinnObj.setCloudProviders("https://github.com/re-blank/test1.git");
+        spinnObj.setGitUri(configResp.getGithubURL());
+        spinnObj.setCloudProviders("asure");
         spinnObj.setEmail("true");
         spinnObj.setProjectName("visualstudiocode");
         spinnObj.setBranch("false");
         SpinnakerController spinnController = new SpinnakerController();
         SpinnakerServiceResp spinnResp = spinnController.testSpinnaker(spinnObj);
-        System.out.println("running spinn: " + spinnResp);
+        System.out.println("\nrunning spinn: " + spinnResp);
 
         //we have finshed
         runningStatus = false;
