@@ -1,10 +1,14 @@
 package com.revature.autoci.init;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 import javax.servlet.ServletException;
@@ -13,19 +17,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
+import com.revature.autoci.init.generators.GenerateGithubActions;
+import com.revature.autoci.init.generators.GenerateJenkinsfile;
+import com.revature.autoci.init.generators.GenerateMavenProject;
+import com.revature.autoci.init.generators.GenerateNpmProject;
+import com.revature.autoci.init.generators.GenerateSpinnaker;
+import com.revature.autoci.init.generators.GenerationException;
+import com.revature.autoci.init.generators.HelmGenerate;
+import com.revature.autoci.init.generators.LocalGitRepo;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
-import com.revature.autoci.init.generators.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class InitServlet extends HttpServlet {
     static final String SECRET_DIR = "secrets/";
     private String token;
-    private String containerRegistryURL;
-    private String containerRegistryCredentialId;
+    private Gson gson;
+
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -46,20 +63,65 @@ public class InitServlet extends HttpServlet {
                 throw new ServletException("Failed to find github token in environment or secrets/");
             }
         }
-        containerRegistryURL = System.getProperty("CONTAINER_REGISTRY_URL", "REPLACEME");
-        containerRegistryCredentialId = System.getProperty("CONTAINER_CREDENTIAL_ID", "REPLACEME");
+        // Setup custom JSON deseriailizers
+        Gson temp = new Gson();
+        GsonBuilder builder = new GsonBuilder();
+
+        // Npm json deserializer
+        JsonDeserializer<NpmJSON> deserializer = new JsonDeserializer<NpmJSON>(){
+            @Override
+            public NpmJSON deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                    throws JsonParseException {
+                JsonObject jsonObj = json.getAsJsonObject();
+                Type listmap = new TypeToken<List<Map<String, String>>> (){}.getType();
+                Type listType = new TypeToken<List<String>> (){}.getType();
+                Type mapType = new TypeToken<Map<String,String>> (){}.getType();
+
+                List<Map<String, String>> depList = temp.fromJson(jsonObj.get("dependencies"), listmap);
+
+                List<Map<String, String>> devDepList = temp.fromJson(jsonObj.get("devDependencies"), listmap);
+                List<String> keywordList = temp.fromJson(jsonObj.get("keywords"), listType);
+                List<Map<String, String>> scriptList = temp.fromJson(jsonObj.get("scripts"), listmap);
+
+                Map<String, String> dependencies = new HashMap<>();
+                for(Map<String, String> dep: depList)
+                {
+                    dependencies.put(dep.get("name"), dep.get("version"));
+                }
+
+                Map<String, String> devDependencies = new HashMap<>();
+                for(Map<String, String> dep: devDepList)
+                {
+                    devDependencies.put(dep.get("name"), dep.get("version"));
+                }
+
+                Map<String, String> scripts = new HashMap<>();
+                for(Map<String, String> dep: scriptList)
+                {
+                    scripts.put(dep.get("command"), dep.get("script"));
+                }
+
+                return new NpmJSON(jsonObj.get("projectName").getAsString(), jsonObj.get("description").getAsString(), 
+                jsonObj.get("version").getAsString(), jsonObj.get("mainEntrypoint").getAsString(),
+                jsonObj.get("author").getAsString(), jsonObj.get("license").getAsString(), 
+                keywordList, dependencies, devDependencies, scripts);
+            }
+        };
+
+        builder.registerTypeAdapter(NpmJSON.class, deserializer);
+        gson = builder.create();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Load in JSON message
-        Gson gson = new Gson();
         JSONRequest data = gson.fromJson(req.getReader(), JSONRequest.class);
+
         boolean success = false;
+        // create temp directory
         Path tempPath = Files.createTempDirectory("init");
         System.out.println(tempPath.toAbsolutePath().toString());
         try (LocalGitRepo git = new LocalGitRepo(data.getGithubURL(), tempPath, token)) {
-            // create temp directory
             String projectName = null;
             String appVersion = null;
             String imageName = null;
