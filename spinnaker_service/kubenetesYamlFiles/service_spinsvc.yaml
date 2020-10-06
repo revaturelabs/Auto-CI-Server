@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: spinnaker-service
-  namespace: spinnaker-service
+  namespace: autoci
   labels:
     app: spinnaker-service
 spec:
