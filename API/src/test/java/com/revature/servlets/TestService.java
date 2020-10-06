@@ -1,4 +1,4 @@
-package com.revature.api;
+package com.revature.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,31 +10,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.controller.Config;
-import com.revature.model.Configuration.Configuration;
+import com.revature.model.Frontend.FrontendReq;
 
-@WebServlet(name = "ConfigTest", urlPatterns = { "/configtest" })
-public class ConfigTestEntrypoint extends HttpServlet {
+
+@WebServlet(name = "TestService", urlPatterns = { "/test" })
+public class TestService extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                // This is just the entrypoint, just a testing trigger.  Just feed a config to the controller.  The other servlet will be the mock jenkins server.
+                // Jackson stuff
                 ObjectMapper objectMapper = new ObjectMapper();        
 
-                Configuration config = objectMapper.readValue(req.getInputStream(), Configuration.class);
-                
+                FrontendReq init = objectMapper.readValue(req.getInputStream(), FrontendReq.class);
+            
 
+                String result = objectMapper.writeValueAsString(init);
+
+                PrintWriter out = resp.getWriter();
 
                 //return 
                 resp.setContentType("application/json");
                 resp.setCharacterEncoding("UTF-8");
                 resp.setStatus(200);
-                Config controller = new Config();
-                controller.ConfigService(config);
-
-                //out.print(result);
-                //out.flush();
+                out.print(result);
+                out.flush();
     }
 }

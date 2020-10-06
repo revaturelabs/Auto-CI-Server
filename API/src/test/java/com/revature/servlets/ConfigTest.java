@@ -1,4 +1,4 @@
-package com.revature.api;
+package com.revature.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,16 +22,18 @@ public class ConfigTest extends HttpServlet {
                 // Mock jenkins.  Receive the stuff that the controller sent.  If it's good, send back the response Alex gave.
                 
                 System.out.println("YOU'RE IN THE SECOND SERVLET");
-                ObjectMapper objectMapper = new ObjectMapper(); //IT'S BREAKING HERE.  SOMETHING WITH VISIBLITY       
+                ObjectMapper objectMapper2 = new ObjectMapper(); //IT'S BREAKING HERE.  SOMETHING WITH VISIBLITY       
 
-                System.out.println("THAT SAME JSON SHOULD PRINT HERE: \n" + objectMapper.writeValueAsString(req));
+                //System.out.println("THAT SAME JSON SHOULD PRINT HERE: \n" + objectMapper2.writeValueAsString(req);
 
 
                 ConfigurationResp configresp = new ConfigurationResp();
-                configresp.setGithubURL("successful github URL");
+                configresp.setGithubURL("www.github.com");
                 configresp.setMadeHook("true");
 
-                String result = objectMapper.writeValueAsString(configresp);
+                String result = objectMapper2.writeValueAsString(configresp);
+
+                System.out.println("YOUR RESPONSE JSON:" + result);
 
                 PrintWriter out = resp.getWriter();
 
