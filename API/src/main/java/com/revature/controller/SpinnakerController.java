@@ -44,18 +44,17 @@ public class SpinnakerController {
                     
                     return spinnResp;
                 } catch (IOException e) {
-                    log.error("Failed setting spinnResp = " + e);
+                    log.error("Failed setting spinnResp = " + e.getMessage());
                     e.printStackTrace();
                 }
             } catch (IOException e) {
-                log.error("Failed setting response = " + e);
+                log.error("Failed setting response = " + e.getMessage());
                 e.printStackTrace();
             }
         } catch (JsonProcessingException e) {
-            log.error("Failed setting jsonString = " + e);
+            log.error("Failed setting jsonString = " + e.getMessage());
             e.printStackTrace();
         }
-
         return null;
     }
 }
