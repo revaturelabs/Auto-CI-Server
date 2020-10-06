@@ -10,11 +10,15 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class App {
     public static final Optional<String> port = Optional.ofNullable(System.getenv("PORT"));
+    private final static Logger log = LoggerFactory.getLogger("App.java");
 
     public static void main(String[] args) {
-        
+
         final String base = new File("./").getAbsolutePath();
         Tomcat server = new Tomcat();
         server.setBaseDir(new File("target/tomcat/").getAbsolutePath());
@@ -28,7 +32,8 @@ public class App {
         try {
             server.start();
         } catch (LifecycleException e) {
-            System.err.println("trouble starting tomcat: " + e);
+            log.error("Failed starting server. " + e.getMessage());
+            System.out.println(e);
         }
         server.getServer().await();
     }

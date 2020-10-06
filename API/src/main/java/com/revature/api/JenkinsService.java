@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.model.Jenkins.JenkinsServiceObject;
+// import com.revature.model.Jenkins.JenkinsServiceObject;
 import com.revature.model.Jenkins.JenkinsServiceResp;
 
 
@@ -26,10 +26,11 @@ public class JenkinsService extends HttpServlet {
         // Vars
         String jenkinsURL = req.getParameter("jenkinsURL");
         String githubURL = req.getParameter("githubURL");
-        String projectName = req.getParameter("projectName");
-        String slackChannel = req.getParameter("slackChannel");
+        // String projectName = req.getParameter("projectName");
+        // String slackChannel = req.getParameter("slackChannel");
 
-        JenkinsServiceObject jSer = new JenkinsServiceObject(jenkinsURL, githubURL, projectName, slackChannel);
+        // Commenting out Unused Vars 202010061001-mwg
+        // JenkinsServiceObject jSer = new JenkinsServiceObject(jenkinsURL, githubURL, projectName, slackChannel);
 
         String jobName = makeJenkinsJobFunction(jenkinsURL, githubURL);
 

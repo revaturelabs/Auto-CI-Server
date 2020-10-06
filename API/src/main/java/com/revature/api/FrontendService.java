@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.controller.ProgressSingleton;
-import com.revature.model.Frontend.FrontendReq;
+// import com.revature.model.Frontend.FrontendReq;
 
 @WebServlet(name = "FrontendService", urlPatterns = { "/frontend" })
 public class FrontendService extends HttpServlet {
@@ -24,8 +24,9 @@ public class FrontendService extends HttpServlet {
         String result = "";
 
         // get data from frontend website convert to java model
-        ObjectMapper objectMapper = new ObjectMapper();        
-        FrontendReq frontendReqObj = objectMapper.readValue(req.getInputStream(), FrontendReq.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        // Commenting out Unused Vars 202010061001-mwg
+        // FrontendReq frontendReqObj = objectMapper.readValue(req.getInputStream(), FrontendReq.class);
     
         //setup sington to allow us keep track of all service creations
         ProgressSingleton ps = ProgressSingleton.instance();
