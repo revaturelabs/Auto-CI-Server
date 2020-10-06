@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.controller.InitializationController;
-import com.revature.model.Initialization.InitializationObj;
+import com.revature.model.Frontend.FrontendReq;
 import com.revature.model.Initialization.InitializationResp;
 
 @WebServlet(name = "TestInitEntrypoint", urlPatterns = { "/testInitEntrypoint" })
@@ -25,11 +25,11 @@ public class TestInitServiceEntrypoint extends HttpServlet {
         InitializationController ic = new InitializationController();
 
         //testing Initialization Controller
-        InitializationObj initObj = new InitializationObj("true");
+        FrontendReq frontendObj = new FrontendReq();
         
-        InitializationResp initResp = ic.testInitialization(initObj);
+        InitializationResp initResp = ic.runInitialization(frontendObj);
 
-        System.out.println("\n\tHere's this:" + initObj + "\n");
+        System.out.println("\n\tHere's this:" + frontendObj + "\n");
 
         //sending results
         ObjectMapper objectMapper = new ObjectMapper();

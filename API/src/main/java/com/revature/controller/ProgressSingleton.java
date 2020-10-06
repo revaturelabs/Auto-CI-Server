@@ -1,8 +1,11 @@
 package com.revature.controller;
 
+import com.revature.model.Frontend.FrontendReq;
+import com.revature.model.Initialization.InitializationResp;
 
 /**
- * this method sets current progress object; It will be deleted once the pipeline it complete;
+ * this method sets current progress object; It will be deleted once the
+ * pipeline it complete;
  */
 
 public class ProgressSingleton {
@@ -25,6 +28,15 @@ public class ProgressSingleton {
         }
             
         return single_instance; 
+    }
+
+    public void startInit(FrontendReq frontEndObj){
+        InitializationController ic = new InitializationController();
+        InitializationResp initResp = ic.runInitialization(frontEndObj);
+        System.out.println("\n\tresponse:" + initResp + "\n");
+
+        //we have finshed
+        runningStatus = false;
     }
 
     public Boolean getRunningStatus() {

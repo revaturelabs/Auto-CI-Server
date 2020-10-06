@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.model.Initialization.InitializationObj;
+import com.revature.model.Frontend.FrontendReq;
 import com.revature.model.Initialization.InitializationResp;
 
 import org.slf4j.Logger;
@@ -21,11 +21,11 @@ public class InitializationController {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public InitializationResp testInitialization(InitializationObj initObj) {
+    public InitializationResp runInitialization(FrontendReq frontendObj) {
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String result = objectMapper.writeValueAsString(initObj);
+            String result = objectMapper.writeValueAsString(frontendObj);
             RequestBody body = RequestBody.create(result, JSON);
             Request request = new Request.Builder().url(REQ_URL).post(body).build();
             OkHttpClient client = new OkHttpClient();
