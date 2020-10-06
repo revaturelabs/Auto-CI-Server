@@ -3,60 +3,78 @@ package com.revature.model.Configuration;
 public class Configuration {
 
     private String githubUsername;
-    private String jenkinsURI;
+    private String jenkinsURL;
     private String projectName;
-    private boolean generateGithubActions; // Was Jenkins specified, or are we using Github Actions?
-    private boolean debug; // Optional; leave to true to prevent polluting the revaturelabs org with our test repos
+    private String generateGithubActions; // Was Jenkins specified, or are we using Github Actions?
+    private String debug; // Optional; leave to true to prevent polluting the revaturelabs org with our test repos
 
-    public Configuration() { }
 
-    public Configuration(String githubUsername, String jenkinsURI, String projectName, boolean generateGithubActions,
-            boolean debug) {
-        this.githubUsername = githubUsername;
-        this.jenkinsURI = jenkinsURI;
-        this.projectName = projectName;
-        this.generateGithubActions = generateGithubActions;
-        this.debug = debug;
+    public Configuration() {
     }
 
     public String getGithubUsername() {
-        return githubUsername;
+        return this.githubUsername;
     }
 
     public void setGithubUsername(String githubUsername) {
         this.githubUsername = githubUsername;
     }
 
-    public String getJenkinsURI() {
-        return jenkinsURI;
+    public String getJenkinsURL() {
+        return this.jenkinsURL;
     }
 
-    public void setJenkinsURI(String jenkinsURI) {
-        this.jenkinsURI = jenkinsURI;
+    public void setJenkinsURL(String jenkinsURL) {
+        this.jenkinsURL = jenkinsURL;
     }
 
     public String getProjectName() {
-        return projectName;
+        return this.projectName;
     }
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
 
-    public boolean isGenerateGithubActions() {
-        return generateGithubActions;
+    public String getGenerateGithubActions() {
+        return this.generateGithubActions;
     }
 
-    public void setGenerateGithubActions(boolean generateGithubActions) {
+    public void setGenerateGithubActions(String generateGithubActions) {
         this.generateGithubActions = generateGithubActions;
     }
 
-    public boolean isDebug() {
-        return debug;
+    public String getDebug() {
+        return this.debug;
     }
 
-    public void setDebug(boolean debug) {
+    public void setDebug(String debug) {
         this.debug = debug;
+    }
+
+    public Configuration githubUsername(String githubUsername) {
+        this.githubUsername = githubUsername;
+        return this;
+    }
+
+    public Configuration jenkinsURL(String jenkinsURL) {
+        this.jenkinsURL = jenkinsURL;
+        return this;
+    }
+
+    public Configuration projectName(String projectName) {
+        this.projectName = projectName;
+        return this;
+    }
+
+    public Configuration generateGithubActions(String generateGithubActions) {
+        this.generateGithubActions = generateGithubActions;
+        return this;
+    }
+
+    public Configuration debug(String debug) {
+        this.debug = debug;
+        return this;
     }
    
 }
