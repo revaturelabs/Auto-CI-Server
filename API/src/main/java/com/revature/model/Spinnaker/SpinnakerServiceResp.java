@@ -6,29 +6,29 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "applicationCreated", "pipelineCreated" })
 public class SpinnakerServiceResp {
-    private String applicationCreated;
-    private String pipelineCreated;
+    private Boolean applicationCreated;
+    private Boolean pipelineCreated;
 
     public SpinnakerServiceResp() { }
 
-    public SpinnakerServiceResp(String applicationCreated, String pipelineCreated) {
+    public SpinnakerServiceResp(Boolean applicationCreated, Boolean pipelineCreated) {
         this.applicationCreated = applicationCreated;
         this.pipelineCreated = pipelineCreated;
     }
 
-    public String getApplicationCreated() {
+    public Boolean getApplicationCreated() {
         return applicationCreated;
     }
 
-    public void setApplicationCreated(String applicationCreated) {
+    public void setApplicationCreated(Boolean applicationCreated) {
         this.applicationCreated = applicationCreated;
     }
 
-    public String getPipelineCreated() {
+    public Boolean getPipelineCreated() {
         return pipelineCreated;
     }
 
-    public void setPipelineCreated(String pipelineCreated) {
+    public void setPipelineCreated(Boolean pipelineCreated) {
         this.pipelineCreated = pipelineCreated;
     }
 }

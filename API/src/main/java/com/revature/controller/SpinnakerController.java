@@ -39,7 +39,6 @@ public class SpinnakerController {
                 SpinnakerServiceResp spinnResp;
                 try { // trying spinnResp = 
                     spinnResp = objectMapper.readValue(response.body().byteStream(), SpinnakerServiceResp.class);
-                    
                     return spinnResp;
                 } catch (IOException e) {
                     log.error("Failed setting spinnResp = " + e.getMessage());

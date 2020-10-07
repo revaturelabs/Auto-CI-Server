@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class SpinnakerServiceObject {
 
     private String gitUri;
-    private List<String> cloudProviders = null;;
+    private List<String> cloudProviders = null;
     private String email;
     private String projectName;
     private String branch;

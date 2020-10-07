@@ -26,7 +26,7 @@ public class TestSpinn extends HttpServlet {
         // Commenting out Unused Vars 202010061001-mwg
         // SpinnakerServiceObject init = objectMapper.readValue(req.getInputStream(), SpinnakerServiceObject.class);
 
-        SpinnakerServiceResp response = new SpinnakerServiceResp("true", "true");
+        SpinnakerServiceResp response = new SpinnakerServiceResp(true, true);
 
         String result = objectMapper.writeValueAsString(response);
 
