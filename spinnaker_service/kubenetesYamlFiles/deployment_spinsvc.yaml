@@ -28,8 +28,3 @@ spec:
                         secretKeyRef:
                             name: github-token
                             key: token
-                
-
-                
-    
-

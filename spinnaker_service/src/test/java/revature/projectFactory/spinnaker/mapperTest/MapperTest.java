@@ -2,15 +2,16 @@ package revature.projectFactory.spinnaker.mapperTest;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import java.util.ArrayList;
 
+import org.junit.Test;
 import revature.projectFactory.spinnaker.POJO.PipelinePojo;
 import revature.projectFactory.spinnaker.POJO.ReturnMessage;
 import revature.projectFactory.spinnaker.mapper.Mapper;
 
 public class MapperTest {
-    private String jsonPipelineTest = "{\"gitUri\":\"testUri/.:?\",\"branch\":\"testBranch\",\"cloudProviders\":\"testProviders,Other\",\"email\":\"testemail\",\"projectName\":\"test\"}";
-    private PipelinePojo expectedPipelineObj = new PipelinePojo("testUri/.:?", "testBranch", "testProviders,Other", "testemail", "test");
+    private String jsonPipelineTest = "{\"gitUri\":\"testUri/.:?\",\"branch\":\"testBranch\",\"cloudProviders\":[\"testProviders\",\"Other\"],\"email\":\"testemail\",\"projectName\":\"test\"}";
+    private PipelinePojo expectedPipelineObj = new PipelinePojo("testUri/.:?", "testBranch", new ArrayList<String>(){{ add("testProviders"); add("Other");}}, "testemail", "test");
     private String jsonReturnMessage = "{\"applicationCreated\":true,\"pipelineCreated\":true}";
     private ReturnMessage rtnMessage = new ReturnMessage(true,true);
     private Mapper mapper = new Mapper();

@@ -1,5 +1,8 @@
 package revature.projectFactory.spinnaker.POJO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PipelinePojo {
     /**
      * Git uri used in post request to create pipeline, and in get request to recieve pipeline file
@@ -14,7 +17,7 @@ public class PipelinePojo {
     /**
      * Comma separated string of cloud provider used in the application creation call.
      */
-    private String cloudProviders;
+    private List<String> cloudProviders;
     
     /**
      * Email used as owner email of Application in Spinnaker
@@ -31,7 +34,7 @@ public class PipelinePojo {
         gitUri = "";
         email = "";
         projectName = "";
-        cloudProviders = "";
+        cloudProviders = new ArrayList<String>();
         branch ="";
     }
 
@@ -59,11 +62,11 @@ public class PipelinePojo {
         this.email = email;
     }
 
-    public String getCloudProviders() {
+    public List<String> getCloudProviders() {
         return cloudProviders;
     }
 
-    public void setCloudProviders(String cloudProviders) {
+    public void setCloudProviders(List<String> cloudProviders) {
         this.cloudProviders = cloudProviders;
     }
 
@@ -78,10 +81,18 @@ public class PipelinePojo {
 
     @Override
     public String toString(){
-        return "gitUri: " + gitUri + ", cloudProviders: " + cloudProviders + ", email: " + email + ", projectName: " + projectName + ", branch: " + branch;
+        return "gitUri: " + gitUri + ", cloudProviders: " + ListCloudProviders() + ", email: " + email + ", projectName: " + projectName + ", branch: " + branch;
     }
 
-    public PipelinePojo(String gitUri, String branch, String cloudProviders, String email, String projectName) {
+    public String ListCloudProviders() {
+        StringBuilder result = new StringBuilder();
+            for(int i=0; i<cloudProviders.size(); i++){
+                result.append(cloudProviders.get(i)+",");
+            }
+        return result.toString();
+    }
+
+    public PipelinePojo(String gitUri, String branch, List<String> cloudProviders, String email, String projectName) {
         this.gitUri = gitUri;
         this.branch = branch;
         this.cloudProviders = cloudProviders;

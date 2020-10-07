@@ -45,7 +45,7 @@ public class pipelineServlet extends HttpServlet{
         Mapper mapper = new Mapper();
         PipelinePojo obj = mapper.pipelinePojoReadMapper(body);
         ReturnMessage result = new ReturnMessage();
-        if(APPBUILDER.create(obj.getProjectName(), obj.getEmail(), obj.getCloudProviders()) == 1){
+        if(APPBUILDER.create(obj.getProjectName(), obj.getEmail(), obj.ListCloudProviders()) == 1){
             result.setApplicationCreated(false);;
             log.error("Application failed to create");
             resp.setStatus(500);
