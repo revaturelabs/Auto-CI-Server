@@ -22,9 +22,3 @@ spec:
                   imagePullPolicy: Always
                   ports:
                     - containerPort: 8080
-                  env:
-                    - name: GITHUB-OAUTH
-                      valueFrom:
-                        secretKeyRef:
-                            name: github-token
-                            key: token

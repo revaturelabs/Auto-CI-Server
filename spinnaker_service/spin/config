@@ -1,4 +1,4 @@
 gate:
-  endpoint: af3235edd21e94cac82a4dde04b42894-869788612.us-east-1.elb.amazonaws.com   8084
+  endpoint: http://af3235edd21e94cac82a4dde04b42894-869788612.us-east-1.elb.amazonaws.com:8084
 auth:
   enabled: false

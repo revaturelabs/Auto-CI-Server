@@ -16,8 +16,9 @@ public class PipelineCreation implements IPipeLineCreation {
     private final String branch;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private void setupGitUri(){
+        gitHubUri =gitHubUri.replaceFirst("\\.git", "/"+branch+"/Spinnaker.json");
         gitHubUri = gitHubUri.replaceFirst("github", "raw.githubusercontent");
-        gitHubUri +="/"+branch+"/Spinnaker.json";
+        System.out.println("gitUri: " + gitHubUri);
     }
 
     private String getJSONFile(){
