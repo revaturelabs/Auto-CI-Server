@@ -30,13 +30,17 @@ public class FrontendService extends HttpServlet {
         ProgressSingleton progress = ProgressSingleton.instance();
         
         //if this endpoint is called twice before finishing, respond with currenly working
-        if(!progress.getRunningStatus()){
-            progress.setRunningStatus(true);
-            pipeline.init(frontendReqObj);
-            result = objectMapper.writeValueAsString("Pipeline has finished");
-        } else {
-            result = objectMapper.writeValueAsString("already running, please try back soon");
-        }
+        // if(!progress.getRunningStatus()){
+        //     progress.setRunningStatus(true);
+        //     pipeline.init(frontendReqObj);
+        //     result = objectMapper.writeValueAsString("Pipeline has finished");
+        // } else {
+        //     result = objectMapper.writeValueAsString("already running, please try back soon");
+        // }
+
+        progress.setRunningStatus(true);
+        pipeline.init(frontendReqObj);
+        result = objectMapper.writeValueAsString("Pipeline has finished");
 
         //return with json here
         PrintWriter out = resp.getWriter();
