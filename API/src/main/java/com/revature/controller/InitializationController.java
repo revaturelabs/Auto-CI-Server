@@ -18,8 +18,8 @@ import okhttp3.Response;
 
 public class InitializationController {
     // private final String REQ_URL = "http://localhost:8080/testInit";
-    private final String REQ_URL = "http://10.100.50.248/init/";
-    // private final String REQ_URL = "http://a06935fc1837f424fb852a38fc085428-1378621262.us-east-1.elb.amazonaws.com/init/";
+    // private final String REQ_URL = "http:// 10.100.122.66 /init/";
+    private final String REQ_URL = "http://acefd179b3bf24f75a454ad47bab768e-575975828.us-east-1.elb.amazonaws.com/init/";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -29,7 +29,6 @@ public class InitializationController {
         try {
             String result = objectMapper.writeValueAsString(frontendObj);
             RequestBody body = RequestBody.create(result, JSON);
-            System.out.println(frontendObj.getNpmData().getKeywords());
             Request request = new Request.Builder().url(REQ_URL).post(body).build();
             OkHttpClient client = new OkHttpClient();
             Response response;
@@ -38,16 +37,9 @@ public class InitializationController {
                 int respCode = response.code();
                 if (respCode != 200) {
                     log.warn("Got a bad Response Code in testInitialization = " + respCode);
-                    return new InitializationResp("false");
+                    return new InitializationResp("failed");
                 } else {
-                    InitializationResp initResp;
-                    try {
-                        initResp = objectMapper.readValue(response.body().byteStream(), InitializationResp.class);
-                        return initResp;
-                    } catch (IOException e) {
-                        log.error("Failed setting initResp = " + e.getMessage());
-                        e.printStackTrace();
-                    }
+                    return new InitializationResp("done");
                 }
             } catch (IOException e) {
                 log.error("Failed setting response = " + e.getMessage());

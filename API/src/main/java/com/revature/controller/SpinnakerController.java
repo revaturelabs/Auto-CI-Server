@@ -1,15 +1,11 @@
 package com.revature.controller;
-
 import java.io.IOException;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Spinnaker.SpinnakerServiceObject;
 import com.revature.model.Spinnaker.SpinnakerServiceResp;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,8 +13,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SpinnakerController {
-    private final String REQ_URL = "http://localhost:8080/testspinn";
-    // private final String REQ_URL = "http://a98ddfe1cc81045dea5d2a5703ac4c84-1333226332.us-east-1.elb.amazonaws.com:8080/api/pipeline";
+    // private final String REQ_URL = "http://localhost:8080/testspinn";
+    private final String REQ_URL = "http://a0db1c05a05a74349818c2986d5b37be-2043532376.us-east-1.elb.amazonaws.com:8080/api/pipeline";
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private final Logger log = LoggerFactory.getLogger(this.getClass());

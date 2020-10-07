@@ -5,8 +5,8 @@ public class Configuration {
     private String githubUsername;
     private String jenkinsURL;
     private String projectName;
-    private String generateGithubActions; // Was Jenkins specified, or are we using Github Actions?
-    private String debug; // Optional; leave to true to prevent polluting the revaturelabs org with our test repos
+    private Boolean generateGithubActions; // Was Jenkins specified, or are we using Github Actions?
+    private Boolean debug; // Optional; leave to true to prevent polluting the revaturelabs org with our test repos
 
 
     public Configuration() {
@@ -36,19 +36,19 @@ public class Configuration {
         this.projectName = projectName;
     }
 
-    public String getGenerateGithubActions() {
+    public Boolean getGenerateGithubActions() {
         return this.generateGithubActions;
     }
 
-    public void setGenerateGithubActions(String generateGithubActions) {
+    public void setGenerateGithubActions(Boolean generateGithubActions) {
         this.generateGithubActions = generateGithubActions;
     }
 
-    public String getDebug() {
+    public Boolean getDebug() {
         return this.debug;
     }
 
-    public void setDebug(String debug) {
+    public void setDebug(Boolean debug) {
         this.debug = debug;
     }
 
@@ -67,12 +67,12 @@ public class Configuration {
         return this;
     }
 
-    public Configuration generateGithubActions(String generateGithubActions) {
+    public Configuration generateGithubActions(Boolean generateGithubActions) {
         this.generateGithubActions = generateGithubActions;
         return this;
     }
 
-    public Configuration debug(String debug) {
+    public Configuration debug(Boolean debug) {
         this.debug = debug;
         return this;
     }

@@ -2,22 +2,20 @@ package com.revature.model;
 
 public class Progress {
 
-    //this class is to keep track of all the stages progess in the pipeline
+    //might need to delete this file its the same as the progress singltion
 
-    private String frontend;
+    private Boolean runningStatus;
     private String initialization;
     private String configuration;
     private String jenkins;
     private String Spinnaker;
 
-    public Progress(){}
-
-    public String getFrontend() {
-        return this.frontend;
+    public Boolean getRunningStatus() {
+        return this.runningStatus;
     }
 
-    public void setFrontend(String frontend) {
-        this.frontend = frontend;
+    public void setRunningStatus(Boolean runningStatus) {
+        this.runningStatus = runningStatus;
     }
 
     public String getInitialization() {
@@ -51,5 +49,9 @@ public class Progress {
     public void setSpinnaker(String Spinnaker) {
         this.Spinnaker = Spinnaker;
     }
+
+    public Progress(){}
+
+    
 
 }

@@ -2,6 +2,8 @@ package com.revature.entrypointservlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,8 +27,16 @@ public class TestSpinnEntrypoint extends HttpServlet{
         SpinnakerController sc = new SpinnakerController();
 
         //testing Spinnaker Controller
-        SpinnakerServiceObject ssObj = new SpinnakerServiceObject("gitUri.com", "cloud, providers", "email@email.email", "projectName", "branch");
-        
+        SpinnakerServiceObject ssObj = new SpinnakerServiceObject();
+        ssObj.setGitUri("gitUri.com");
+        List<String> listProviders = new ArrayList<>();
+        listProviders.add("aws");
+        listProviders.add("kubernetes");
+        ssObj.setCloudProviders(listProviders);
+        ssObj.setEmail("true");
+        ssObj.setProjectName("visualstudiocode");
+        ssObj.setBranch("prod");
+
         SpinnakerServiceResp spinnResp = sc.testSpinnaker(ssObj);
 
         System.out.println("\n\tHere's this:" + ssObj + "\n");

@@ -1,5 +1,7 @@
 package com.revature.model.Spinnaker;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -8,41 +10,29 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class SpinnakerServiceObject {
 
     private String gitUri;
-    private String cloudProviders;
+    private List<String> cloudProviders = null;;
     private String email;
     private String projectName;
     private String branch;
 
-    public SpinnakerServiceObject() {
-    }
-
-    public SpinnakerServiceObject(String gitUri, String cloudProviders, String email, String projectName,
-            String branch) {
-        this.gitUri = gitUri;
-        this.cloudProviders = cloudProviders;
-        this.email = email;
-        this.projectName = projectName;
-        this.branch = branch;
-    }
-
     public String getGitUri() {
-        return gitUri;
+        return this.gitUri;
     }
 
     public void setGitUri(String gitUri) {
         this.gitUri = gitUri;
     }
 
-    public String getCloudProviders() {
-        return cloudProviders;
+    public List<String> getCloudProviders() {
+        return this.cloudProviders;
     }
 
-    public void setCloudProviders(String cloudProviders) {
+    public void setCloudProviders(List<String> cloudProviders) {
         this.cloudProviders = cloudProviders;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -50,7 +40,7 @@ public class SpinnakerServiceObject {
     }
 
     public String getProjectName() {
-        return projectName;
+        return this.projectName;
     }
 
     public void setProjectName(String projectName) {
@@ -58,10 +48,14 @@ public class SpinnakerServiceObject {
     }
 
     public String getBranch() {
-        return branch;
+        return this.branch;
     }
 
     public void setBranch(String branch) {
         this.branch = branch;
     }
+
+    public SpinnakerServiceObject() {
+    }
+
 }

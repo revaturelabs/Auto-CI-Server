@@ -20,7 +20,8 @@ public class Config {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     // final String URL = "http://localhost:8080/configtest2";
-    final String URL = "http://10.100.144.140:30100";
+    // final String URL = "http://10.100.144.140:8080";
+    final String URL = "http://aa7d4312010bb42048cb10bf1f6ff356-640074528.us-east-1.elb.amazonaws.com:8080/config/";
     public final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public ConfigurationResp ConfigService(Configuration config) {
@@ -33,7 +34,7 @@ public class Config {
             String json = mapper.writeValueAsString(config);
             RequestBody body = RequestBody.create(json, JSON);      
             Request request = new Request.Builder().url(URL).post(body).build();
-            Response response; 
+            Response response;
             try {
                 response = client.newCall(request).execute();
                 ConfigurationResp configresp;

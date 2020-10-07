@@ -12,9 +12,6 @@ public class InitializationResp {
         this.isDone = isDone;
     }
 
-    public InitializationResp() {
-    }
-
     public String getIsDone() {
         return isDone;
     }

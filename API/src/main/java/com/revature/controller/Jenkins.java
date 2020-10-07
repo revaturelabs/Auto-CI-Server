@@ -19,8 +19,9 @@ import okhttp3.Response;
 
 public class Jenkins {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    final String URL = "http://localhost:8080/jenkinstest2";
+    // final String URL = "http://localhost:8080/jenkinstest2";
     // final String URL = "http://10.100.77.80:30110";
+    final String URL = "http://ace4f487a5b1c4ff986fa0bd92cbb63b-887864636.us-east-1.elb.amazonaws.com:8080/jenkins-svlt/";
     public final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public JenkinsServiceResp JenkinsService(JenkinsServiceObject jenkins) {

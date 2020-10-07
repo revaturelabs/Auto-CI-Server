@@ -2,7 +2,7 @@ package com.revature.model.Configuration;
 
 public class ConfigurationResp {
     private String githubURL;
-    private String madeHook; // false if using GHActions or on error
+    private Boolean madeHook; // false if using GHActions or on error
 
     public ConfigurationResp() {
     }
@@ -15,11 +15,11 @@ public class ConfigurationResp {
         this.githubURL = githubURL;
     }
 
-    public String getMadeHook() {
+    public Boolean getMadeHook() {
         return this.madeHook;
     }
 
-    public void setMadeHook(String madeHook) {
+    public void setMadeHook(Boolean madeHook) {
         this.madeHook = madeHook;
     }
 
@@ -28,7 +28,7 @@ public class ConfigurationResp {
         return this;
     }
 
-    public ConfigurationResp madeHook(String madeHook) {
+    public ConfigurationResp madeHook(Boolean madeHook) {
         this.madeHook = madeHook;
         return this;
     }
