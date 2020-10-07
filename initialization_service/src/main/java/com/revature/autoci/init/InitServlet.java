@@ -152,8 +152,8 @@ public class InitServlet extends HttpServlet {
             }
             imageName = projectName;
             // Generate Helm Chart
+            HelmGenerate.generateHelmChart(projectName.toLowerCase().trim().replace(' ', '-'), appVersion, projectName, tempPath.toString(), false);
             log.info("HELM chart with configuration and files successfully generated");
-            HelmGenerate.generateHelmChart(projectName.trim().replace(' ', '-'), appVersion, projectName, tempPath.toString(), false);
 
             // Generate Spinnaker pipeline JSON file
             GenerateSpinnaker.generateSpinnaker(projectName, tempPath.toString());
