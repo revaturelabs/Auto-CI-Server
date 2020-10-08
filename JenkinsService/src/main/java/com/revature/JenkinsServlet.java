@@ -120,12 +120,13 @@ public class JenkinsServlet extends HttpServlet {
 
         String execOutput = "";
 
-        System.out.println("terraform init...");
         execOutput = exec.execute("terraform init");
         log.info(execOutput);
 
-        System.out.println("terraform apply...");
         execOutput = exec.execute("terraform apply -auto-approve");
+        log.info(execOutput);
+
+        execOutput = exec.execute("terraform state rm aws_ecr_repository." + projName);
         log.info(execOutput);
     }
 }
