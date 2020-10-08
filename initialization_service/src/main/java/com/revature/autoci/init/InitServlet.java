@@ -156,7 +156,7 @@ public class InitServlet extends HttpServlet {
             log.info("HELM chart with configuration and files successfully generated");
 
             // Generate Spinnaker pipeline JSON file
-            GenerateSpinnaker.generateSpinnaker(projectName, tempPath.toString());
+            GenerateSpinnaker.generateSpinnaker(projectName, tempPath.toString(), projectName);
             log.info("Pipeline JSON file with configuration successfully generated");
 
             // Generate jenkinsfile in top-level directory
