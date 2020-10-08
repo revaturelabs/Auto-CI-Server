@@ -14,6 +14,10 @@ jenkins:
         value: "ecr:us-east-1:mehrab-trg00000835-opsusr"
       - key: "ContainerRegistryURL"
         value: "https://855430746673.dkr.ecr.us-east-1.amazonaws.com"
+      - key: "kubectlCreds"
+        value: "kubectl-token"
+      - key: "kubectlServer"
+        value: "https://kubernetes.default.svc"
   labelAtoms:
   - name: "master"
   markupFormatter: "plainText"
