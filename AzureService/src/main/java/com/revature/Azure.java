@@ -23,6 +23,7 @@ public class Azure extends HttpServlet {
     String slackChannel;
   
     final String azureAuth = " -u " + System.getenv("AZURE_USERNAME") + " -p " + System.getenv("AZURE_PASSWORD");
+    final String azOrgName = System.getenv("AZURE_ORG_NAME");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
     @Override
@@ -32,14 +33,16 @@ public class Azure extends HttpServlet {
         parseParams(request);
 
         try {
+            CommandExecutor cmd = new CommandExecutor();
+
             log.info("Logging into Azure...");
-			azureLogin(responseJson);
+			azureLogin(cmd, responseJson);
             log.info("Making project...");
-            makeProject(responseJson);
+            makeProject(cmd, responseJson);
             log.info("Making pipeline...");
-            makePipeline(responseJson);
+            makePipeline(cmd, responseJson);
             log.info("Making container repo...");
-            makeContainerRepo(responseJson);
+            makeContainerRepo(cmd, responseJson);
         } catch (Exception e) {
             responseJson.put("errorMsg", e.getMessage());
             log.error(e.getMessage());
@@ -82,7 +85,7 @@ public class Azure extends HttpServlet {
     private void parseJsonToVars(JSONObject json) throws IOException {
         try {
             repoUrl = json.getString("githubURL");
-            projName = json.getString("projectName").toLowerCase();
+            projName = json.getString("projectName");
             slackChannel = json.getString("slackChannel");
             gitUrl = json.getString("githubURL");
         } catch (JSONException e) {
@@ -95,26 +98,31 @@ public class Azure extends HttpServlet {
             throw new IOException(err);
         }
     }
-	
-    private void azureLogin(JSONObject response) throws IOException {
-        CommandExecutor cmd = new CommandExecutor();
-        String execOutput = cmd.exec("az login" + azureAuth);
+
+    private void execAndLogCmd(CommandExecutor cmd, String command) {
+        String execOutput = cmd.execute(command);
         if (cmd.wasLastCmdSuccess()) {
             log.info(execOutput);
         } else {
             log.error(execOutput);
         }
+        System.out.println(execOutput);
     }
 	
-    private void makeProject(JSONObject response) throws IOException {
-		
+    private void azureLogin(CommandExecutor cmd, JSONObject response) throws IOException {
+        execAndLogCmd(cmd, "az login" + azureAuth);
+        execAndLogCmd(cmd, "az devops configure -d organization=https://dev.azure.com/RevatureProjectFactory project=" + projName);
     }
 	
-    private void makePipeline(JSONObject response) throws IOException {
+    private void makeProject(CommandExecutor cmd, JSONObject response) throws IOException {
+        execAndLogCmd(cmd, "az devops project create --name " + projName);
+    }
+	
+    private void makePipeline(CommandExecutor cmd, JSONObject response) throws IOException {
 		
     }
     
-    private void makeContainerRepo(JSONObject response) throws IOException {
+    private void makeContainerRepo(CommandExecutor cmd, JSONObject response) throws IOException {
 		
     }
 }

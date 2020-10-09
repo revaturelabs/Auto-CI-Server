@@ -21,3 +21,14 @@ spec:
           image: alxl/autoci-azure:latest
           ports:
           - containerPort: 8080
+          env:
+            - name: AZURE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: azure-login
+                  key: azure-username
+            - name: AZURE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: azure-login
+                  key: azure-password
