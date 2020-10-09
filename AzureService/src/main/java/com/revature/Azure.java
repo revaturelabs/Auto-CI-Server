@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 public class Azure extends HttpServlet {
     String repoUrl;
     String projName;
+    String gitUrl;
     String slackChannel;
   
     final String azureAuth = System.getenv("AZURE_AUTHENTICATION");
@@ -46,7 +47,7 @@ public class Azure extends HttpServlet {
 		
         response.setContentType("application/json");
         response.getWriter().write(responseJson.toString(0));
-        log.info("Jenkins servlet has written HTTP response and finished.");
+        log.info("Azure servlet has written HTTP response and finished.");
     }
 
     private void parseParams(HttpServletRequest req) throws IOException {
@@ -83,6 +84,7 @@ public class Azure extends HttpServlet {
             repoUrl = json.getString("githubURL");
             projName = json.getString("projectName").toLowerCase();
             slackChannel = json.getString("slackChannel");
+            gitUrl = json.getString("githubURL");
         } catch (JSONException e) {
             log.error("Exception when trying to parse JSON to Java.  " + e.getMessage());
             String err = "Error parsing JSON request string";
