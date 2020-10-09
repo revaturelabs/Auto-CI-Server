@@ -27,7 +27,7 @@ public class HelmGenerateTest {
     {
         HelmGenerate.generateHelmChart("example", "1.0.0", "example/example", tempDir.toString(), false);
 
-        ProcessBuilder pb = new ProcessBuilder("helm", "lint", "example");
+        ProcessBuilder pb = new ProcessBuilder("helm", "lint", "Chart");
         pb.directory(tempDir.toFile());
         Process p = pb.start();
         
@@ -40,7 +40,7 @@ public class HelmGenerateTest {
     {
         HelmGenerate.generateHelmChart("example", "1.0.0", "example/example", tempDir.toString(), false);
 
-        Path baseDir = Paths.get(tempDir.toString(), "example");
+        Path baseDir = Paths.get(tempDir.toString(), "Chart");
         assertTrue(baseDir.toFile().isDirectory());
         assertTrue(Paths.get(baseDir.toString(), ".helmignore").toFile().isFile());
         assertTrue(Paths.get(baseDir.toString(), "Chart.yaml").toFile().isFile());
@@ -57,7 +57,7 @@ public class HelmGenerateTest {
     public void testChartYamlContents() throws IOException
     {
         HelmGenerate.generateHelmChart("example", "1.0.0", "example/example", tempDir.toString(), false);
-        String chart = new String(Files.readAllBytes(Paths.get(tempDir.toString(), "example", "Chart.yaml")), UTF_8); 
+        String chart = new String(Files.readAllBytes(Paths.get(tempDir.toString(), "Chart", "Chart.yaml")), UTF_8); 
         assertTrue(chart.contains("apiVersion: v2"));
         assertTrue(chart.contains("name: example"));
         assertTrue(chart.contains("type: application"));
@@ -68,7 +68,7 @@ public class HelmGenerateTest {
     public void testValuesYamlContents() throws IOException
     {
         HelmGenerate.generateHelmChart("example", "1.0.0", "example/example", tempDir.toString(), false);
-        String values = new String(Files.readAllBytes(Paths.get(tempDir.toString(), "example", "values.yaml")), UTF_8);
+        String values = new String(Files.readAllBytes(Paths.get(tempDir.toString(), "Chart", "values.yaml")), UTF_8);
         assertTrue(values.contains("repository: example/example"));
         assertTrue(values.contains("type: LoadBalancer"));
         assertTrue(values.contains("port: 80"));
