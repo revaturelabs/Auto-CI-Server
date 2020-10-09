@@ -32,3 +32,13 @@ spec:
                 secretKeyRef:
                   name: azure-login
                   key: azure-password
+            - name: AZURE_GITHUB_AUTH_SERVICE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: azure-login
+                  key: github-service-id
+            - name: AZURE_DEVOPS_EXT_GITHUB_PAT
+              valueFrom:
+                secretKeyRef:
+                  name: github-token
+                  key: token

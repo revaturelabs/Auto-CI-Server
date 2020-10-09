@@ -2,8 +2,6 @@ package com.revature;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +22,7 @@ public class Azure extends HttpServlet {
   
     final String azureAuth = " -u " + System.getenv("AZURE_USERNAME") + " -p " + System.getenv("AZURE_PASSWORD");
     final String azOrgName = System.getenv("AZURE_ORG_NAME");
+    final String azServiceId = System.getenv("AZURE_GITHUB_AUTH_SERVICE_ID");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
     @Override
@@ -37,8 +36,6 @@ public class Azure extends HttpServlet {
 
             log.info("Logging into Azure...");
 			azureLogin(cmd, responseJson);
-            log.info("Making project...");
-            makeProject(cmd, responseJson);
             log.info("Making pipeline...");
             makePipeline(cmd, responseJson);
             log.info("Making container repo...");
@@ -111,15 +108,16 @@ public class Azure extends HttpServlet {
 	
     private void azureLogin(CommandExecutor cmd, JSONObject response) throws IOException {
         execAndLogCmd(cmd, "az login" + azureAuth);
-        execAndLogCmd(cmd, "az devops configure -d organization=https://dev.azure.com/RevatureProjectFactory project=" + projName);
+        execAndLogCmd(cmd, "az devops configure -d organization=https://dev.azure.com/RevatureProjectFactory project=ProjectFactory");
     }
-	
-    private void makeProject(CommandExecutor cmd, JSONObject response) throws IOException {
-        execAndLogCmd(cmd, "az devops project create --name " + projName);
+    
+    private String makePipelineCommand(String branch) {
+        return "az pipelines create --folder " + projName + " --name " + projName + "-" + branch + " --repository " + gitUrl + " --branch " + branch + " --yaml-path azure-pipeline.yaml --service-connection " + azServiceId;
     }
-	
     private void makePipeline(CommandExecutor cmd, JSONObject response) throws IOException {
-		
+        execAndLogCmd(cmd, "az pipelines folder create --path " + projName);
+        execAndLogCmd(cmd, makePipelineCommand("dev"));
+        execAndLogCmd(cmd, makePipelineCommand("prod"));
     }
     
     private void makeContainerRepo(CommandExecutor cmd, JSONObject response) throws IOException {
