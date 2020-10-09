@@ -40,6 +40,11 @@ public class App
             System.out.println();
         }
     }
+
+    /**
+     * Loads properties from the app.properties file
+     * @author Reese Benson
+     */
     private static void load(){
         Properties properties = new Properties();
         try {

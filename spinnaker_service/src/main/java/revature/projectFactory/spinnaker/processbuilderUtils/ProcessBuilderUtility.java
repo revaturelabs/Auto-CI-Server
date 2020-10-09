@@ -7,6 +7,15 @@ import org.slf4j.LoggerFactory;
 public class ProcessBuilderUtility {
     private final static Logger log = LoggerFactory.getLogger(ProcessBuilderUtility.class);
 
+    /**
+     * Builds and runs a Process Builder Command on the current OS.
+     * @param buildcommand the command to be executed
+     * @param execDirectory the directory to execute the command in
+     * @return
+     * @author Douglas Liu, Reese Benson, Lawerence Dang
+     * @version 1.0.0
+     * @since 10/9/2020
+     */
     public static int pbGenerate(String buildcommand, String execDirectory) {
         ProcessBuilder processBuilder = new ProcessBuilder();
 

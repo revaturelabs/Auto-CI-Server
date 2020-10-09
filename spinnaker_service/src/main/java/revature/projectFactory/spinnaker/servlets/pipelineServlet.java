@@ -16,6 +16,7 @@ import revature.projectFactory.spinnaker.spinnakerServices.ApplicationCreation;
 import revature.projectFactory.spinnaker.spinnakerServices.IApplicationCreation;
 import revature.projectFactory.spinnaker.spinnakerServices.IPipeLineCreation;
 import revature.projectFactory.spinnaker.spinnakerServices.PipelineCreation;
+import revature.projectFactory.spinnaker.stringUtils.StringUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,12 @@ public class pipelineServlet extends HttpServlet{
         APPBUILDER = new ApplicationCreation();
     }
 
+    /**
+     * Creates a Spinnakers application and pipeline
+     * @author Reese Benson
+     * @version 1.0.0
+     * @since 10/9/2020
+     */
     @Override  
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.info("Spinnaker Service Recieved Request for a new pipeline");
@@ -45,7 +52,7 @@ public class pipelineServlet extends HttpServlet{
         Mapper mapper = new Mapper();
         PipelinePojo obj = mapper.pipelinePojoReadMapper(body);
         ReturnMessage result = new ReturnMessage();
-        if(APPBUILDER.create(obj.getProjectName(), obj.getEmail(), obj.ListCloudProviders()) == 1){
+        if(APPBUILDER.create(obj.getProjectName(), obj.getEmail(), StringUtility.asCommaSeperatedString(obj.getCloudProviders())) == 1){
             result.setApplicationCreated(false);;
             log.error("Application failed to create");
             resp.setStatus(500);

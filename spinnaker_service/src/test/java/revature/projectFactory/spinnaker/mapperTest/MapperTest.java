@@ -1,6 +1,7 @@
 package revature.projectFactory.spinnaker.mapperTest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 
@@ -38,5 +39,15 @@ public class MapperTest {
     public void testReturnMessageWriteMapper(){
         String actual = mapper.writeMapper(rtnMessage);
         assertEquals(jsonReturnMessage, actual);
+    }
+
+    @Test
+    public void testPipelineReadMapperWithInvalidJsonReturnsNull(){
+        assertNull(mapper.pipelinePojoReadMapper("{Invaild:json}"));
+    }
+
+    @Test
+    public void testReturnMessageReadMapperWithInvalidJsonReturnsNull(){
+        assertNull(mapper.returnMessageMapper("{Invaild:json}"));
     }
 }
