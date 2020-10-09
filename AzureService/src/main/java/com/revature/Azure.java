@@ -22,7 +22,7 @@ public class Azure extends HttpServlet {
     String gitUrl;
     String slackChannel;
   
-    final String azureAuth = System.getenv("AZURE_AUTHENTICATION");
+    final String azureAuth = " -u " + System.getenv("AZURE_USERNAME") + " -p " + System.getenv("AZURE_PASSWORD");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
     @Override
@@ -97,7 +97,13 @@ public class Azure extends HttpServlet {
     }
 	
     private void azureLogin(JSONObject response) throws IOException {
-		
+        CommandExecutor cmd = new CommandExecutor();
+        String execOutput = cmd.exec("az login" + azureAuth);
+        if (cmd.wasLastCmdSuccess()) {
+            log.info(execOutput);
+        } else {
+            log.error(execOutput);
+        }
     }
 	
     private void makeProject(JSONObject response) throws IOException {
