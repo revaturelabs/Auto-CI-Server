@@ -95,7 +95,7 @@ public class HelmGenerate {
         Templater templater = new Templater(mapping);
 
         // Create helm chart dir
-        Path helmDir = Paths.get(directoryToPush, chartName);
+        Path helmDir = Paths.get(directoryToPush, "Chart");
         if(helmDir.toFile().mkdir() == false)
         {
             throw new IOException("Chart directory already exists");

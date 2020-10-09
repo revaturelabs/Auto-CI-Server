@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.revature.autoci.init.generators.utils.Templater;
 
@@ -18,11 +19,13 @@ import org.slf4j.LoggerFactory;
 public class GenerateSpinnaker {
     private static final Logger log = LoggerFactory.getLogger(GenerateSpinnaker.class);
     // Generates a Jenkinsfile from a template. The template used depends on whether it is a Maven or NPM project.
-    public static void generateSpinnaker(String projectName, String pathToProject) throws IOException
+    public static void generateSpinnaker(String projectName, String pathToProject, String imageName) throws IOException
     {
         // Compile regex to replace variables with arguments
         Map<String, String> pairs = new HashMap<>();
         pairs.put("projectName", projectName);
+        pairs.put("pipelineId", projectName + UUID.randomUUID().toString());
+        pairs.put("imageName", imageName);
         Templater templater = new Templater(pairs);
 
         // Determine the template to use
@@ -36,7 +39,7 @@ public class GenerateSpinnaker {
             spinnaker.createNewFile();
             try(FileWriter writer = new FileWriter(spinnaker))
             {
-                templater.fillTemplate(buf, writer, "\"");
+                templater.fillTemplate(buf, writer, "");
                 log.info("Spinnaker Pipeline Template successfully updated");
             }
         }
