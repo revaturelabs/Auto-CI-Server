@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoci-azure
+  namespace: autoci
+  labels:
+    app: autoci-azure
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: autoci-azure
+  template:
+    metadata:
+      labels:
+        app: autoci-azure
+    spec:
+      containers:
+        - name: autoci-azure
+          image: alxl/autoci-azure:latest
+          ports:
+          - containerPort: 8080
