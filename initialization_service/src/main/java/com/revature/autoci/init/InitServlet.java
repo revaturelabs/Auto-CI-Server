@@ -25,6 +25,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.revature.autoci.init.generators.GenerateGithubActions;
+import com.revature.autoci.init.generators.GenerateDockerfile;
 import com.revature.autoci.init.generators.GenerateJenkinsfile;
 import com.revature.autoci.init.generators.GenerateMavenProject;
 import com.revature.autoci.init.generators.GenerateNpmProject;
@@ -75,7 +76,6 @@ public class InitServlet extends HttpServlet {
                 JsonObject jsonObj = json.getAsJsonObject();
                 Type listmap = new TypeToken<List<Map<String, String>>> (){}.getType();
                 Type listType = new TypeToken<List<String>> (){}.getType();
-                Type mapType = new TypeToken<Map<String,String>> (){}.getType();
 
                 List<Map<String, String>> depList = temp.fromJson(jsonObj.get("dependencies"), listmap);
 
@@ -161,7 +161,9 @@ public class InitServlet extends HttpServlet {
 
             // Generate jenkinsfile in top-level directory
             GenerateJenkinsfile.generateJenkinsfile(data.isMaven(), tempPath.toString());
-                log.info("Jenkinsfile successfully generated");
+            log.info("Jenkinsfile successfully generated");
+            
+            GenerateDockerfile.generateDockerfile(tempPath.toString());
 
             try 
             {

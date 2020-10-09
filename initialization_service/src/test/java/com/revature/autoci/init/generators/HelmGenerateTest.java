@@ -47,7 +47,7 @@ public class HelmGenerateTest {
         assertTrue(Paths.get(baseDir.toString(), "values.yaml").toFile().isFile());
         assertTrue(Paths.get(baseDir.toString(), "charts").toFile().isDirectory());
         assertTrue(Paths.get(baseDir.toString(), "templates").toFile().isDirectory());
-        assertTrue(Paths.get(baseDir.toString(), "templates", "deployment.yaml").toFile().isFile());
+        assertTrue(Paths.get(baseDir.toString(), "templates", "replicaset.yaml").toFile().isFile());
         assertTrue(Paths.get(baseDir.toString(), "templates", "service.yaml").toFile().isFile());
         assertTrue(Paths.get(baseDir.toString(), "templates").toFile().isDirectory());
         assertTrue(Paths.get(baseDir.toString(), "templates", "tests").toFile().isDirectory());
@@ -72,7 +72,7 @@ public class HelmGenerateTest {
         assertTrue(values.contains("repository: example/example"));
         assertTrue(values.contains("type: LoadBalancer"));
         assertTrue(values.contains("port: 80"));
-        assertTrue(values.contains("targetPort: 8080"));
+        assertTrue(values.contains("targetPort: 80"));
     }
 
 }
