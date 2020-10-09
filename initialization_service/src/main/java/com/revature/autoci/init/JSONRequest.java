@@ -3,7 +3,9 @@ package com.revature.autoci.init;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Represents the JSON body of a post request.
+ */
 public class JSONRequest {
     private String githubUsername;
     private String githubURL;

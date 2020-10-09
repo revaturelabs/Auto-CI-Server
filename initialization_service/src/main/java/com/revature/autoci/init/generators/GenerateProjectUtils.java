@@ -19,8 +19,13 @@ public class GenerateProjectUtils {
 
     private static final Logger log = LoggerFactory.getLogger(GenerateProjectUtils.class);
 
-    // Generates a .gitignore file by sending a GET request to gitignore.io
-    // Creates request using the url then writes the response line by line to a .gitignore in the desired directory
+    /**
+     * Generates a .gitignore file by sending a GET request to gitignore.io
+     * Creates request using the url then writes the response line by line to a .gitignore in the desired directory
+     * 
+     * @param gitIgnoreIoUrl The URL to the gitignore.io site
+     * @param directoryToPush The working directory where the gitignore file will be placed
+     */
     public static void generateGitIgnoreFromUrl(String gitIgnoreIoUrl, String directoryToPush) {
         try {
             URL requestURL;

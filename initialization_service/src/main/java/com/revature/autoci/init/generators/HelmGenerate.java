@@ -14,29 +14,23 @@ import java.util.Map;
 
 import com.revature.autoci.init.generators.utils.Templater;
 
-import org.apache.commons.lang3.arch.Processor.Arch;
 import org.rauschig.jarchivelib.ArchiveFormat;
 import org.rauschig.jarchivelib.Archiver;
 import org.rauschig.jarchivelib.ArchiverFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** 
- * The method chartGenerate generates a new file structure for helm chart, and print out the status on command
- * The method must specifi the below parameter
- * 
- * chartName        a name for the chart, which will be reflected in the name of the file and chart.yaml
- * apiVersion       the API version, v2, v1... which will be reflected in chart.yaml
- * type             the type of the helm chart, such as application, also reflected in chart.yaml
- * directoryToPush  the file directory for the chart being built
- * 
- * For example, this method shall be 
- * HelmGenerate test = new HelmGenerate();
- * test.chartGenerate("testChart", "v2", "application","C:/Users/xxx/");
- * 
+ * Class that provides static methods for generating Helm charts compatible with
+ * our Spinnaker pipeline. Notably, these Helm charts specifically require the use
+ * of a ReplicaSet instead of a Deployment, a couple of annotations in the ReplicaSet.
+ * and the Service selector must not match any keys in the ReplicaSet.
  */
 
 public class HelmGenerate {
     static final String DEFAULT_CHART_VERSION = "v2";
     static final String DEFAULT_CHART_TYPE = "application";
+    static final Logger logger = LoggerFactory.getLogger(HelmGenerate.class);
     /**
      * Generate a basic helm chart with the specified information.
      * @param chartName The name of the helm chart
@@ -98,6 +92,7 @@ public class HelmGenerate {
         Path helmDir = Paths.get(directoryToPush, "Chart");
         if(helmDir.toFile().mkdir() == false)
         {
+            logger.warn("Failed to create chart directory");
             throw new IOException("Chart directory already exists");
         }
                 
@@ -126,6 +121,7 @@ public class HelmGenerate {
 
         Archiver archiver = ArchiverFactory.createArchiver(ArchiveFormat.TAR);
         archiver.extract(loader.getResourceAsStream("Helm/helm.tar"), helmDir.toFile());
+        logger.info("Completed Helm generation");
     }
 
     /** 

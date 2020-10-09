@@ -26,6 +26,9 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Provides static methods for generating a new Maven project.
+ */
 public class GenerateMavenProject {
     
     private static final Logger log = LoggerFactory.getLogger(GenerateJenkinsfile.class);
@@ -36,9 +39,26 @@ public class GenerateMavenProject {
     static final String CHECKSTYLE_FILENAME = "rev_checks.xml";
     static final int TAB_SPACES = 4;
 
-    // Generates a new Maven project in the designated directory. Creates standard
-    // folder structure, generates a generic .gitignore file, generates a generic
-    // main java file, and generates a basic pom.xml file
+    /**
+     * Generates a new Maven project in the designated directory. Creates standard
+     * folder structure, generates a generic .gitignore file, generates a generic
+     * main java file, and generates a basic pom.xml file
+     * @param groupId The Maven group id
+     * @param artifactId The Maven artifact id
+     * @param version
+     * @param description
+     * @param name A human-readable name
+     * @param url The homepage for this project, possibly an online Git repository.
+     * @param packaging The type of packaging to use for this project e.g. jar, war
+     * @param javaVersion The JDK version to use for this project.
+     * @param mainClass The main entrypoint for this application
+     * @param dependencies A list of dependencies for this project, matching 
+     * the dependency format used by maven.
+     * @param IDE
+     * @param directoryToPush The working directory to generate this project in.
+     * @throws GenerationException
+     */
+
     public static void generateNewMavenProject(String groupId, String artifactId, String version, String description,
             String name, String url, String packaging, String javaVersion, String mainClass,
             List<Map<String, String>> dependencies, String IDE, String directoryToPush) throws GenerationException {

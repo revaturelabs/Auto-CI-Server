@@ -39,6 +39,10 @@ import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This Servlet listens for a Post request, then attempts to initialize 
+ * the given Github repository with appropriate project files.
+ */
 public class InitServlet extends HttpServlet {
     static final String SECRET_DIR = "secrets/";
     private String token;
@@ -68,7 +72,7 @@ public class InitServlet extends HttpServlet {
         Gson temp = new Gson();
         GsonBuilder builder = new GsonBuilder();
 
-        // Npm json deserializer
+        // Custom npm json deserializer
         JsonDeserializer<NpmJSON> deserializer = new JsonDeserializer<NpmJSON>(){
             @Override
             public NpmJSON deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -114,6 +118,7 @@ public class InitServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.info("Processing POST request");
         // Load in JSON message
         JSONRequest data = gson.fromJson(req.getReader(), JSONRequest.class);
 
@@ -121,16 +126,19 @@ public class InitServlet extends HttpServlet {
         // create temp directory
         Path tempPath = Files.createTempDirectory("init");
         System.out.println(tempPath.toAbsolutePath().toString());
+        
         try (LocalGitRepo git = new LocalGitRepo(data.getGithubURL(), tempPath, token)) {
             String projectName = null;
             String appVersion = null;
             String imageName = null;
+
             if (data.isMaven()) {
+                // Generate a maven project
                 MavenJSON mavenData = data.getMavenData();
                 projectName = mavenData.getProjectName();
                 appVersion = mavenData.getVersion();
+
                 System.out.println("Generating maven project");
-                
                 GenerateMavenProject.generateNewMavenProject(mavenData.getGroupId(),
                     mavenData.getArtifactId(), mavenData.getVersion(), mavenData.getDescription(),
                     mavenData.getDescription(), data.getGithubURL(), mavenData.getPackaging(),
@@ -139,18 +147,21 @@ public class InitServlet extends HttpServlet {
                 log.info("Maven Project with all required files and configuration succesfully generated");
             } else // Is node
             {
+                // Generate a Node project
                 NpmJSON npmData = data.getNpmData();
                 projectName = npmData.getProjectName();
                 appVersion = npmData.getVersion();
-                System.out.println("Generating Node project");
 
+                System.out.println("Generating Node project");
                 GenerateNpmProject.generateNewNpmProject(npmData.getProjectName(), npmData.getAuthor(), npmData.getVersion(), 
                     npmData.getDescription(), npmData.getMainEntrypoint(), data.getGithubURL(),
                     npmData.getLicense(), npmData.getScripts(), npmData.getKeywords(),
                     npmData.getDependencies(), npmData.getDevDependencies(), data.getIDE(), tempPath.toString());
                 log.info("Node JS Project with all required files and configuration succesfully generated");
             }
+
             imageName = projectName;
+
             // Generate Helm Chart
             HelmGenerate.generateHelmChart(projectName.toLowerCase().trim().replace(' ', '-'), appVersion, projectName, tempPath.toString(), false);
             log.info("HELM chart with configuration and files successfully generated");
@@ -204,13 +215,13 @@ public class InitServlet extends HttpServlet {
         if(success)
         {
             resp.setStatus(HttpServletResponse.SC_OK);
-            log.info("Servelet functioned as desired");
+            log.info("Successfully processed request");
             return;
         }
         else
         {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            log.error("Servelet did not function as desired");
+            log.error("Failed to process POST request");
             return;
         }
         
