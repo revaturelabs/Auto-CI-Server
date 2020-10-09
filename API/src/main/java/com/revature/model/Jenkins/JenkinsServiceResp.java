@@ -1,8 +1,11 @@
 package com.revature.model.Jenkins;
 
+
 public class JenkinsServiceResp {
     private String devJob;
     private String prodJob;
+    private String errorMsg;
+
 
     public JenkinsServiceResp() {
     }
@@ -23,6 +26,14 @@ public class JenkinsServiceResp {
         this.prodJob = prodJob;
     }
 
+    public String getErrorMsg() {
+        return this.errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
     public JenkinsServiceResp devJob(String devJob) {
         this.devJob = devJob;
         return this;
@@ -30,6 +41,11 @@ public class JenkinsServiceResp {
 
     public JenkinsServiceResp prodJob(String prodJob) {
         this.prodJob = prodJob;
+        return this;
+    }
+
+    public JenkinsServiceResp errorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
         return this;
     }
 
