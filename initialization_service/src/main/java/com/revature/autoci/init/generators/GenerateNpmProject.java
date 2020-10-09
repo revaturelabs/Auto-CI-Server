@@ -16,12 +16,31 @@ import com.google.gson.JsonIOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Class that provides static methods for generating a Node.js project
+ */
 public class GenerateNpmProject {
     private static final Logger log = LoggerFactory.getLogger(GenerateNpmProject.class);
     static final String ESLINT_VERSION = "^7.10.0";
     static final String ESLINT_CONFIG_FILENAME = ".eslintrc.json";
-    // Generates a new npm project in the designated directory. Creates standard folder structure, generates 
-    // a generic .gitignore file, and generates a basic package.json file
+
+    /**
+     * Generates a new Node.js project with appropriate files and file structure.
+     * @param projectName
+     * @param author
+     * @param version
+     * @param description
+     * @param mainEntrypoint Corresponds to the "main" field in package.json
+     * @param gitUrl URL to the Git repository
+     * @param license
+     * @param scripts A map describing supported "npm run" commands and the associated scripts.
+     * @param keywords
+     * @param dependencies A map of dependency names to versions.
+     * @param devDependencies A map of development dependency names to versions.
+     * @param IDE
+     * @param directoryToPush The working directory to generate the project in.
+     * @throws GenerationException
+     */
     public static void generateNewNpmProject(String projectName, String author, String version, String description,
             String mainEntrypoint, String gitUrl, String license, Map<String, String> scripts, List<String> keywords,
             Map<String, String> dependencies, Map<String, String> devDependencies, String IDE, String directoryToPush)
@@ -32,7 +51,10 @@ public class GenerateNpmProject {
         generatePackageJSON(projectName, version, description, mainEntrypoint, gitUrl, scripts, keywords, author, license, dependencies, devDependencies, directoryToPush);
     }
 
-    // Creates a common npm project file structure in the designated directory, adding bin, lib, and doc folders
+    /**
+     * Generates a new npm project in the designated directory. Creates standard folder structure, generates 
+     * a generic .gitignore file, and generates a basic package.json file
+     **/ 
     private static void generateNpmFileStructure(String directoryToPush) {
         File baseFolder = Paths.get(directoryToPush).toFile();
         // Adding bin folder

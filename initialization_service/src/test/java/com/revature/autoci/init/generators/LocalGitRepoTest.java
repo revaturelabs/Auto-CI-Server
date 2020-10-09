@@ -56,11 +56,12 @@ public class LocalGitRepoTest {
         boolean success = false;
         for(DiffEntry d: diffs)
         {
-            if(d.getOldPath().equals("example.txt"))
+            if(d.getNewPath().equals("example.txt"))
             {
                 success = true;
             }
         }
+        assertTrue(success);
     }
 
     @Test
@@ -85,9 +86,12 @@ public class LocalGitRepoTest {
         ObjectId newTree = git.getRepository().resolve( "HEAD^{tree}" );
         newTreeIter.reset( reader, newTree );
 
-        DiffFormatter diffFormatter = new DiffFormatter( DisabledOutputStream.INSTANCE );
-        diffFormatter.setRepository( git.getRepository() );
-        List<DiffEntry> entries = diffFormatter.scan( oldTreeIter, newTreeIter );
+        List<DiffEntry> entries = null;
+        try(DiffFormatter diffFormatter = new DiffFormatter( DisabledOutputStream.INSTANCE ))
+        {
+            diffFormatter.setRepository( git.getRepository() );
+            entries = diffFormatter.scan( oldTreeIter, newTreeIter );
+        }
 
         return entries;
 

@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
  */
 public class InitServer
 {
+    /**
+     * Launches the embedded tomcat server. This is the entrypoint for this microservice.
+     */
     public static void main( String[] args ) throws LifecycleException
     {
         final Logger log = LoggerFactory.getLogger(InitServer.class);

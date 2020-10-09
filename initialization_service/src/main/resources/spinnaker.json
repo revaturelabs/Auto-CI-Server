@@ -92,7 +92,6 @@
           ],
           "refId": "2",
           "requiredArtifactIds": [
-            "09fd68bc-f5b7-4473-9e22-63697a3a318e"
           ],
           "requiredArtifacts": [
             {
@@ -126,7 +125,7 @@
       "triggers": [
         {
           "enabled": true,
-          "job": "${projectName}/job/prod-pipe",
+          "job": "${jenkinsName}/job/prod-pipe",
           "master": "my-jenkins-master",
           "type": "jenkins"
         }
