@@ -24,6 +24,7 @@ public class GenerateSpinnaker {
         // Compile regex to replace variables with arguments
         Map<String, String> pairs = new HashMap<>();
         pairs.put("projectName", projectName);
+        pairs.put("jenkinsName", projectName.toLowerCase());
         pairs.put("pipelineId", projectName + UUID.randomUUID().toString());
         pairs.put("imageName", imageName);
         Templater templater = new Templater(pairs);
