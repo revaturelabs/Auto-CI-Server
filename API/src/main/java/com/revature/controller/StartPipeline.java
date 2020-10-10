@@ -3,11 +3,11 @@ package com.revature.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.revature.model.ProgressResp;
 import com.revature.model.Configuration.ConfigurationResp;
 import com.revature.model.Frontend.FrontendReq;
 import com.revature.model.Initialization.InitializationResp;
 import com.revature.model.Jenkins.JenkinsServiceResp;
+import com.revature.model.Progress.ProgressResp;
 import com.revature.model.Spinnaker.SpinnakerServiceResp;
 
 public class StartPipeline {

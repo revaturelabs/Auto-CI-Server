@@ -1,4 +1,4 @@
-package com.revature.model;
+package com.revature.model.Progress;
 
 public class ProgressResp {
     private String message;

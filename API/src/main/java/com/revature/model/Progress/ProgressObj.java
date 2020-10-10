@@ -1,8 +1,6 @@
-package com.revature.model;
+package com.revature.model.Progress;
 
-public class Progress {
-
-    //might need to delete this file its the same as the progress singltion
+public class ProgressObj {
 
     private Boolean runningStatus;
     private String initialization;
@@ -50,7 +48,7 @@ public class Progress {
         this.Spinnaker = Spinnaker;
     }
 
-    public Progress(){}
+    public ProgressObj(){}
 
     
 
