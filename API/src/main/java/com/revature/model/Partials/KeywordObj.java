@@ -1,4 +1,4 @@
-package com.revature.model.Frontend;
+package com.revature.model.Partials;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

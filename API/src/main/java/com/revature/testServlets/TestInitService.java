@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Initialization.InitializationResp;
 
-@WebServlet(name = "TestInit", urlPatterns = { "/testInit" })
+@WebServlet(name = "TestInit", urlPatterns = { "/test-init" })
 public class TestInitService extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -31,9 +31,8 @@ public class TestInitService extends HttpServlet {
 
         // to demo time it takes to respond
         try {
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

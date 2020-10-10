@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class InitializationResp {
     private String isDone;
 
+    public InitializationResp(){}
+
     public InitializationResp(String isDone) {
         this.isDone = isDone;
     }

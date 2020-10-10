@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Jenkins.JenkinsServiceResp;
 
-@WebServlet(name = "JenkinsTest2", urlPatterns = { "/jenkinstest2" })
+@WebServlet(name = "JenkinsTest2", urlPatterns = { "/test-jenkins" })
 public class JenkinsTest extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

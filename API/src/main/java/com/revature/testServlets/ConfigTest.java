@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Configuration.ConfigurationResp;
 
-@WebServlet(name = "ConfigTest2", urlPatterns = { "/configtest2" })
+@WebServlet(name = "ConfigTest2", urlPatterns = { "/test-config" })
 public class ConfigTest extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

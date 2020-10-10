@@ -1,56 +1,52 @@
 package com.revature.controller;
-
 import java.io.IOException;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.model.Configuration.ConfigurationResp;
+import com.revature.model.Frontend.FrontendReq;
 import com.revature.model.Jenkins.JenkinsServiceObject;
 import com.revature.model.Jenkins.JenkinsServiceResp;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
-
 public class Jenkins {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
-    // final String URL = "http://localhost:8080/jenkinstest2";
-    // final String URL = "http://10.100.77.80:30110";
-    final String URL = "http://ace4f487a5b1c4ff986fa0bd92cbb63b-887864636.us-east-1.elb.amazonaws.com:8080/jenkins-svlt/";
-    public final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    public JenkinsServiceResp JenkinsService(JenkinsServiceObject jenkins) {
-        log.info("Beginning JenkinsService method");
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    public JenkinsServiceResp jenkinsService(FrontendReq frontEndObj, String url, String URLjenkinshost, ConfigurationResp configResp) {
+
+        ProgressSingleton progress = ProgressSingleton.instance();
         ObjectMapper mapper = new ObjectMapper();
-        try {
-            OkHttpClient client = new OkHttpClient();
-            String json = mapper.writeValueAsString(jenkins);
-            RequestBody body = RequestBody.create(json, JSON);      
-            Request request = new Request.Builder().url(URL).post(body).build();
-            Response response;
+
+        progress.setJenkins("started");
+        JenkinsServiceObject jenkinsServiceObj = new JenkinsServiceObject();
+        JenkinsServiceResp jenkinsResp;
+        jenkinsServiceObj.setGithubURL(configResp.getGithubURL());
+        jenkinsServiceObj.setJenkinsURL(URLjenkinshost);
+        jenkinsServiceObj.setProjectName(frontEndObj.getMavenData().getProjectName());
+        jenkinsServiceObj.setSlackChannel("");
+
+        Response response = HttpRequest.sendHttpReq(jenkinsServiceObj, url);
+
+        //checks for 200 response
+        if (FailureChecker.CheckCode(response)) {
             try {
-                response = client.newCall(request).execute();
-                JenkinsServiceResp jenkinsresp;
-                try {
-                    jenkinsresp = mapper.readValue(response.body().byteStream(), JenkinsServiceResp.class);
-                    return jenkinsresp;
-                } catch (IOException e) {
-                    log.error("Failed setting jenkinsresp = " + e.getMessage());
-                    e.printStackTrace();
-                }
+                jenkinsResp = mapper.readValue(response.body().byteStream(), JenkinsServiceResp.class);
+                log.info("OK");
+                progress.setJenkins("finished");
+                return jenkinsResp;
             } catch (IOException e) {
-                log.error("Failed setting response = " + e.getMessage());
                 e.printStackTrace();
+                progress.setJenkins("failed");
+                progress.setRunningStatus(false);
+                log.error("Failed setting response = " + e.getMessage());
             }
-        } catch (JsonProcessingException e) {
-            log.error("Failed setting jsonString = " + e.getMessage());
-            e.printStackTrace();
+        } else {
+            progress.setJenkins("failed");
+            progress.setRunningStatus(false);
+            jenkinsResp = new JenkinsServiceResp();
         }
         return null;
     }
+    
 }

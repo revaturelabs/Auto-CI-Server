@@ -1,6 +1,6 @@
 package com.revature.model.Configuration;
 
-public class Configuration {
+public class ConfigurationObj {
 
     private String githubUsername;
     private String jenkinsURL;
@@ -9,7 +9,7 @@ public class Configuration {
     private Boolean debug; // Optional; leave to true to prevent polluting the revaturelabs org with our test repos
 
 
-    public Configuration() {
+    public ConfigurationObj() {
     }
 
     public String getGithubUsername() {
@@ -52,27 +52,27 @@ public class Configuration {
         this.debug = debug;
     }
 
-    public Configuration githubUsername(String githubUsername) {
+    public ConfigurationObj githubUsername(String githubUsername) {
         this.githubUsername = githubUsername;
         return this;
     }
 
-    public Configuration jenkinsURL(String jenkinsURL) {
+    public ConfigurationObj jenkinsURL(String jenkinsURL) {
         this.jenkinsURL = jenkinsURL;
         return this;
     }
 
-    public Configuration projectName(String projectName) {
+    public ConfigurationObj projectName(String projectName) {
         this.projectName = projectName;
         return this;
     }
 
-    public Configuration generateGithubActions(Boolean generateGithubActions) {
+    public ConfigurationObj generateGithubActions(Boolean generateGithubActions) {
         this.generateGithubActions = generateGithubActions;
         return this;
     }
 
-    public Configuration debug(Boolean debug) {
+    public ConfigurationObj debug(Boolean debug) {
         this.debug = debug;
         return this;
     }

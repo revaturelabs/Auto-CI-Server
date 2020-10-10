@@ -13,26 +13,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // import com.revature.model.Spinnaker.SpinnakerServiceObject;
 import com.revature.model.Spinnaker.SpinnakerServiceResp;
 
-@WebServlet(name = "TestSpinn", urlPatterns = { "/testspinn" })
+@WebServlet(name = "TestSpinn", urlPatterns = { "/test-spinn" })
 public class TestSpinn extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Jackson stuff
+
         ObjectMapper objectMapper = new ObjectMapper();
-
-        // Commenting out Unused Vars 202010061001-mwg
-        // SpinnakerServiceObject init = objectMapper.readValue(req.getInputStream(), SpinnakerServiceObject.class);
-
         SpinnakerServiceResp response = new SpinnakerServiceResp(true, true);
-
         String result = objectMapper.writeValueAsString(response);
 
         PrintWriter out = resp.getWriter();
-
-        // return
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         resp.setStatus(200);

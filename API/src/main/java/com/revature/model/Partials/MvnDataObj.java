@@ -1,4 +1,4 @@
-package com.revature.model.Frontend;
+package com.revature.model.Partials;
 
 import java.util.List;
 
