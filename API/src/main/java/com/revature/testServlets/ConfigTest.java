@@ -2,6 +2,7 @@ package com.revature.testServlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,6 +30,13 @@ public class ConfigTest extends HttpServlet {
         String result = objectMapper2.writeValueAsString(configresp);
 
         PrintWriter out = resp.getWriter();
+
+        // to demo time it takes to respond
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //return 
         resp.setContentType("application/json");

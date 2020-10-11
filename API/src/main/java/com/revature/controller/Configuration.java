@@ -4,7 +4,7 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Configuration.ConfigurationObj;
 import com.revature.model.Configuration.ConfigurationResp;
-import com.revature.model.Frontend.FrontendReq;
+import com.revature.model.Frontend.FrontendObj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import okhttp3.Response;
@@ -13,7 +13,7 @@ public class Configuration {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public ConfigurationResp ConfigService(FrontendReq frontEndObj, String UrlConfig, String Urljenkins) {
+    public ConfigurationResp ConfigService(FrontendObj frontEndObj, String UrlConfig, String Urljenkins) {
 
         ProgressSingleton progress = ProgressSingleton.instance();
         ObjectMapper mapper = new ObjectMapper();

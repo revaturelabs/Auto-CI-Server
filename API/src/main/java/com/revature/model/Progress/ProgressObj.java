@@ -3,8 +3,8 @@ package com.revature.model.Progress;
 public class ProgressObj {
 
     private Boolean runningStatus;
-    private String initialization;
     private String configuration;
+    private String initialization;
     private String jenkins;
     private String Spinnaker;
 

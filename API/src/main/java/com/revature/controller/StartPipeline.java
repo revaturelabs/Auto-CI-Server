@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.revature.model.Configuration.ConfigurationResp;
-import com.revature.model.Frontend.FrontendReq;
+import com.revature.model.Frontend.FrontendObj;
 import com.revature.model.Initialization.InitializationResp;
 import com.revature.model.Jenkins.JenkinsServiceResp;
-import com.revature.model.Progress.ProgressResp;
+import com.revature.model.Progress.ReturnResp;
 import com.revature.model.Spinnaker.SpinnakerServiceResp;
 
 public class StartPipeline {
@@ -24,10 +24,11 @@ public class StartPipeline {
     private final String URLjenkinsHost = "test.jenkins.com";
     private final String URLspinnaker = "http://localhost:8080/test-spinn";
 
-    public ProgressResp init(FrontendReq frontEndObj) {
+    public ReturnResp init(FrontendObj frontEndObj) {
 
         // to keep track of progress
         ProgressSingleton progress = ProgressSingleton.instance();
+        ReturnResp response = new ReturnResp();
 
         //1
         ConfigurationResp configResp = new Configuration().ConfigService(frontEndObj, URLconfig, URLjenkinsHost);
@@ -48,8 +49,10 @@ public class StartPipeline {
 
         //we have finshed
         progress.setRunningStatus(false);
+        response.setMessage("Completed Pipeline");
+        response.setStatus(true);
 
-        return new ProgressResp("finished running", true);
+        return response;
     }
 
     static <T> void printJson(T obj){

@@ -7,7 +7,7 @@ import com.revature.model.Partials.NpmDataObj;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "githubUsername", "githubURL", "ide", "generateGithubActions", "isMaven", "mavenData", "npmData" })
-public class FrontendReq {
+public class FrontendObj {
 
     private String githubUsername;
     private String githubURL;
@@ -18,7 +18,7 @@ public class FrontendReq {
     private MvnDataObj mavenData;
     private NpmDataObj npmData;
 
-    public FrontendReq() { }
+    public FrontendObj() { }
 
     public String getGithubUsername() {
         return this.githubUsername;
@@ -76,37 +76,37 @@ public class FrontendReq {
         this.npmData = npmData;
     }
 
-    public FrontendReq githubUsername(String githubUsername) {
+    public FrontendObj githubUsername(String githubUsername) {
         this.githubUsername = githubUsername;
         return this;
     }
 
-    public FrontendReq githubURL(String githubURL) {
+    public FrontendObj githubURL(String githubURL) {
         this.githubURL = githubURL;
         return this;
     }
 
-    public FrontendReq ide(String ide) {
+    public FrontendObj ide(String ide) {
         this.ide = ide;
         return this;
     }
 
-    public FrontendReq generateGithubActions(Boolean generateGithubActions) {
+    public FrontendObj generateGithubActions(Boolean generateGithubActions) {
         this.generateGithubActions = generateGithubActions;
         return this;
     }
 
-    public FrontendReq isMaven(Boolean isMaven) {
+    public FrontendObj isMaven(Boolean isMaven) {
         this.isMaven = isMaven;
         return this;
     }
 
-    public FrontendReq mavenData(MvnDataObj mavenData) {
+    public FrontendObj mavenData(MvnDataObj mavenData) {
         this.mavenData = mavenData;
         return this;
     }
 
-    public FrontendReq npmData(NpmDataObj npmData) {
+    public FrontendObj npmData(NpmDataObj npmData) {
         this.npmData = npmData;
         return this;
     }

@@ -1,10 +1,12 @@
 package com.revature.model.Progress;
 
-public class ProgressResp {
+public class ReturnResp {
     private String message;
     private Boolean status;
 
-    public ProgressResp(String message, Boolean status){
+    public ReturnResp(){}
+
+    public ReturnResp(Boolean status, String message){
         this.message = message;
         this.status = status;
     }

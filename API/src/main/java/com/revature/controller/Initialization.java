@@ -3,7 +3,7 @@ package com.revature.controller;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Configuration.ConfigurationResp;
-import com.revature.model.Frontend.FrontendReq;
+import com.revature.model.Frontend.FrontendObj;
 import com.revature.model.Initialization.InitializationObj;
 import com.revature.model.Initialization.InitializationResp;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ public class Initialization {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public InitializationResp initService(FrontendReq frontendObj, String url, ConfigurationResp configResp) {
+    public InitializationResp initService(FrontendObj frontendObj, String url, ConfigurationResp configResp) {
 
         ProgressSingleton progress = ProgressSingleton.instance();
         ObjectMapper mapper = new ObjectMapper();
