@@ -28,27 +28,20 @@ public class Initialization {
         initObj.setIsMaven(frontendObj.getIsMaven());
         initObj.setMavenData(frontendObj.getMavenData());
         initObj.setNpmData(frontendObj.getNpmData());
-        InitializationResp initResp;
+        InitializationResp initResp = new InitializationResp();
         Response response = HttpRequest.sendHttpReq(initObj, url);
 
         //checks for 200 response
         if (FailureChecker.CheckCode(response)) {
-            try {
-                initResp = mapper.readValue(response.body().byteStream(), InitializationResp.class);
-                log.info("OK");
-                progress.setInitialization("finished");
-                return initResp;
-            } catch (IOException e) {
-                e.printStackTrace();
-                progress.setInitialization("failed");
-                progress.setRunningStatus(false);
-                log.error("Failed setting response = " + e.getMessage());
-            }
+            log.info("OK");
+            initResp.setIsDone("done");
+            progress.setInitialization("finished");
+            return initResp;
         } else {
             progress.setInitialization("failed");
             progress.setRunningStatus(false);
-            initResp = new InitializationResp();
+            initResp.setIsDone("failed");
+            return initResp;
         }
-        return null;
     }
 }

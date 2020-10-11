@@ -3,6 +3,7 @@ package com.revature.model.Configuration;
 public class ConfigurationResp {
     private String githubURL;
     private Boolean madeHook; // false if using GHActions or on error
+    private String errorMsg;
 
     public ConfigurationResp() {
     }
@@ -31,6 +32,14 @@ public class ConfigurationResp {
     public ConfigurationResp madeHook(Boolean madeHook) {
         this.madeHook = madeHook;
         return this;
+    }
+
+    public String getErrorMsg() {
+        return this.errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 
 }

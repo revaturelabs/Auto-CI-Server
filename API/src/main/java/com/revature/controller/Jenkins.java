@@ -1,5 +1,8 @@
 package com.revature.controller;
+
 import java.io.IOException;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Configuration.ConfigurationResp;
 import com.revature.model.Frontend.FrontendObj;
@@ -16,7 +19,7 @@ public class Jenkins {
     public JenkinsServiceResp jenkinsService(FrontendObj frontEndObj, String url, String URLjenkinshost, ConfigurationResp configResp) {
 
         ProgressSingleton progress = ProgressSingleton.instance();
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         progress.setJenkins("started");
         JenkinsServiceObject jenkinsServiceObj = new JenkinsServiceObject();
