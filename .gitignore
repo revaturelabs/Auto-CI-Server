@@ -1,0 +1,7 @@
+spinnaker_service/target
+.vscode/
+.settings/
+.classpath
+.project
+spinnaker_service/app.properties
+spinnaker_service/logs/*.log

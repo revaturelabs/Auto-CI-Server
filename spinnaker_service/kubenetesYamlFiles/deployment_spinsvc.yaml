@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: spinnaker-receiver
+    namespace: autoci
+    labels:
+        app: spinnaker-receiver
+spec:
+    replicas: 2
+    revisionHistoryLimit: 3
+    selector:
+        matchLabels:
+            app: spinnaker-receiver
+    template:
+        metadata:
+            labels:
+                app: spinnaker-receiver
+        spec:
+            containers:
+                - name: spin-receiver
+                  image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/auto_ci_spin_service
+                  imagePullPolicy: Always
+                  ports:
+                    - containerPort: 8080

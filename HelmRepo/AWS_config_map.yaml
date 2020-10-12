@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-map
+  namespace: autoci
+data:
+  # property-like keys; each key maps to a simple value
+  STORAGE_AMAZON_BUCKET: ___
+  STORAGE_AMAZON_PREFIX: "charts"
+  STORAGE_AMAZON_REGION: ___

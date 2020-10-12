@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s3-chart-museum
+  namespace: autoci
+  labels:
+    app: s3-chart-museum
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: s3-chart-museum
+  template:
+    metadata:
+      labels:
+        app: s3-chart-museum
+    spec:
+      containers:
+        - name: s3-chart-museum
+          image: chartmuseum/chartmuseum:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: STORAGE
+              value: amazon
+            - name: STORAGE_AMAZON_BUCKET
+              valueFrom: 
+                configMapKeyRef:
+                  name: aws-map
+                  key: STORAGE_AMAZON_BUCKET
+            - name: STORAGE_AMAZON_PREFIX
+              valueFrom: 
+                configMapKeyRef:
+                  name: aws-map
+                  key: STORAGE_AMAZON_PREFIX
+            - name: STORAGE_AMAZON_REGION
+              valueFrom: 
+                configMapKeyRef:
+                  name: aws-map
+                  key: STORAGE_AMAZON_REGION
+            - name: AWS_ACCESS_KEY_ID 
+              valueFrom: 
+                secretKeyRef:
+                  name: aws-access-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom: 
+                secretKeyRef:
+                  name: aws-access-secrets
+                  key: AWS_SECRET_ACCESS_KEY
