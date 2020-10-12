@@ -42,7 +42,7 @@ pipeline {
         stage('Helm Tests') {
             steps {
                 withKubeConfig([credentialsId: "${kubectlCreds}", serverUrl: "${kubectlServer}"]) {
-                    sh "helm install helmtest ${projectName} -n helm-test"
+                    sh "helm install helmtest Chart -n helm-test"
                     sleep(10);
                     sh 'helm test helmtest -n helm-test'
                 }
