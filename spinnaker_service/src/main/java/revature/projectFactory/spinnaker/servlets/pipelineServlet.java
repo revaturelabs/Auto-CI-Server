@@ -29,6 +29,8 @@ public class pipelineServlet extends HttpServlet{
     
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private IApplicationCreation APPBUILDER;
+    private IPipeLineCreation PIPELINEBUILDER;
+
     @Override
     public void init() throws ServletException {
         super.init();
@@ -59,7 +61,7 @@ public class pipelineServlet extends HttpServlet{
         }else{
             result.setApplicationCreated(true);
         }
-        IPipeLineCreation PIPELINEBUILDER = new PipelineCreation(ConnectionConstants.getSPINNAKERURI(), obj.getGitUri(), obj.getBranch());
+        PIPELINEBUILDER = new PipelineCreation(ConnectionConstants.getSPINNAKERURI(), obj.getGitUri(), obj.getBranch());
         if(PIPELINEBUILDER.create()){
             result.setPipelineCreated(true);
         }else{
