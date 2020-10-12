@@ -48,6 +48,13 @@ pipeline {
                 }
             }
         }
+        stage('Upload Helm Chart')
+        {
+            steps {
+                def chartname = sh script: "helm package Chart | sed 's/^[^:]*://g'", returnStdout: true
+                sh "curl --data-binary \"@${chartname}\" http://a9c2594943a63472faa675f1858e4264-18446664.us-east-1.elb.amazonaws.com/api/charts"
+            }
+        }
     }
     post {
         success {
