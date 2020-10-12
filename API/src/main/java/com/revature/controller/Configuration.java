@@ -24,7 +24,7 @@ public class Configuration {
         configObj.setGithubUsername(frontEndObj.getGithubUsername());
         configObj.setJenkinsURL(Urljenkins);
         configObj.setProjectName(frontEndObj.getMavenData().getProjectName());
-        configObj.setGenerateGithubActions(true);
+        configObj.setGenerateGithubActions(frontEndObj.getGenerateGithubActions());
         configObj.setDebug(true);
 
         Response response = HttpRequest.sendHttpReq(configObj, UrlConfig);
