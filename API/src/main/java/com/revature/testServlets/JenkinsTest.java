@@ -13,10 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Jenkins.JenkinsServiceResp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @WebServlet(name = "JenkinsTest2", urlPatterns = { "/test-jenkins" })
 public class JenkinsTest extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private final Class<? extends JenkinsTest> CLASS_NAME = this.getClass();
+    private final Logger log = LoggerFactory.getLogger(CLASS_NAME);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -42,6 +47,12 @@ public class JenkinsTest extends HttpServlet {
            resp.setStatus(200);
            out.print(result);
            out.flush();
-
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // If someone sends a Get request here by mistake
+        log.warn("Sorry! " + CLASS_NAME + " only takes POST requests. Sending data to POST...");
+        super.doPost(req, resp);
     }
 }

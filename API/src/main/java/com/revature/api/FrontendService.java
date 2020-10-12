@@ -18,11 +18,15 @@ import com.revature.model.Frontend.FrontendObj;
 import com.revature.model.Progress.ReturnResp;
 import com.revature.model.Validate.ValidateObj;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet(name = "FrontendService", urlPatterns = { "/frontend" })
 public class FrontendService extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private final Class<? extends FrontendService> CLASS_NAME = this.getClass();
+    private final Logger log = LoggerFactory.getLogger(CLASS_NAME);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -89,5 +93,12 @@ public class FrontendService extends HttpServlet {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // If someone sends a Get request here by mistake
+        log.warn("Sorry! " + CLASS_NAME + " only takes POST requests. Sending data to POST...");
+        super.doPost(req, resp);
     }
 }

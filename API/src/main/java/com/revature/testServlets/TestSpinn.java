@@ -14,10 +14,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // import com.revature.model.Spinnaker.SpinnakerServiceObject;
 import com.revature.model.Spinnaker.SpinnakerServiceResp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @WebServlet(name = "TestSpinn", urlPatterns = { "/test-spinn" })
 public class TestSpinn extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private final Class<? extends TestSpinn> CLASS_NAME = this.getClass();
+    private final Logger log = LoggerFactory.getLogger(CLASS_NAME);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,5 +45,12 @@ public class TestSpinn extends HttpServlet {
         resp.setStatus(200);
         out.print(result);
         out.flush();
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // If someone sends a Get request here by mistake
+        log.warn("Sorry! " + CLASS_NAME + " only takes POST requests. Sending data to POST...");
+        super.doPost(req, resp);
     }
 }
