@@ -20,9 +20,10 @@ public class Azure extends HttpServlet {
     String gitUrl;
     String slackChannel;
   
-    final String azureAuth = " -u " + System.getenv("AZURE_USERNAME") + " -p " + System.getenv("AZURE_PASSWORD");
-    final String azOrgName = System.getenv("AZURE_ORG_NAME");
-    final String azServiceId = System.getenv("AZURE_GITHUB_AUTH_SERVICE_ID");
+    final String AZ_AUTH = " -u " + System.getenv("AZURE_USERNAME") + " -p " + System.getenv("AZURE_PASSWORD");
+    final String AZ_ORG = System.getenv("AZURE_ORG_NAME");
+    final String AZ_SERVICE_ID = System.getenv("AZURE_GITHUB_AUTH_SERVICE_ID");
+    final String[] BRANCHES = {"dev", "prod"};
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
     @Override
@@ -38,8 +39,8 @@ public class Azure extends HttpServlet {
 			azureLogin(cmd, responseJson);
             log.info("Making pipeline...");
             makePipeline(cmd, responseJson);
-            log.info("Making container repo...");
-            makeContainerRepo(cmd, responseJson);
+            log.info("Setting pipeline variables...");
+            setPipelineVars(cmd, responseJson);
         } catch (Exception e) {
             responseJson.put("errorMsg", e.getMessage());
             log.error(e.getMessage());
@@ -107,20 +108,31 @@ public class Azure extends HttpServlet {
     }
 	
     private void azureLogin(CommandExecutor cmd, JSONObject response) throws IOException {
-        execAndLogCmd(cmd, "az login" + azureAuth);
+        execAndLogCmd(cmd, "az login" + AZ_AUTH);
         execAndLogCmd(cmd, "az devops configure -d organization=https://dev.azure.com/RevatureProjectFactory project=ProjectFactory");
     }
     
     private String makePipelineCommand(String branch) {
-        return "az pipelines create --folder " + projName + " --name " + projName + "-" + branch + " --repository " + gitUrl + " --branch " + branch + " --yaml-path azure-pipeline.yaml --service-connection " + azServiceId;
+        return "az pipelines create --folder " + projName + " --name " + projName + "-" + branch + " --repository " + gitUrl + " --branch " + branch + " --yaml-path azure-pipelines.yaml --service-connection " + AZ_SERVICE_ID;
     }
     private void makePipeline(CommandExecutor cmd, JSONObject response) throws IOException {
         execAndLogCmd(cmd, "az pipelines folder create --path " + projName);
-        execAndLogCmd(cmd, makePipelineCommand("dev"));
-        execAndLogCmd(cmd, makePipelineCommand("prod"));
+        for (String b : BRANCHES) {
+            execAndLogCmd(cmd, makePipelineCommand(b));
+        }
     }
     
-    private void makeContainerRepo(CommandExecutor cmd, JSONObject response) throws IOException {
-		
+    private String makePipelineVarCommand(String name, String value, String branch) {
+        return "az pipelines variable create --name " + name + " --value " + value + " --pipeline-name " + projName + "-" + branch;
+    }
+    private void setPipelineVars(CommandExecutor cmd, JSONObject response) throws IOException {
+        for (String b : BRANCHES) {
+            execAndLogCmd(cmd, makePipelineVarCommand("projNameLowercase", projName.toLowerCase(), b));
+            execAndLogCmd(cmd, makePipelineVarCommand("azureSubscriptionEndpoint", "helm", b));
+            execAndLogCmd(cmd, makePipelineVarCommand("keyVaultName", "Project3KeyVault", b));
+            execAndLogCmd(cmd, makePipelineVarCommand("azureContainerRegistry", "revprojectfactory.azurecr.io", b));
+            execAndLogCmd(cmd, makePipelineVarCommand("azureResourceGroup", "Project3", b));
+            execAndLogCmd(cmd, makePipelineVarCommand("kubernetesCluster", "Project3Cluster", b));
+        }
     }
 }
