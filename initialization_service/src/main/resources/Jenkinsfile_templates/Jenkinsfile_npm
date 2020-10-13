@@ -26,7 +26,7 @@ pipeline {
                 sh 'npm test'
             }
         }
-        stage('Deploy') {
+        stage('Upload Docker Image') {
             steps {
                 script {
                     docker.withTool('docker') {
@@ -42,17 +42,19 @@ pipeline {
         stage('Helm Tests') {
             steps {
                 withKubeConfig([credentialsId: "${kubectlCreds}", serverUrl: "${kubectlServer}"]) {
-                    sh "helm install helmtest Chart -n helm-test"
+                    sh "helm install helmtest-${projectName}-${gitBranch} Chart -n helm-test"
                     sleep(10);
-                    sh 'helm test helmtest -n helm-test'
+                    sh 'helm test helmtest-${projectName}-${gitBranch} -n helm-test'
                 }
             }
         }
         stage('Upload Helm Chart')
         {
+            environment{
+                chartname = sh (script: "helm package Chart | sed 's/^[^:]*: //g'", returnStdout:true).trim()
+            }
             steps {
-                sh "export chartname=$(helm package temp | sed 's/^[^:]*://g')"
-                sh "curl --data-binary \"@${chartname}\" http://a9c2594943a63472faa675f1858e4264-18446664.us-east-1.elb.amazonaws.com/api/charts"
+                sh "curl --data-binary \"@${env.chartname}\" ${helmChartRepoURL}"
             }
         }
     }
@@ -65,7 +67,7 @@ pipeline {
         }
         always {
             withKubeConfig([credentialsId: "${kubectlCreds}", serverUrl: "${kubectlServer}"]) {
-                sh 'helm uninstall helmtest -n helm-test'
+                sh 'helm uninstall helmtest-${projectName}-${gitBranch} -n helm-test'
             }
         }
     }

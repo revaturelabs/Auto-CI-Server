@@ -1,9 +1,8 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  namespace: autoci #(TBD)
-  name: init-deploy # TBD, testing using nginx
-  #More TBD
+  namespace: autoci 
+  name: init-deploy 
 spec:
   selector:
     matchLabels:
@@ -15,8 +14,8 @@ spec:
         app: init-service
     spec:
       containers:
-      - name: testserver # TBD, testing using nginx
-        image: reblank/autoci-init # TBD, testing using nginx
+      - name: init-container
+        image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/auto_ci_init_service
         imagePullPolicy: Always
         volumeMounts:
         - name: secrets
