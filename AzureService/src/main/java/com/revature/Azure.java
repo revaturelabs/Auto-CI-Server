@@ -110,7 +110,7 @@ public class Azure extends HttpServlet {
     }
     
     private String makePipelineCommand(String branch) {
-        return "az pipelines create --folder " + projName + " --name " + projName + "-" + branch + " --repository " + gitUrl + " --branch " + branch + " --yaml-path azure-pipelines.yaml --service-connection " + AZ_SERVICE_ID;
+        return "az pipelines create --folder " + projName + " --name " + projName + "-" + branch + " --repository " + gitUrl + " --branch " + branch + " --yaml-path azure-pipelines-" + branch + ".yaml --service-connection " + AZ_SERVICE_ID;
     }
     private void makePipeline(CommandExecutor cmd, JSONObject response) throws IOException {
         execAndLogCmd(cmd, "az pipelines folder create --path " + projName);
@@ -133,6 +133,7 @@ public class Azure extends HttpServlet {
             execAndLogCmd(cmd, makePipelineVarCommand("kubernetesCluster", "Project3Cluster", b));
             execAndLogCmd(cmd, makePipelineVarCommand("chartPath", "chart/", b));
             execAndLogCmd(cmd, makePipelineVarCommand("azureCRConnection", "docker-acr", b));
+            execAndLogCmd(cmd, makePipelineVarCommand("gitBranch", b, b));
         }
         response.put("pipeline-vars", "success");
     }
