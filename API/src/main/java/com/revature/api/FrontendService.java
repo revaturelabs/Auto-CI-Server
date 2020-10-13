@@ -60,6 +60,10 @@ public class FrontendService extends HttpServlet {
                 response = objectMapper.writeValueAsString(validateResponse);
             } else {
                 //if input not valid send back this message with error
+                progress.setConfiguration("not started");
+                progress.setInitialization("not started");
+                progress.setJenkins("not started");
+                progress.setSpinnaker("not started");
                 response = objectMapper.writeValueAsString(validateResponse);
             }
             
