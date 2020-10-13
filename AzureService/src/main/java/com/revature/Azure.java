@@ -18,7 +18,6 @@ public class Azure extends HttpServlet {
     String repoUrl;
     String projName;
     String gitUrl;
-    String slackChannel;
   
     final String AZ_AUTH = " -u " + System.getenv("AZURE_USERNAME") + " -p " + System.getenv("AZURE_PASSWORD");
     final String AZ_ORG = System.getenv("AZURE_ORG_NAME");
@@ -84,7 +83,6 @@ public class Azure extends HttpServlet {
         try {
             repoUrl = json.getString("githubURL");
             projName = json.getString("projectName");
-            slackChannel = json.getString("slackChannel");
             gitUrl = json.getString("githubURL");
         } catch (JSONException e) {
             log.error("Exception when trying to parse JSON to Java.  " + e.getMessage());
@@ -110,6 +108,7 @@ public class Azure extends HttpServlet {
     private void azureLogin(CommandExecutor cmd, JSONObject response) throws IOException {
         execAndLogCmd(cmd, "az login" + AZ_AUTH);
         execAndLogCmd(cmd, "az devops configure -d organization=https://dev.azure.com/RevatureProjectFactory project=ProjectFactory");
+        response.put("login", "success");
     }
     
     private String makePipelineCommand(String branch) {
@@ -120,6 +119,7 @@ public class Azure extends HttpServlet {
         for (String b : BRANCHES) {
             execAndLogCmd(cmd, makePipelineCommand(b));
         }
+        response.put("pipeline", "success");
     }
     
     private String makePipelineVarCommand(String name, String value, String branch) {
@@ -133,6 +133,9 @@ public class Azure extends HttpServlet {
             execAndLogCmd(cmd, makePipelineVarCommand("azureContainerRegistry", "revprojectfactory.azurecr.io", b));
             execAndLogCmd(cmd, makePipelineVarCommand("azureResourceGroup", "Project3", b));
             execAndLogCmd(cmd, makePipelineVarCommand("kubernetesCluster", "Project3Cluster", b));
+            execAndLogCmd(cmd, makePipelineVarCommand("chartPath", "chart/", b));
+            execAndLogCmd(cmd, makePipelineVarCommand("azureCRConnection", "docker-acr", b));
         }
+        response.put("pipeline-vars", "success");
     }
 }

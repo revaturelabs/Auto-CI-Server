@@ -58,7 +58,7 @@
   </dependencies>
 
   <build>
-    <finalName>AzureService</finalName>
+    <finalName>azure</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
