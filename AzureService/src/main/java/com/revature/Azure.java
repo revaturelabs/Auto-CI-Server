@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Azure extends HttpServlet {
-    String repoUrl;
     String projName;
     String gitUrl;
   
@@ -81,7 +80,6 @@ public class Azure extends HttpServlet {
 
     private void parseJsonToVars(JSONObject json) throws IOException {
         try {
-            repoUrl = json.getString("githubURL");
             projName = json.getString("projectName");
             gitUrl = json.getString("githubURL");
         } catch (JSONException e) {
