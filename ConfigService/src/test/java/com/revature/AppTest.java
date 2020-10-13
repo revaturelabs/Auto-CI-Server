@@ -23,13 +23,13 @@ public class AppTest {
         String gitUsernameExpected = "New User";
         String jenkinsUriExpected = "user.com";
         String projNameExpected = "New Project";
-        Boolean usingJenkinsExpected = false;
+        Boolean usingJenkinsExpected = true;
         Boolean debugModeExpected = true;
 
         json.put("githubUsername", gitUsernameExpected);
         json.put("jenkinsURL", jenkinsUriExpected);
         json.put("projectName", projNameExpected);
-        json.put("generateGithubActions", !usingJenkinsExpected);
+        json.put("makeJenkinsWebhook", usingJenkinsExpected);
         json.put("debug",debugModeExpected);
 
         servlet1.parseJsonToVars(json);
