@@ -30,7 +30,7 @@ public class ConfigServlet extends HttpServlet {
 
     GitHubAPI github = new GitHubAPI();
     String gitUsername;
-    String jenkinsUri;
+    String jenkinsUri = "";
     String projName;
     boolean usingJenkins;
 
@@ -95,9 +95,11 @@ public class ConfigServlet extends HttpServlet {
     protected void parseJsonToVars(JSONObject json) throws IOException {
         try {
             gitUsername = json.getString("githubUsername");
-            jenkinsUri = json.getString("jenkinsURL");
             projName = json.getString("projectName");
-            usingJenkins = !json.getBoolean("generateGithubActions");
+            usingJenkins = json.getBoolean("makeJenkinsWebhook");
+            if (usingJenkins) {
+                jenkinsUri = json.getString("jenkinsURL");
+            }
             github.debugMode = json.has("debug") && json.getBoolean("debug");
             log.info("Json successfully parsed in ConfigServlet");
         } catch (JSONException e) {
