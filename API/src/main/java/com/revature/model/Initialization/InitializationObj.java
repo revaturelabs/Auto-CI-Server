@@ -6,13 +6,13 @@ import com.revature.model.Partials.MvnDataObj;
 import com.revature.model.Partials.NpmDataObj;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "githubUsername", "githubURL", "ide", "generateGithubActions", "isMaven", "mavenData", "npmData" })
+@JsonPropertyOrder({ "githubUsername", "githubURL", "ide", "makeJenkinsWebhook", "isMaven", "mavenData", "npmData" })
 public class InitializationObj {
 
     private String githubUsername;
     private String githubURL;
     private String ide;
-    private Boolean generateGithubActions;
+    private Boolean makeJenkinsWebhook;
     private Boolean isMaven;
 
     private MvnDataObj mavenData;
@@ -45,11 +45,11 @@ public class InitializationObj {
     }
 
     public Boolean getGenerateGithubActions() {
-        return this.generateGithubActions;
+        return this.makeJenkinsWebhook;
     }
 
-    public void setGenerateGithubActions(Boolean generateGithubActions) {
-        this.generateGithubActions = generateGithubActions;
+    public void setGenerateGithubActions(Boolean makeJenkinsWebhook) {
+        this.makeJenkinsWebhook = makeJenkinsWebhook;
     }
 
     public Boolean getIsMaven() {
@@ -91,8 +91,8 @@ public class InitializationObj {
         return this;
     }
 
-    public InitializationObj generateGithubActions(Boolean generateGithubActions) {
-        this.generateGithubActions = generateGithubActions;
+    public InitializationObj makeJenkinsWebhook(Boolean makeJenkinsWebhook) {
+        this.makeJenkinsWebhook = makeJenkinsWebhook;
         return this;
     }
 

@@ -5,7 +5,7 @@ public class ConfigurationObj {
     private String githubUsername;
     private String jenkinsURL;
     private String projectName;
-    private Boolean generateGithubActions; // Was Jenkins specified, or are we using Github Actions?
+    private Boolean makeJenkinsWebhook; // Was Jenkins specified, or are we using Github Actions?
     private Boolean debug; // Optional; leave to true to prevent polluting the revaturelabs org with our test repos
 
 
@@ -37,11 +37,11 @@ public class ConfigurationObj {
     }
 
     public Boolean getGenerateGithubActions() {
-        return this.generateGithubActions;
+        return this.makeJenkinsWebhook;
     }
 
-    public void setGenerateGithubActions(Boolean generateGithubActions) {
-        this.generateGithubActions = generateGithubActions;
+    public void setGenerateGithubActions(Boolean makeJenkinsWebhook) {
+        this.makeJenkinsWebhook = makeJenkinsWebhook;
     }
 
     public Boolean getDebug() {
@@ -67,8 +67,8 @@ public class ConfigurationObj {
         return this;
     }
 
-    public ConfigurationObj generateGithubActions(Boolean generateGithubActions) {
-        this.generateGithubActions = generateGithubActions;
+    public ConfigurationObj makeJenkinsWebhook(Boolean makeJenkinsWebhook) {
+        this.makeJenkinsWebhook = makeJenkinsWebhook;
         return this;
     }
 
