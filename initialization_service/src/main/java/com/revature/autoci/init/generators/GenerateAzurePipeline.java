@@ -45,7 +45,7 @@ public class GenerateAzurePipeline {
         InputStream templateStream = GenerateAzurePipeline.class.getClassLoader().getResourceAsStream(template);
         try(BufferedReader buf = new BufferedReader(new InputStreamReader(templateStream)))       
         {
-            File spinnaker = Paths.get(workingDir, "azure-pipelines-"+branch+".json").toFile();
+            File spinnaker = Paths.get(workingDir, "azure-pipelines-"+branch+".yaml").toFile();
             spinnaker.createNewFile();
             try(FileWriter writer = new FileWriter(spinnaker))
             {
