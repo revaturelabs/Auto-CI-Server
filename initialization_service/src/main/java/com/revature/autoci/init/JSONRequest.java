@@ -11,7 +11,7 @@ public class JSONRequest {
     private String githubURL;
     private String ide;
     private boolean isMaven;
-    private boolean generateGHActions;
+    private boolean generateGithubActions;
     private MavenJSON mavenData;
     private NpmJSON npmData;
 
@@ -21,7 +21,7 @@ public class JSONRequest {
         this.githubURL = githubURL;
         this.ide = ide;
         this.isMaven = isMaven;
-        this.generateGHActions = generateGHActions;
+        this.generateGithubActions = generateGHActions;
         this.mavenData = mavenData;
         this.npmData = null;;
     }
@@ -32,7 +32,7 @@ public class JSONRequest {
         this.githubURL = githubURL;
         this.ide = ide;
         this.isMaven = isMaven;
-        this.generateGHActions = generateGHActions;
+        this.generateGithubActions = generateGHActions;
         this.mavenData = null;
         this.npmData = npmData;
     }
@@ -54,7 +54,7 @@ public class JSONRequest {
     }
 
     public boolean shouldGenerateGHActions() {
-        return generateGHActions;
+        return generateGithubActions;
     }
 
     public MavenJSON getMavenData() {
