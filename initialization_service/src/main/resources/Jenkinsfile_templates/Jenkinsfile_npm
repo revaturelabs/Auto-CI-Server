@@ -42,7 +42,7 @@ pipeline {
         stage('Helm Tests') {
             steps {
                 withKubeConfig([credentialsId: "${kubectlCreds}", serverUrl: "${kubectlServer}"]) {
-                    sh "helm install helmtest-${projectName}-${gitBranch} Chart -n helm-test"
+                    sh "helm install helmtest-${projectName}-${gitBranch} chart -n helm-test"
                     sleep(10);
                     sh 'helm test helmtest-${projectName}-${gitBranch} -n helm-test'
                 }
@@ -51,7 +51,7 @@ pipeline {
         stage('Upload Helm Chart')
         {
             environment{
-                chartname = sh (script: "helm package Chart | sed 's/^[^:]*: //g'", returnStdout:true).trim()
+                chartname = sh (script: "helm package chart | sed 's/^[^:]*: //g'", returnStdout:true).trim()
             }
             steps {
                 sh "curl --data-binary \"@${env.chartname}\" ${helmChartRepoURL}"

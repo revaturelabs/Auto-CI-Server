@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "echo \"This is a test\" && exit 1",
-    "lint": "eslint . --no-error-on-unmatched-pattern --ext .js"
+    "lint": "eslint . --no-error-on-unmatched-pattern true --ext .js"
   },
   "repository": {
     "type": "git",

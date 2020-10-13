@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GenerateMavenProject {
     
-    private static final Logger log = LoggerFactory.getLogger(GenerateJenkinsfile.class);
+    private static final Logger log = LoggerFactory.getLogger(GenerateMavenProject.class);
     
     static final String MAVEN_MODEL_VERSION = "4.0.0";
     static final String ASSEMBLY_PLUGIN_VERSION = "3.3.0";

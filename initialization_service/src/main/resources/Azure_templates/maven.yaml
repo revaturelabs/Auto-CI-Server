@@ -1,0 +1,192 @@
+trigger:
+- ${gitBranch}
+
+stages:
+- stage: Checkstyle
+  jobs: 
+  - job: CheckstyleJob
+    displayName: Checkstyle Job
+    workspace:
+      clean: outputs
+    steps: 
+    - script: echo "Running style checks..."
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'validate'
+        publishJUnitResults: false
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
+    - script: echo "Finished running style checks"
+
+- stage: Test
+  condition: succeeded()
+  jobs:
+  - job: TestProject
+    displayName: Project Testing
+    steps:
+    - script: echo "Testing Project..."
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'test'
+        options: '-Dcheckstyle.skip=true'
+        publishJUnitResults: false
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
+    - script: echo "Finished Testing Project"
+
+- stage: Build
+  condition: succeeded()
+  jobs: 
+  - job: BuildJob
+    displayName: Job Building
+    steps: 
+    - script: echo "Building Project..."
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        options: '-DskipTests=true -Dcheckstyle.skip=true'
+        publishJUnitResults: false
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
+    - script: echo "Finished Building Project"
+    - script: echo "Building and Pushing Image..."
+    - task: Docker@2
+      inputs:
+        containerRegistry: '$(azureCRConnection)'
+        repository: '$(projNameLowercase)'
+        command: 'buildAndPush'
+        Dockerfile: 'Dockerfile'
+        tags: 'latest'
+    - script: echo "Finished Building and Pushing Image"
+
+- stage: Helm
+  condition: succeeded() 
+  jobs:
+  
+  - job: TestHelm
+    displayName: Helm Testing
+    steps:
+      - script: |
+          echo "Running Helm Tests..."
+          echo "##vso[task.setvariable variable=HELM_EXPERIMENTAL_OCI]1" 
+      - task: HelmInstaller@1
+        displayName: Install Helm
+        inputs:
+          HelmVersionToInstall: latest
+      - task: HelmDeploy@0
+        inputs:
+          connectionType: 'Azure Resource Manager'
+          azureSubscription: '$(azureSubscriptionEndpoint)'
+          azureResourceGroup: '$(azureResourceGroup)'
+          kubernetesCluster: '$(kubernetesCluster)'
+          namespace: 'helm-tests'
+          command: 'install'
+          chartType: 'FilePath'
+          chartPath: '$(chartPath)'
+          releaseName: 'test-release'
+          waitForExecution: false
+          arguments: '--create-namespace'
+      - script: sleep 10
+      - task: HelmDeploy@0
+        inputs:
+          connectionType: 'Azure Resource Manager'
+          azureSubscription: '$(azureSubscriptionEndpoint)'
+          azureResourceGroup: '$(azureResourceGroup)'
+          kubernetesCluster: '$(kubernetesCluster)'
+          namespace: 'helm-tests'
+          command: 'test'
+          arguments: 'test-release'
+      - task: HelmDeploy@0
+        inputs:
+          azureSubscriptionForACR: '$(azureSubscriptionEndpoint)'
+          azureResourceGroupForACR: '$(azureResourceGroup)'
+          azureContainerRegistry: '$(azureContainerRegistry)'
+          command: 'save'
+          chartNameForACR: '$(projNameLowercase):latest'
+          chartPathForACR: '$(chartPath)'
+      - script: echo "Finished Running Helm Tests"
+      
+
+# This job should always run to clean up the test release from the cluster
+  - job: TestReleaseUninstall
+    displayName: Uninstall of Helm Test release
+    dependsOn: TestHelm
+    condition: always()
+    steps:
+    - script: echo "Uninstalling Helm Test Release..."
+    - task: HelmDeploy@0
+      inputs:
+        connectionType: 'Azure Resource Manager'
+        azureSubscription: '$(azureSubscriptionEndpoint)'
+        azureResourceGroup: '$(azureResourceGroup)'
+        kubernetesCluster: '$(kubernetesCluster)'
+        namespace: 'helm-tests'
+        command: 'uninstall'
+        arguments: 'test-release'
+    - script: echo "Finished Uninstalling Helm Test Release"
+
+  - deployment:
+    dependsOn: TestHelm
+    condition: succeeded('TestHelm')
+    displayName: Project Deployment
+    environment: $(kubernetesCluster)
+    strategy:
+      runOnce:
+          deploy:
+            steps:
+            - script: echo "Deploying Project..."
+            - task: AzureKeyVault@1
+              inputs:
+                azureSubscription: '$(azureSubscriptionEndpoint)'
+                KeyVaultName: '$(keyVaultName)'
+                SecretsFilter: 'PFUsername,PFPassword,PFRepoUsername,PFRepoPassword' 
+            - script: | 
+                az login \
+                  -u $(PFUsername) \
+                  -p '$(PFPassword)'
+                az aks get-credentials \
+                  -n $(kubernetesCluster) \
+                  -g $(azureResourceGroup)
+                export HELM_EXPERIMENTAL_OCI=1
+                helm registry login $(azureContainerRegistry)/helm/$(projNameLowercase):latest \
+                    --username $(PFRepoUsername) --password '$(PFRepoPassword)'
+                echo "Deploying Project..."           
+                echo "##vso[task.setvariable variable=HELM_EXPERIMENTAL_OCI]1"
+            - task: helm@1
+              inputs:
+                subCommand: 'chart'
+                arguments: |
+                  pull
+                  $(azureContainerRegistry)/helm/$(projNameLowercase):latest
+            - task: helm@1
+              inputs:
+                subCommand: 'chart'
+                arguments: |
+                  export
+                  $(azureContainerRegistry)/helm/$(projNameLowercase):latest
+                  --destination ./charts
+            - task: HelmDeploy@0
+              inputs:
+                connectionType: 'Azure Resource Manager'
+                azureSubscription: '$(azureSubscriptionEndpoint)'
+                azureResourceGroup: '$(azureResourceGroup)'
+                kubernetesCluster: '$(kubernetesCluster)'
+                namespace: '$(projNameLowercase)-deployment'
+                command: 'upgrade'
+                chartType: 'FilePath'
+                chartPath: 'charts/$(projNameLowercase)'
+                releaseName: '$(projNameLowercase)-release'
+                waitForExecution: false
+                arguments: '--create-namespace'
+            - script: echo "Finished Deploying Project"

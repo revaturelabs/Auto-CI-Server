@@ -10,6 +10,7 @@ public class JSONRequest {
     private String githubUsername;
     private String githubURL;
     private String ide;
+    private boolean isAzure;
     private boolean isMaven;
     private boolean generateGithubActions;
     private MavenJSON mavenData;
@@ -47,6 +48,10 @@ public class JSONRequest {
 
     public String getIDE() {
         return ide;
+    }
+
+    public boolean isAzure(){
+        return isAzure;
     }
 
     public boolean isMaven() {

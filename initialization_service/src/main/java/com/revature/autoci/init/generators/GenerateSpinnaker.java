@@ -53,7 +53,7 @@ public class GenerateSpinnaker {
             try(FileWriter writer = new FileWriter(spinnaker))
             {
                 templater.fillTemplate(buf, writer, "");
-                log.info("Spinnaker Pipeline Template successfully updated");
+                log.info("Spinnaker Pipeline file successfully generated");
             }
         }
     }

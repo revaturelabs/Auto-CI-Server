@@ -25,6 +25,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.revature.autoci.init.generators.GenerateGithubActions;
+import com.revature.autoci.init.generators.GenerateAzurePipeline;
 import com.revature.autoci.init.generators.GenerateDockerfile;
 import com.revature.autoci.init.generators.GenerateJenkinsfile;
 import com.revature.autoci.init.generators.GenerateMavenProject;
@@ -165,17 +166,23 @@ public class InitServlet extends HttpServlet {
             // Generate Helm Chart
             HelmGenerate.generateHelmChart(projectName.toLowerCase().trim().replace(' ', '-'), appVersion, projectName, tempPath.toString(), false);
             log.info("HELM chart with configuration and files successfully generated");
-
-            // Generate Spinnaker pipeline JSON file
-            GenerateSpinnaker.generateSpinnaker(projectName, tempPath.toString(), projectName);
-            log.info("Pipeline JSON file with configuration successfully generated");
-
-            // Generate jenkinsfile in top-level directory
-            GenerateJenkinsfile.generateJenkinsfile(data.isMaven(), tempPath.toString());
-            log.info("Jenkinsfile successfully generated");
             
             GenerateDockerfile.generateDockerfile(tempPath.toString());
 
+            if(data.isAzure())
+            {
+                GenerateAzurePipeline.generatePipeline(data.isMaven(), tempPath.toString());
+            }
+            else
+            {
+                // Generate Spinnaker pipeline JSON file
+                GenerateSpinnaker.generateSpinnaker(projectName, tempPath.toString(), projectName);
+                log.info("Pipeline JSON file with configuration successfully generated");
+
+                // Generate jenkinsfile in top-level directory
+                GenerateJenkinsfile.generateJenkinsfile(data.isMaven(), tempPath.toString());
+                log.info("Jenkinsfile successfully generated");
+            }
             try 
             {
                 if(data.shouldGenerateGHActions())

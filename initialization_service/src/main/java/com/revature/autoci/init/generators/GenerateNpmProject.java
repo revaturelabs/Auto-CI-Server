@@ -108,7 +108,7 @@ public class GenerateNpmProject {
         finalDevDependencies.putIfAbsent("eslint", ESLINT_VERSION);
 
         Map<String, String> finalScripts = new HashMap<>(scripts);
-        finalScripts.putIfAbsent("lint", "eslint . --no-error-on-unmatched-pattern --ext .js");
+        finalScripts.putIfAbsent("lint", "eslint . --no-error-on-unmatched-pattern true --ext .js");
         // initializing project object from paramaters
         NpmProject project = new NpmProject(projectName, description, version, mainEntrypoint, finalScripts, repository, keywords, author, license, dependencies, finalDevDependencies);
 
