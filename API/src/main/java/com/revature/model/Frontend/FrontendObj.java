@@ -44,11 +44,11 @@ public class FrontendObj {
         this.ide = ide;
     }
 
-    public Boolean getGenerateGithubActions() {
+    public Boolean getMakeJenkinsWebhook() {
         return this.makeJenkinsWebhook;
     }
 
-    public void setGenerateGithubActions(Boolean makeJenkinsWebhook) {
+    public void setMakeJenkinsWebhook(Boolean makeJenkinsWebhook) {
         this.makeJenkinsWebhook = makeJenkinsWebhook;
     }
 

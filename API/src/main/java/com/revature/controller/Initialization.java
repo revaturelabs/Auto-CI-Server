@@ -21,7 +21,7 @@ public class Initialization {
         progress.setInitialization("started");
         InitializationObj initObj = new InitializationObj();
         initObj.setGithubURL(configResp.getGithubURL());
-        initObj.setGenerateGithubActions(frontendObj.getGenerateGithubActions());
+        initObj.setMakeJenkinsWebhook(frontendObj.getMakeJenkinsWebhook());
         initObj.setGithubUsername(frontendObj.getGithubUsername());
         initObj.setIde(frontendObj.getIde());
         initObj.setIsMaven(frontendObj.getIsMaven());
