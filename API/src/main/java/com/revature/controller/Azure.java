@@ -1,6 +1,8 @@
 package com.revature.controller;
 
 import java.io.IOException;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Azure.AzureObj;
 import com.revature.model.Azure.AzureRespObj;
@@ -17,7 +19,7 @@ public class Azure {
     public AzureRespObj azureService(FrontendObj frontendObj, ConfigurationResp configResp, String urlAzure) {
 
         ProgressSingleton progress = ProgressSingleton.instance();
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         progress.setAzure("started");
         AzureObj azureObj = new AzureObj();
@@ -27,12 +29,12 @@ public class Azure {
 
         Response response = HttpRequest.sendHttpReq(azureObj, urlAzure);
 
-        if(response == null){
-            progress.setAzure("failed");
-            progress.setRunningStatus(false);
-            azureRespObj = new AzureRespObj();
-            return azureRespObj;
-        }
+        // if(response == null){
+        //     progress.setAzure("failed");
+        //     progress.setRunningStatus(false);
+        //     azureRespObj = new AzureRespObj();
+        //     return azureRespObj;
+        // }
 
         //checks for 200 response
         if (FailureChecker.CheckCode(response)) {

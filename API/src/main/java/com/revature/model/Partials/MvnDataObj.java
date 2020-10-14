@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "projectName", "version", "description", "groupId", "artifactId", "packaging", "javaVersion", "mainClass"})
+@JsonPropertyOrder({ "projectName", "version", "description", "groupId", "artifactId", "packaging", "javaVersion", "mainClass", "packageName"})
 public class MvnDataObj {
     private String projectName;
     private String version;
@@ -14,6 +14,7 @@ public class MvnDataObj {
     private String groupId;
     private String artifactId;
     private String packaging;
+    private String packageName;
     private String javaVersion;
     private String mainClass;
     private List<MvnDependsObj> dependencies = null;
@@ -66,6 +67,14 @@ public class MvnDataObj {
 
     public void setPackaging(String packaging) {
         this.packaging = packaging;
+    }
+
+    public String getPackageName() {
+        return this.packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
     public String getJavaVersion() {

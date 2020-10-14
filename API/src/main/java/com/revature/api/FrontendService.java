@@ -35,7 +35,7 @@ public class FrontendService extends HttpServlet {
         FrontendObj frontendReqObj = objectMapper.readValue(req.getInputStream(), FrontendObj.class);
 
         //printing input from request here
-        printJson(frontendReqObj);
+        // printJson(frontendReqObj);
 
         //setup sington to allow us keep track of all service creations
         StartPipeline pipeline = new StartPipeline();
@@ -61,6 +61,7 @@ public class FrontendService extends HttpServlet {
                 response = objectMapper.writeValueAsString(validateResponse);
             } else {
                 //if input not valid send back this message with error
+                progress.setRunningStatus(false);
                 progress.setConfiguration("not started");
                 progress.setInitialization("not started");
                 progress.setJenkins("not started");

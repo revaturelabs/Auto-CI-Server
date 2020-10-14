@@ -1,5 +1,8 @@
 package com.revature.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.revature.model.Configuration.ConfigurationResp;
 import com.revature.model.Frontend.FrontendObj;
 import com.revature.model.Initialization.InitializationObj;
@@ -26,16 +29,18 @@ public class Initialization {
         initObj.setIsMaven(frontendObj.getIsMaven());
         initObj.setMavenData(frontendObj.getMavenData());
         initObj.setNpmData(frontendObj.getNpmData());
+        initObj.setIsAzure(frontendObj.getIsAzure());
         InitializationResp initResp = new InitializationResp();
+        printJson(initObj);
 
         Response response = HttpRequest.sendHttpReq(initObj, url);
 
-        if(response == null){
-            progress.setInitialization("failed");
-            progress.setRunningStatus(false);
-            initResp.setIsDone("failed");
-            return initResp;
-        }
+        // if(response == null){
+        //     progress.setInitialization("failed");
+        //     progress.setRunningStatus(false);
+        //     initResp.setIsDone("failed");
+        //     return initResp;
+        // }
 
         //checks for 200 response
         if (FailureChecker.CheckCode(response)) {
@@ -48,6 +53,18 @@ public class Initialization {
             progress.setRunningStatus(false);
             initResp.setIsDone("failed");
             return initResp;
+        }
+    }
+
+    static <T> void printJson(T obj){
+        // pretty print test
+        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        String json;
+        try {
+            json = mapper.writeValueAsString(obj);
+            System.out.println(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
     }
 }
