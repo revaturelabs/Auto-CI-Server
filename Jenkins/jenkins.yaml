@@ -14,6 +14,8 @@ jenkins:
         value: "ecr:us-east-1:mehrab-trg00000835-opsusr"
       - key: "ContainerRegistryURL"
         value: "https://855430746673.dkr.ecr.us-east-1.amazonaws.com"
+      - key: "helmChartRepoURL"
+        value: "http://a9c2594943a63472faa675f1858e4264-18446664.us-east-1.elb.amazonaws.com/api/charts"
       - key: "kubectlCreds"
         value: "kubectl-token"
       - key: "kubectlServer"
