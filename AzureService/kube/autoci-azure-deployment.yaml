@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: autoci-azure
-          image: alxl/autoci-azure:latest
+          image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/autoci-azure:latest
           ports:
           - containerPort: 8080
           env:
