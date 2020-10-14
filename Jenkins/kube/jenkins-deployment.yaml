@@ -23,7 +23,7 @@ spec:
         emptyDir: {}
       containers:
       - name: jenkins
-        image: alxl/autoci-jenkins:latest
+        image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/autoci-jenkins:latest
         ports:
         - containerPort: 8080
         - containerPort: 50000
