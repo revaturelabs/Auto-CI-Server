@@ -18,7 +18,7 @@ public class ValidateData {
         //Maven
         String projectNameMaven = obj.getMavenData().getProjectName();
         String projectVersionMaven = obj.getMavenData().getVersion();
-        String packageMaven = obj.getMavenData().getPackaging();
+        String packageMaven = obj.getMavenData().getPackageName();
         String groupIdMaven = obj.getMavenData().getGroupId();
         String packageAndGroup = packageMaven + groupIdMaven;
 
