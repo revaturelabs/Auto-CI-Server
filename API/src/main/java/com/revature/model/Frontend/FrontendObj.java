@@ -6,7 +6,7 @@ import com.revature.model.Partials.MvnDataObj;
 import com.revature.model.Partials.NpmDataObj;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "githubUsername", "githubURL", "ide", "makeJenkinsWebhook", "isMaven", "mavenData", "npmData" })
+@JsonPropertyOrder({ "githubUsername", "githubURL", "ide", "makeJenkinsWebhook", "isMaven", "isAzure", "mavenData", "npmData", "slackChannel" })
 public class FrontendObj {
 
     private String githubUsername;
@@ -14,7 +14,8 @@ public class FrontendObj {
     private String ide;
     private Boolean makeJenkinsWebhook;
     private Boolean isMaven;
-
+    private Boolean isAzure;
+    private String slackChannel;
     private MvnDataObj mavenData;
     private NpmDataObj npmData;
 
@@ -109,6 +110,22 @@ public class FrontendObj {
     public FrontendObj npmData(NpmDataObj npmData) {
         this.npmData = npmData;
         return this;
+    }
+
+    public Boolean getIsAzure() {
+        return this.isAzure;
+    }
+
+    public void setIsAzure(Boolean isAzure) {
+        this.isAzure = isAzure;
+    }
+
+    public String getSlackChannel() {
+        return this.slackChannel;
+    }
+
+    public void setSlackChannel(String slackChannel) {
+        this.slackChannel = slackChannel;
     }
 
 }

@@ -13,7 +13,7 @@ public class Configuration {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public ConfigurationResp ConfigService(FrontendObj frontEndObj, String UrlConfig, String Urljenkins) {
+    public ConfigurationResp configService(FrontendObj frontEndObj, String UrlConfig, String Urljenkins) {
 
         ProgressSingleton progress = ProgressSingleton.instance();
         ObjectMapper mapper = new ObjectMapper();

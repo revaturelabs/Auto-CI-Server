@@ -12,6 +12,7 @@ public class ProgressSingleton {
     private String configuration = "not started";
     private String jenkins = "not started";
     private String spinnaker = "not started";
+    private String azure = "not started";
 
     private static ProgressSingleton single_instance = null;
 
@@ -64,5 +65,13 @@ public class ProgressSingleton {
 
     public void setSpinnaker(String spinnaker) {
         this.spinnaker = spinnaker;
+    }
+
+    public String getAzure() {
+        return this.azure;
+    }
+
+    public void setAzure(String azure) {
+        this.azure = azure;
     }
 }

@@ -6,7 +6,7 @@ import com.revature.model.Partials.MvnDataObj;
 import com.revature.model.Partials.NpmDataObj;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "githubUsername", "githubURL", "ide", "makeJenkinsWebhook", "isMaven", "mavenData", "npmData" })
+@JsonPropertyOrder({ "githubUsername", "githubURL", "ide", "makeJenkinsWebhook", "isMaven", "isAzure", "mavenData", "npmData" })
 public class InitializationObj {
 
     private String githubUsername;
@@ -14,6 +14,7 @@ public class InitializationObj {
     private String ide;
     private Boolean makeJenkinsWebhook;
     private Boolean isMaven;
+    private Boolean isAzure;
 
     private MvnDataObj mavenData;
     private NpmDataObj npmData;
@@ -109,6 +110,14 @@ public class InitializationObj {
     public InitializationObj npmData(NpmDataObj npmData) {
         this.npmData = npmData;
         return this;
+    }
+
+    public Boolean getIsAzure() {
+        return this.isAzure;
+    }
+
+    public void setIsAzure(Boolean isAzure) {
+        this.isAzure = isAzure;
     }
 
 }

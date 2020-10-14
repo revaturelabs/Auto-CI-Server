@@ -55,6 +55,7 @@ public class FrontendService extends HttpServlet {
                 progress.setInitialization("not started");
                 progress.setJenkins("not started");
                 progress.setSpinnaker("not started");
+                progress.setAzure("not started");
                 ReturnResp pipeResp = pipeline.init(frontendReqObj);//maybe introduce new thread here
                 validateResponse.setMessage(pipeResp.getMessage());
                 response = objectMapper.writeValueAsString(validateResponse);
@@ -64,6 +65,7 @@ public class FrontendService extends HttpServlet {
                 progress.setInitialization("not started");
                 progress.setJenkins("not started");
                 progress.setSpinnaker("not started");
+                progress.setAzure("not started");
                 response = objectMapper.writeValueAsString(validateResponse);
             }
             

@@ -27,7 +27,7 @@ public class Jenkins {
         jenkinsServiceObj.setGithubURL(configResp.getGithubURL());
         jenkinsServiceObj.setJenkinsURL(URLjenkinshost);
         jenkinsServiceObj.setProjectName(frontEndObj.getMavenData().getProjectName());
-        jenkinsServiceObj.setSlackChannel("");
+        jenkinsServiceObj.setSlackChannel(frontEndObj.getSlackChannel());
 
         Response response = HttpRequest.sendHttpReq(jenkinsServiceObj, url);
 
