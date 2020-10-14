@@ -1,0 +1,16 @@
+amazon-ecr
+configuration-as-code
+docker-plugin
+docker-workflow
+git
+github
+job-dsl
+junit
+kubernetes-cli
+nodejs
+pipeline-model-definition
+pipeline-stage-step
+pipeline-maven
+pipeline-npm
+slack
+workflow-aggregator

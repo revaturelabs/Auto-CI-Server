@@ -1,0 +1,22 @@
+# This is a .txt so that Terraform ignores it; the temporary files made from it are .tf
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
+}
+
+# Define following environment vars:
+# AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION
+provider "aws" { }
+
+# %1$s is populated by the servlet after copying the template to a temporary file
+resource "aws_ecr_repository" "%1$s" {
+  name = "%1$s"
+  image_scanning_configuration {
+    scan_on_push = false
+  }
+}
