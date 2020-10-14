@@ -7,6 +7,7 @@ public class MavenJSON {
     private String projectName;
     private String description;
     private String version;
+    private String packageName;
     private String groupId;
     private String artifactId;
     private String packaging;
@@ -14,11 +15,12 @@ public class MavenJSON {
     private String mainClass;
     private List<Map<String, String>> dependencies;
 
-    public MavenJSON(String projectName, String description, String version, String groupId, String artifactId,
+    public MavenJSON(String projectName, String description, String version, String packageName, String groupId, String artifactId,
             String packaging, String javaVersion, String mainClass, List<Map<String, String>> dependencies) {
         this.projectName = projectName;
         this.description = description;
         this.version = version;
+        this.packageName = packageName;
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.packaging = packaging;
@@ -29,6 +31,10 @@ public class MavenJSON {
 
     public String getProjectName() {
         return projectName;
+    }
+
+    public String getPackageName() {
+        return packageName;
     }
 
     public String getDescription() {

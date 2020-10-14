@@ -59,21 +59,21 @@ public class GenerateMavenProject {
      * @throws GenerationException
      */
 
-    public static void generateNewMavenProject(String groupId, String artifactId, String version, String description,
+    public static void generateNewMavenProject(String groupId, String artifactId, String version, String packageName, String description,
             String name, String url, String packaging, String javaVersion, String mainClass,
             List<Map<String, String>> dependencies, String IDE, String directoryToPush) throws GenerationException {
-        generateMvnFileStructure(groupId, directoryToPush);
+        generateMvnFileStructure(packageName, directoryToPush);
         generateGitIgnoreFile(IDE, directoryToPush);
         addCheckstyleFile(directoryToPush);
-        generateMainJavaFile(mainClass, groupId, directoryToPush);
-        generatePomFile(groupId, artifactId, version, description, name, url, packaging, javaVersion, mainClass,
+        generateMainJavaFile(mainClass, packageName, directoryToPush);
+        generatePomFile(groupId, artifactId, version, packageName, description, name, url, packaging, javaVersion, mainClass,
                 dependencies, directoryToPush);
     }
 
     // Creates the standard Maven project file structure in the designated directory
-    private static void generateMvnFileStructure(String groupId, String directoryToPush) {
+    private static void generateMvnFileStructure(String packageName, String directoryToPush) {
         // Parsing group id to determine folder structure in src
-        String groupIdFolders = GetFoldersFromGroupId(groupId);
+        String packageFolders = GetFoldersFromPackageName(packageName);
 
         // Adding src folder
         String srcPath = Paths.get(directoryToPush, "src/").toString();
@@ -81,27 +81,27 @@ public class GenerateMavenProject {
         srcDir.mkdir();
 
         // Adding main/java/parsedGroupId directory
-        String mainJavaPath = Paths.get(directoryToPush, "src/main/java/", groupIdFolders).toString();
+        String mainJavaPath = Paths.get(directoryToPush, "src/main/java/", packageFolders).toString();
         File mainJavaDir = new File(mainJavaPath);
         mainJavaDir.mkdirs();
 
         // Adding test/java/parsedGroupId directory
-        String testJavaPath = Paths.get(directoryToPush, "src/test/java/", groupIdFolders).toString();
+        String testJavaPath = Paths.get(directoryToPush, "src/test/java/", packageFolders).toString();
         File testJavaDir = new File(testJavaPath);
         testJavaDir.mkdirs();
         log.info("Maven Project File Structure successfully generated");
 
     }
 
-    // Parse the groupID and returns what folders to create to follow standard Maven
+    // Parse the packageName and returns what folders to create to follow standard Maven
     // project folder structure com.example.project -> com/example/project
-    private static String GetFoldersFromGroupId(String groupId) {
-        String[] groupIdParts = groupId.split("\\.");
-        String groupIdFolders = "";
-        for (String groupIdPart : groupIdParts) {
-            groupIdFolders += groupIdPart + "/";
+    private static String GetFoldersFromPackageName(String packageName) {
+        String[] packageParts = packageName.split("\\.");
+        String packageFolders = "";
+        for (String packagePart : packageParts) {
+            packageFolders += packagePart + "/";
         }
-        return groupIdFolders;
+        return packageFolders;
     }
 
     // Generates a generic .gitignore file for the maven project by sending a get
@@ -138,9 +138,9 @@ public class GenerateMavenProject {
     // supplied.
     // If something like: "appFiles/app" will create the appFiles folder and put
     // app.java in that folder
-    private static void generateMainJavaFile(String mainClass, String groupId, String directoryToPush) {
+    private static void generateMainJavaFile(String mainClass, String packageName, String directoryToPush) {
         // Parsing groupId to return folder structure: com.example returns com/return/
-        String groupIdFolders = GetFoldersFromGroupId(groupId);
+        String packageFolders = GetFoldersFromPackageName(packageName);
         String tabSpaceString = StringUtils.repeat(' ', TAB_SPACES);
 
         // Verifying that mainClass doesn't have .java or .class appended to end
@@ -162,23 +162,18 @@ public class GenerateMavenProject {
                 }
             }
         }
-        // Constructing the string to be put into the java file
-        String packageName = groupId;
-        for (String packageAddition : additionsToPackage) {
-            packageName += "." + packageAddition;
-        }
         String javaString = "package " + packageName + ";\n\n";
         javaString += "public class " + mainClassName + " {\n\n";
         javaString += "\tpublic static void main(String[] args) {\n\n\t}\n}";
         javaString = javaString.replaceAll("\t", tabSpaceString); // Revature standard checkstyle prefers spaces to tabs
 
-        String javaFilePath = Paths.get(directoryToPush, "src/main/java/", groupIdFolders, mainClass + ".java")
+        String javaFilePath = Paths.get(directoryToPush, "src/main/java/", packageFolders, mainClass + ".java")
                 .toString();
 
         // Creating directory to add main class if necessary
         if (!mainClassFolders.equals("")) {
             File javaFileDirectory = new File(
-                    Paths.get(directoryToPush, "src/main/java/", groupIdFolders, mainClassFolders).toString());
+                    Paths.get(directoryToPush, "src/main/java/", packageFolders, mainClassFolders).toString());
             javaFileDirectory.mkdir();
             log.info("Java directory successfully created");
         }
@@ -207,7 +202,7 @@ public class GenerateMavenProject {
     // Generates pom.xml in the designated directory from supplied parameters using
     // the apache.maven Model and other associated objects. Writes the Model object
     // to the pom.xml file using the apache.maven MavenXpp3Writer
-    private static void generatePomFile(String groupId, String artifactId, String version, String description,
+    private static void generatePomFile(String groupId, String artifactId, String version, String packageName, String description,
             String name, String url, String packaging, String javaVersion, String mainClass,
             List<Map<String, String>> dependencies, String directoryToPush) throws GenerationException {
         // initializing variables and objects
@@ -230,7 +225,7 @@ public class GenerateMavenProject {
         mainClass = mainClass.split("\\.")[0];
         // giving the main class its fully qualified name
         mainClass = mainClass.replaceAll("/", ".");
-        mainClass = groupId + "." + mainClass;
+        mainClass = packageName + "." + mainClass;
         
         // --- Adding properties ---
         mvnFile.addProperty("exec.mainClass", mainClass);
@@ -299,7 +294,7 @@ public class GenerateMavenProject {
         Xpp3Dom configDomAssembly = null;
         Xpp3Dom configDomCheckstyle = null;
         try {
-            configDomAssembly = createMvnAssemblyPluginConfig(packaging);
+            configDomAssembly = createMvnAssemblyPluginConfig();
             configDomCheckstyle = createMvnCheckstylePluginConfig(CHECKSTYLE_FILENAME);
         } catch (XmlPullParserException | IOException e) {
             throw new GenerationException("Failed to generate config DOM");
@@ -325,9 +320,9 @@ public class GenerateMavenProject {
 
     // Returns configuration details for the maven-assembly-plugin,
     // which we'll want to package the project with dependencies for app deployment
-    private static Xpp3Dom createMvnAssemblyPluginConfig(String packaging) throws XmlPullParserException, IOException {
-        String mvnAssemblyPluginConfig = "<configuration>" + "<descriptorRefs>" + "<descriptorRef>" + packaging
-                + "-with-dependencies</descriptorRef>" + "</descriptorRefs>" + "<archive>" + "<manifest>"
+    private static Xpp3Dom createMvnAssemblyPluginConfig() throws XmlPullParserException, IOException {
+        String mvnAssemblyPluginConfig = "<configuration>" + "<descriptorRefs>" + "<descriptorRef>" 
+                + "jar-with-dependencies</descriptorRef>" + "</descriptorRefs>" + "<archive>" + "<manifest>"
                 + "<mainClass>${exec.mainClass}</mainClass>" + "</manifest>" + "</archive>"
                 + "<appendAssemblyId>true</appendAssemblyId>" + "</configuration>";
 

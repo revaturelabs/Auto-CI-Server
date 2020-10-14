@@ -48,7 +48,7 @@ public class MavenProjectTest {
         dependencies.add(junitDep);
         dependencies.add(mvnProjectDep);
 
-        GenerateMavenProject.generateNewMavenProject(groupId, "test-app", "1.0.0", "description", "test-app",
+        GenerateMavenProject.generateNewMavenProject(groupId, "test-app", "1.0.0", groupId, "description", "test-app",
                 "mycompany.com", "jar", "1.8", mainClass, dependencies, IDE, tempPath.toString());
     }
 

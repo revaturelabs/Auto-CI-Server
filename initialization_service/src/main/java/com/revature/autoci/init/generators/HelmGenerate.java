@@ -89,7 +89,7 @@ public class HelmGenerate {
         Templater templater = new Templater(mapping);
 
         // Create helm chart dir
-        Path helmDir = Paths.get(directoryToPush, "Chart");
+        Path helmDir = Paths.get(directoryToPush, "chart");
         if(helmDir.toFile().mkdir() == false)
         {
             logger.warn("Failed to create chart directory");

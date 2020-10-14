@@ -140,8 +140,9 @@ public class InitServlet extends HttpServlet {
                 appVersion = mavenData.getVersion();
 
                 System.out.println("Generating maven project");
+                System.out.println(mavenData.getPackageName());
                 GenerateMavenProject.generateNewMavenProject(mavenData.getGroupId(),
-                    mavenData.getArtifactId(), mavenData.getVersion(), mavenData.getDescription(),
+                    mavenData.getArtifactId(), mavenData.getVersion(), mavenData.getPackageName(), mavenData.getDescription(),
                     mavenData.getDescription(), data.getGithubURL(), mavenData.getPackaging(),
                     mavenData.getJavaVersion(), mavenData.getMainClass(),
                     mavenData.getDependencies(), data.getIDE(), tempPath.toString());
