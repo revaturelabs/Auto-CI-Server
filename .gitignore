@@ -1,3 +1,12 @@
+initialization_service/logs/*.log
+initialization_service/init_server_secrets.yaml
+initialization_service/.classpath
+initialization_service/.project
+initialization_service/.settings/
+initialization_service/.vscode/
+initialization_service/target/
+initialization_service/secrets/
+initialization_service/testsecret.yaml
 spinnaker_service/target
 .vscode/
 .settings/
@@ -5,3 +14,4 @@ spinnaker_service/target
 .project
 spinnaker_service/app.properties
 spinnaker_service/logs/*.log
+

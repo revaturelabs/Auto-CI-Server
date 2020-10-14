@@ -1,0 +1,45 @@
+#!/bin/sh
+
+## Author: Jake Hernandez
+
+# git clone $1
+# cd WorkflowTest
+mkdir .github
+mkdir .github/workflows
+# touch .github/workflows/$3.yaml
+# ls -a
+# git status
+# git add $2/.github/workflows/$3.yaml
+echo "name: CI" >> .github/workflows/Test.yaml
+echo "" >> .github/workflows/Test.yaml
+echo "on:" >> .github/workflows/Test.yaml
+echo "  push:" >> .github/workflows/Test.yaml
+echo "    branches: [master]" >> .github/workflows/Test.yaml
+echo "  pull_request:" >> .github/workflows/Test.yaml
+echo "    branches: [master]" >> .github/workflows/Test.yaml
+echo "" >> .github/workflows/Test.yaml
+echo "jobs:" >> .github/workflows/Test.yaml
+echo "  build:" >> .github/workflows/Test.yaml
+echo "    runs-on: ubuntu-latest" >> .github/workflows/Test.yaml
+echo "" >> .github/workflows/Test.yaml
+echo "    steps:" >> .github/workflows/Test.yaml
+echo "      - uses: actions/checkout@v2" >> .github/workflows/Test.yaml
+echo "      - name: Run a one-line script" >> .github/workflows/Test.yaml
+echo "        run: echo Hello, World!" >> .github/workflows/Test.yaml
+echo "" >> .github/workflows/Test.yaml
+echo "      - name: Run a mult-line script" >> .github/workflows/Test.yaml
+echo "        run: |" >> .github/workflows/Test.yaml
+echo "          echo Add other actions to build," >> .github/workflows/Test.yaml
+echo "          echo test, and deploy your project" >> .github/workflows/Test.yaml
+# git add .
+# git status
+# git commit -a -m "First Commit"
+# git push -u origin master
+# cd ..
+# ls -a
+# rm -rf ~/Project3/Auto-CI-Server/ConfigService/Building/WorkflowTest
+# ls -a
+
+# $1="https://github.com/FOX10147/WorkflowTest"
+# $2="~Project3/Auto-CI-Server/ConfigService/Building/WorkflowTest"
+# $3="Test"

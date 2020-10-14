@@ -1,0 +1,31 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  namespace: autoci 
+  name: init-deploy 
+spec:
+  selector:
+    matchLabels:
+      app: init-service
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: init-service
+    spec:
+      containers:
+      - name: init-container
+        image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/auto_ci_init_service
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: secrets
+          mountPath: "/apps/secrets/"
+          readOnly: true
+      volumes:
+      - name: secrets
+        secret:
+            secretName: init-secrets
+      
+        
+      
+# use service to set other info...

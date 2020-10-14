@@ -1,0 +1,8 @@
+package com.mycompany.AppFolder;
+
+public class App {
+
+    public static void main(String[] args) {
+
+    }
+}
