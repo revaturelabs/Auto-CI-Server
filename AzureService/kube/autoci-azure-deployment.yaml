@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoci-azure
+  namespace: autoci
+  labels:
+    app: autoci-azure
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: autoci-azure
+  template:
+    metadata:
+      labels:
+        app: autoci-azure
+    spec:
+      containers:
+        - name: autoci-azure
+          image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/autoci-azure:latest
+          ports:
+          - containerPort: 8080
+          env:
+            - name: AZURE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: azure-login
+                  key: azure-username
+            - name: AZURE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: azure-login
+                  key: azure-password
+            - name: AZURE_GITHUB_AUTH_SERVICE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: azure-login
+                  key: github-service-id
+            - name: AZURE_DEVOPS_EXT_GITHUB_PAT
+              valueFrom:
+                secretKeyRef:
+                  name: github-token
+                  key: token
