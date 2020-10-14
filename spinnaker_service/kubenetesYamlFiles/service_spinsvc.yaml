@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spinnaker-service
+  namespace: autoci
+  labels:
+    app: spinnaker-service
+spec:
+    type: LoadBalancer
+    selector:
+        app: spinnaker-receiver
+    ports:
+    - name: tomcat
+      port: 8080
+      protocol: TCP

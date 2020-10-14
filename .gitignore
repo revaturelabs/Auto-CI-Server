@@ -7,3 +7,11 @@ initialization_service/.vscode/
 initialization_service/target/
 initialization_service/secrets/
 initialization_service/testsecret.yaml
+spinnaker_service/target
+.vscode/
+.settings/
+.classpath
+.project
+spinnaker_service/app.properties
+spinnaker_service/logs/*.log
+

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoci-jenkins-svlt
+  namespace: autoci
+  labels:
+    app: autoci-jenkins-svlt
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: autoci-jenkins-svlt
+  template:
+    metadata:
+      labels:
+        app: autoci-jenkins-svlt
+    spec:
+      containers:
+        - name: autoci-jenkins-svlt
+          image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/autoci-jenkins-svlt:latest
+          ports:
+          - containerPort: 8080
+          env:
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: terraform-aws
+                key: access_key_id
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: terraform-aws
+                key: secret_access_key
+          - name: AWS_DEFAULT_REGION
+            valueFrom:
+              secretKeyRef:
+                name: terraform-aws
+                key: default_region
+          - name: JENKINS_API_UTOKEN
+            valueFrom:
+              secretKeyRef:
+                name: jenkins-token
+                key: user-token

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoci-config
+  namespace: autoci
+  labels:
+    app: autoci-config
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: autoci-config
+  template:
+    metadata:
+      labels:
+        app: autoci-config
+    spec:
+      containers:
+        - name: autoci-config
+          image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/autoci-config:latest
+          ports:
+          - containerPort: 8080
+          env:
+          - name: GITHUB_OAUTH
+            valueFrom:
+              secretKeyRef:
+                name: github-token
+                key: token

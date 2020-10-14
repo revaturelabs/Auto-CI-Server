@@ -1,0 +1,238 @@
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy: "loggedInUsersCanDoAnything"
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  disableRememberMe: false
+  globalNodeProperties:
+  - envVars:
+      env:
+      - key: "ContainerRegistryCredId"
+        value: "ecr:us-east-1:mehrab-trg00000835-opsusr"
+      - key: "ContainerRegistryURL"
+        value: "https://855430746673.dkr.ecr.us-east-1.amazonaws.com"
+      - key: "helmChartRepoURL"
+        value: "http://a9c2594943a63472faa675f1858e4264-18446664.us-east-1.elb.amazonaws.com/api/charts"
+      - key: "kubectlCreds"
+        value: "kubectl-token"
+      - key: "kubectlServer"
+        value: "https://kubernetes.default.svc"
+  labelAtoms:
+  - name: "master"
+  markupFormatter: "plainText"
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  numExecutors: 2
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: false
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+      - id: "admin"
+        name: "admin"
+        properties:
+        - "apiToken"
+        - mailer:
+            emailAddress: "admin@admin.admin"
+        - preferredProvider:
+            providerId: "default"
+  slaveAgentPort: 50000
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+  views:
+  - all:
+      name: "all"
+  viewsTabBar: "standard"
+security:
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: true
+  sSHD:
+    port: -1
+unclassified:
+  buildDiscarders:
+    configuredBuildDiscarders:
+    - "jobBuildDiscarder"
+  defaultFolderConfiguration:
+    healthMetrics:
+    - worstChildHealthMetric:
+        recursive: true
+  gitHubPluginConfig:
+    configs:
+    - credentialsId: "github-debug"
+    hookUrl: "http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/github-webhook/"
+  gitSCM:
+    allowSecondFetch: false
+    createAccountBasedOnEmail: false
+    disableGitToolChooser: false
+    hideCredentials: false
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+  junitTestResultStorage:
+    storage: "file"
+  location:
+    adminAddress: "address not configured yet <nobody@nowhere>"
+    url: "http://a740e512b731f442aa6fa2f96321715a-1223789559.us-east-1.elb.amazonaws.com:8080/"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+    useTls: false
+  pollSCM:
+    pollingThreadCount: 10
+  slackNotifier:
+    botUser: false
+    room: "#project-factory-bot-spam"
+    sendAsText: false
+    teamDomain: "revaturetrain-cx22851"
+    tokenCredentialId: "slack-debug"
+
+tool:
+  dockerTool:
+    installations:
+    - name: "docker"
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+  maven:
+    installations:
+    - name: "maven"
+      properties:
+      - installSource:
+          installers:
+          - maven:
+              id: "3.6.3"
+  nodejs:
+    installations:
+    - name: "nodejs"
+      properties:
+      - installSource:
+          installers:
+          - nodeJSInstaller:
+              id: "14.11.0"
+              npmPackagesRefreshHours: 72
+  pipelineMaven:
+    triggerDownstreamUponResultAborted: false
+    triggerDownstreamUponResultFailure: false
+    triggerDownstreamUponResultNotBuilt: false
+    triggerDownstreamUponResultSuccess: true
+    triggerDownstreamUponResultUnstable: false
+
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - string:
+          id: "github"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAwUfPZgEsGqs9O7PMnauq0dP8aN5A9rQqRXSp/nzNPKmJUIHllESOgQZ2dL9aeTzZ2lvC7P/zgao0/zWixpeJE4Q==}"
+      - string:
+          id: "github-debug"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAwaK1V9pKeEjGolUu0vPsGESTgcHaVP4/fo0Mdbil3DK/Fa4gw37G4a45QfQ7ViFaEG5VG+kMzqcJmeAdN93+A6Q==}"
+      - usernamePassword:
+          id: "dockerhub-debug"
+          password: "{AQAAABAAAAAQc/vAyTCCyzYOFT2OpkGTiNlLbmmwb26n/uI9Rgmxjig=}"
+          scope: GLOBAL
+          username: "alxl"
+      - string:
+          id: "slack-debug"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAgr0oILSDi4CRW4WyN36q1NE7FOfwB5Qw8LVJj9cLo2r2aWa3R2Sdn+6QxgV+9HMj5}"
+      - aws:
+          accessKey: "AKIA4OK5FKIYUHH3IED6"
+          id: "mehrab-trg00000835-opsusr"
+          scope: GLOBAL
+          secretKey: "{AQAAABAAAAAwt2TT0HRVUJQoegEe+P4DM49M/fh5k2Qh7GVZjtMRCCBw8Vx/uiP0iU+5ikut/xhZerZBjV2/pGVO3dbawilZ6g==}"
+      - string:
+          id: "kubectl-token"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAOgbAOkHRxMpMDeCcJmbUE1BlbMIwcn/ZnbFk+5qJEFOOjAb7GiQMGTthsVvLUuD5yFb6VKDiTR2AdsMBBhOOncRAO0iyHeXx4a1SU6nN1ouHnS13FgJz4pbcG3LHPJKVXsxjV0Lp1QkhvgYoLF5DG+1VI0Ci0TqQklh1jj5ojH0OF9jJz4Th9V5+dHXtp7zKk+aJc/mRMLngoUhci5Hb2vxE+gbkHDXBsp0KLSOqhb93i+JqsYqRIeNCBlHpF5BiPC1XXa3IT+0XoYe+wDW/uZf6zVzWMwVrJfmS0/kCXjRbFWuz0bGYsNs774hSAmPj04w6MC+5ZThX09HIy/sANyLiOASpf7a1yMj/yYAwmTtoFg5yuMApqhdD18dz/f55i5/B9recMIVWqslKsfJ5r1ctdZUBfy131qcD7/Bxq7IDmvnzfHuTLTgthBPb3VyUa7k8BA2cRUsvUabJOFaWH1Kkm13LLUwGdIMHiAvlExTX0cu1f9yiBQqioXUmJRdUoILN4Ci3kRqVmVQpNwi2h2GvyvMfT+Jqv4ok20qE+g6YzkON2zh8XhUqrcrroiAdCej1bdDjZ9dKOVg0XL8JP35v3n4hnZ2e5mls3+79KoL9qEY6OYUERCJn5nDFoxJCT0UZYB5waW1EoBAcGkM7ND+S4PxUDEOQmSXg9gIqvqBBplRRCaYzjmvoTXG2tyOsijeiiKhmmOWiG9FfbNYPMyms/90Zs9npWxDTVhUo8BvsG3MyHjMWk78kGi0H3dvmeSfuIYYNfA1lrIdcdkermgME29hMaxbCOeD5f9+iEhFFrb+a9mz13oAfzpMk2x9xfFfZmeRjXfsLI03CENlBHK3h2JiU1e/zMu0DIRvL1FwCouCtG0SX6EWPKzF2mEEMXaX9lfZXzDjlOf2oS9m91uCvdxZ/SaQGkQ+2OLuKuFw4u+gSsfg+/2gNZyVul8mFc+vWtpT6KRspcbA+cavModAGXDfDI1lI+QjmTqKorEo7uJa9sXqZ8+Dslvrqx2+PI4mHhRuCEQ4FXSGhyFG/cBp662oTXhBT34s+osrwJ5RRIi9nNqi/3c6pFD+flApWOYGcPBvFuNUAD/ErTNw9rwhV7/kStOOEAAiwOfMtxHBjaJ41Vt10yliU+iZVU8NCGJDjApONrIXCrAwag/ahCAYJtvML16TNtXGwdEgOyY2+SQLBVuwoA1MMlj1hd+FrdhXRTl3t0wfYmfCp1S8tIP38zbrOEpJciUA16UHc8BdoU=}"
+
+jobs:
+  - script: >
+      freeStyleJob('seed') {
+        parameters{
+          stringParam('githubURL', '', 'URL for Github source code containing Jenkinsfile')
+          stringParam('projectName', '', 'Name of project')
+          stringParam('slackChannel', '', 'Slack channel for the msg')
+        }
+        steps {
+          dsl {
+            text('''
+      folder("^${projectName}") {
+        description("Jobs for project ^${projectName}")
+      }
+      
+      def listenJob = { String forBranch ->
+        freeStyleJob("^${projectName}/$forBranch-listen") {
+          properties {
+            githubProjectUrl("^${githubURL}")
+          }
+          triggers {
+            gitHubPushTrigger()
+          }
+          scm {
+            git {
+              remote {
+                url("^${githubURL}") 
+              }
+              branches("*/$forBranch")
+            }
+          }
+          publishers {
+            downstream("^${projectName}/$forBranch-pipe")
+          }
+        }
+      }
+      def pipeJob = { String forBranch -> 
+        pipelineJob("^${projectName}/$forBranch-pipe") {
+          parameters{
+            stringParam('githubURL', "^${githubURL}", 'URL for Github source code containing Jenkinsfile')
+            stringParam('projectName', "^${projectName}", 'Name of project')
+            stringParam('gitBranch', "$forBranch", 'Branch to checkout')
+            stringParam('slackChannel', "^${slackChannel}", 'Slack channel for the msg')
+          }
+          definition {
+            cpsScm {
+              scm {
+                git {
+                  remote {
+                    url("^${githubURL}")
+                  }
+                  branch("*/$forBranch")
+                }
+              }
+              lightweight()
+            }
+          }
+        }
+      }
+      
+      listenJob('dev')
+      pipeJob('dev')
+      
+      listenJob('prod')
+      pipeJob('prod')
+            ''')
+            ignoreExisting();
+            removeAction('IGNORE');
+          }
+        }
+      }
