@@ -32,7 +32,14 @@ public class Spinnaker {
         spinnObj.setEmail("testemail");
         spinnObj.setProjectName(frontendObj.getMavenData().getProjectName());
         spinnObj.setBranch("main");
+
         Response response = HttpRequest.sendHttpReq(spinnObj, url);
+
+        if(response == null){
+            progress.setSpinnaker("failed");
+            progress.setRunningStatus(false);
+            spinnResp = new SpinnakerServiceResp();
+        }
 
         //checks for 200 response
         if (FailureChecker.CheckCode(response)) {

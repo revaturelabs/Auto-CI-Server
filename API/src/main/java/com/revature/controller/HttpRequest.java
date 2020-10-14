@@ -1,5 +1,7 @@
 package com.revature.controller;
+
 import java.io.IOException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -34,6 +36,27 @@ public class HttpRequest {
             log.error("Failed setting result = " + e.getMessage());
             e.printStackTrace();
         }
+
+        // OkHttpClient client = new OkHttpClient();
+        // String result;
+        // try {
+        //     result = objectMapper.writeValueAsString(obj);
+        //     RequestBody body = RequestBody.create(result, JSON);
+        //     Request request = new Request.Builder().url(REQ_URL).post(body).build();
+    
+        //     client.newBuilder().callTimeout(2, TimeUnit.MINUTES).connectTimeout(2, TimeUnit.MINUTES).writeTimeout(2, TimeUnit.MINUTES).readTimeout(2, TimeUnit.MINUTES).build();
+        //     //.connectTimeout(180, TimeUnit.SECONDS)
+        //     Response response;
+        //     try {
+        //         response = client.newCall(request).execute();
+        //         return response;
+        //     } catch (IOException e) {
+        //         log.error("Failed setting response = " + e.getMessage());
+        //     }
+        // } catch (JsonProcessingException e1) {
+        //     e1.printStackTrace();
+        // }
+
         return null;
     }
 }

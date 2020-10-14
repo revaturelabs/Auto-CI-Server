@@ -1,6 +1,5 @@
 package com.revature.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.Configuration.ConfigurationResp;
 import com.revature.model.Frontend.FrontendObj;
 import com.revature.model.Initialization.InitializationObj;
@@ -16,7 +15,7 @@ public class Initialization {
     public InitializationResp initService(FrontendObj frontendObj, String url, ConfigurationResp configResp) {
 
         ProgressSingleton progress = ProgressSingleton.instance();
-        ObjectMapper mapper = new ObjectMapper();
+        //ObjectMapper mapper = new ObjectMapper();
 
         progress.setInitialization("started");
         InitializationObj initObj = new InitializationObj();
@@ -28,7 +27,15 @@ public class Initialization {
         initObj.setMavenData(frontendObj.getMavenData());
         initObj.setNpmData(frontendObj.getNpmData());
         InitializationResp initResp = new InitializationResp();
+
         Response response = HttpRequest.sendHttpReq(initObj, url);
+
+        if(response == null){
+            progress.setInitialization("failed");
+            progress.setRunningStatus(false);
+            initResp.setIsDone("failed");
+            return initResp;
+        }
 
         //checks for 200 response
         if (FailureChecker.CheckCode(response)) {

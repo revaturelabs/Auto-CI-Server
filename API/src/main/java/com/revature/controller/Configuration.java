@@ -29,6 +29,13 @@ public class Configuration {
 
         Response response = HttpRequest.sendHttpReq(configObj, UrlConfig);
 
+        if(response == null){
+            progress.setConfiguration("failed");
+            progress.setRunningStatus(false);
+            configResp = new ConfigurationResp();
+            return configResp;
+        }
+
         //checks for 200 response
         if (FailureChecker.CheckCode(response)) {
             try {

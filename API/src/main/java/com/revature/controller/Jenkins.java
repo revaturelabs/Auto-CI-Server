@@ -31,6 +31,12 @@ public class Jenkins {
 
         Response response = HttpRequest.sendHttpReq(jenkinsServiceObj, url);
 
+        if(response == null){
+            progress.setJenkins("failed");
+            progress.setRunningStatus(false);
+            jenkinsResp = new JenkinsServiceResp();
+        }
+
         //checks for 200 response
         if (FailureChecker.CheckCode(response)) {
             try {
