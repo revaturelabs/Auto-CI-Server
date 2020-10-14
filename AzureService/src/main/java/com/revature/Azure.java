@@ -2,6 +2,8 @@ package com.revature;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,18 +33,29 @@ public class Azure extends HttpServlet {
         parseParams(request);
 
         try {
-            CommandExecutor cmd = new CommandExecutor();
-
             log.info("Logging into Azure...");
-			azureLogin(cmd, responseJson);
-            log.info("Making pipeline...");
-            makePipeline(cmd, responseJson);
-            log.info("Setting pipeline variables...");
-            setPipelineVars(cmd, responseJson);
+            azureLogin(new CommandExecutor());
+            responseJson.put("azLoginSuccess", true);
         } catch (Exception e) {
-            responseJson.put("errorMsg", e.getMessage());
             log.error(e.getMessage());
+            responseJson.put("errorMsg", e.getMessage());
+            responseJson.put("azLoginSuccess", false);
         }
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        es.submit(() -> {
+            try {
+                CommandExecutor cmd = new CommandExecutor();
+
+                log.info("Logging into Azure...");
+                azureLogin(cmd);
+                log.info("Making pipeline...");
+                makePipeline(cmd);
+                log.info("Setting pipeline variables...");
+                setPipelineVars(cmd);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
+        });
 		
         response.setContentType("application/json");
         response.getWriter().write(responseJson.toString(0));
@@ -103,27 +116,25 @@ public class Azure extends HttpServlet {
         System.out.println(execOutput);
     }
 	
-    private void azureLogin(CommandExecutor cmd, JSONObject response) throws IOException {
+    private void azureLogin(CommandExecutor cmd) throws IOException {
         execAndLogCmd(cmd, "az login" + AZ_AUTH);
         execAndLogCmd(cmd, "az devops configure -d organization=https://dev.azure.com/RevatureProjectFactory project=ProjectFactory");
-        response.put("login", "success");
     }
     
     private String makePipelineCommand(String branch) {
         return "az pipelines create --folder " + projName + " --name " + projName + "-" + branch + " --repository " + gitUrl + " --branch " + branch + " --yaml-path azure-pipelines-" + branch + ".yaml --service-connection " + AZ_SERVICE_ID;
     }
-    private void makePipeline(CommandExecutor cmd, JSONObject response) throws IOException {
+    private void makePipeline(CommandExecutor cmd) throws IOException {
         execAndLogCmd(cmd, "az pipelines folder create --path " + projName);
         for (String b : BRANCHES) {
             execAndLogCmd(cmd, makePipelineCommand(b));
         }
-        response.put("pipeline", "success");
     }
     
     private String makePipelineVarCommand(String name, String value, String branch) {
         return "az pipelines variable create --name " + name + " --value " + value + " --pipeline-name " + projName + "-" + branch;
     }
-    private void setPipelineVars(CommandExecutor cmd, JSONObject response) throws IOException {
+    private void setPipelineVars(CommandExecutor cmd) throws IOException {
         for (String b : BRANCHES) {
             execAndLogCmd(cmd, makePipelineVarCommand("projNameLowercase", projName.toLowerCase(), b));
             execAndLogCmd(cmd, makePipelineVarCommand("azureSubscriptionEndpoint", "helm", b));
@@ -135,6 +146,5 @@ public class Azure extends HttpServlet {
             execAndLogCmd(cmd, makePipelineVarCommand("azureCRConnection", "docker-acr", b));
             execAndLogCmd(cmd, makePipelineVarCommand("gitBranch", b, b));
         }
-        response.put("pipeline-vars", "success");
     }
 }
