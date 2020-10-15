@@ -31,16 +31,16 @@ public class Initialization {
         initObj.setNpmData(frontendObj.getNpmData());
         initObj.setIsAzure(frontendObj.getIsAzure());
         InitializationResp initResp = new InitializationResp();
-        printJson(initObj);
+        // printJson(initObj);
 
         Response response = HttpRequest.sendHttpReq(initObj, url);
 
-        // if(response == null){
-        //     progress.setInitialization("failed");
-        //     progress.setRunningStatus(false);
-        //     initResp.setIsDone("failed");
-        //     return initResp;
-        // }
+        if(response == null){
+            progress.setInitialization("failed");
+            progress.setRunningStatus(false);
+            initResp.setIsDone("failed");
+            return initResp;
+        }
 
         //checks for 200 response
         if (FailureChecker.CheckCode(response)) {

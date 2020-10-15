@@ -35,11 +35,11 @@ public class Spinnaker {
 
         Response response = HttpRequest.sendHttpReq(spinnObj, url);
 
-        // if(response == null){
-        //     progress.setSpinnaker("failed");
-        //     progress.setRunningStatus(false);
-        //     spinnResp = new SpinnakerServiceResp();
-        // }
+        if(response == null){
+            progress.setSpinnaker("failed");
+            progress.setRunningStatus(false);
+            spinnResp = new SpinnakerServiceResp();
+        }
 
         //checks for 200 response
         if (FailureChecker.CheckCode(response)) {
