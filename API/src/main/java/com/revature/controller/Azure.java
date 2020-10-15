@@ -29,12 +29,12 @@ public class Azure {
 
         Response response = HttpRequest.sendHttpReq(azureObj, urlAzure);
 
-        // if(response == null){
-        //     progress.setAzure("failed");
-        //     progress.setRunningStatus(false);
-        //     azureRespObj = new AzureRespObj();
-        //     return azureRespObj;
-        // }
+        if(response == null){
+            progress.setAzure("failed");
+            progress.setRunningStatus(false);
+            azureRespObj = new AzureRespObj();
+            return azureRespObj;
+        }
 
         //checks for 200 response
         if (FailureChecker.CheckCode(response)) {
