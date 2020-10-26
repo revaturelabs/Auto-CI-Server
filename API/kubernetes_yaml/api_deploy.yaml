@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: autoci
+    name: api-server
+    labels:
+        app: api-server
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: api-server
+    template:
+        metadata:
+            labels:
+                app: api-server
+        spec:
+            containers:
+            -   name: api-server
+                image: mattbecker5/project-3-server-api:latest
+            restartPolicy: Always 

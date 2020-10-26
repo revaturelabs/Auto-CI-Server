@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: autoci
+    name: api-server
+spec:
+    type: LoadBalancer
+    selector:
+        app: api-server
+    ports:
+        - port: 80
+          name: server
+          targetPort: 8080
